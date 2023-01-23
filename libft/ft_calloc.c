@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/23 13:47:19 by akorompa         ###   ########.fr       */
+/*   Created: 2022/10/04 17:37:47 by akorompa          #+#    #+#             */
+/*   Updated: 2022/10/18 11:32:40 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../libft/libft.h"
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*mem;
 
-#endif
+	if (size != 0 && (count >= (SIZE_MAX / size)))
+		return (NULL);
+	mem = malloc(size * count);
+	if (!mem)
+		return (NULL);
+	ft_bzero(mem, (size * count));
+	return (mem);
+}
