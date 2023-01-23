@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/23 13:20:22 by arurangi          #+#    #+#              #
+#    Updated: 2023/01/23 13:21:47 by arurangi         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 SRCS			= 	srcs/main.c \
 
 INCLUDES		= includes/minishell.h
@@ -17,8 +29,9 @@ CCFLAGS 	= -Wall -Wextra -Werror -lreadline
 all:		${NAME}
 
 ${NAME}:	${OBJS} ${INCLUDES}
-			make -C $(LIBFT)
-			$(CC) $(CCFLAGS) -L ./libft -l ft -o $(NAME) $(OBJS)
+			$(CC) $(CCFLAGS) -o $(NAME) $(OBJS)
+#$(CC) $(CCFLAGS) -L ./libft -l ft -o $(NAME) $(OBJS)
+#make -C $(LIBFT)
 
 clean:
 				rm -f ${OBJS}
