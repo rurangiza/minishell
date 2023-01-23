@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/23 14:11:10 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/01/23 14:48:32 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,33 @@ char *get_cmd(char *str, char **cmd_path)
 	return (NULL);
 }
 
+void execute(t_cmd *cmd, char *str, char **envp)
+{
+	cmd->path = find_path(envp);
+	cmd->cmd_path = ft_split(cmd->path, ':');
+	cmd->cmd_args = ft_split(str, ' ');
+	cmd->cmd = get_cmd(cmd->cmd_args[0], cmd->cmd_path);
+	execve(cmd->cmd, cmd->cmd_args, envp);
+	
+}
+
 
 int	main(int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
 	char *str;
-	char *cmd;
-	char *path;
-	char **cmd_path;
-	char **cmd_args;
-	int i;
-	
-	i = 0;
-	path = find_path(envp);
-	cmd_path = ft_split(path, ':');
+	t_cmd cmd;
+	pid_t process;
+
 	while (1)
 	{
 		str = readline("$> ");
 		add_history(str);
-		cmd = get_cmd(str, cmd_path);
-		cmd_args = ft_split(str, ' ');
-		execve(cmd, cmd_args, envp);
+		process = fork();
+		if (process == 0)
+			execute(&cmd, str, envp);
+		waitpid(process, NULL, 0);
 	}
 	return (0);
 }
