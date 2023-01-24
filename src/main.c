@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:21:06 by Arsene            #+#    #+#             */
-/*   Updated: 2023/01/24 13:02:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:42:31 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,13 @@ int	main(int arg_count, char **arg_list, char **envp)
 		{
 			char **tab = ft_split(str, ' ');
 			expandor(tab[0], envp);
-			
-			init_cmd(envp, str, &cmd);
-			execve(cmd.path, cmd.args, envp);
+			if (ft_strncmp(tab[0], "echo", 4) == 0)
+				echo(FALSE, str + 4);
+			else
+			{
+				init_cmd(envp, str, &cmd);
+				execve(cmd.path, cmd.args, envp);
+			}
 		}
 		waitpid(pid, &status, 0);
 	}	

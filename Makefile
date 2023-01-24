@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/10 15:24:07 by arurangi          #+#    #+#              #
-#    Updated: 2023/01/23 16:47:22 by arurangi         ###   ########.fr        #
+#    Updated: 2023/01/24 15:08:39 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SOURCE_FILES	=	${SRC_DIR}main.c \
 					${SRC_DIR}init.c \
 					${SRC_DIR}errors.c \
 					${SRC_DIR}expander.c \
+					src/built-ins/echo.c \
 					
 
 # VARIABLES

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/01/23 16:46:05 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/01/24 15:40:44 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+
+# define TRUE 1
+# define FALSE 0
 
 # define P_READ 0
 # define P_WRITE 1
@@ -64,5 +67,8 @@ void	exit_nofile_msg(char *filename);
 void	exit_wrongcmd_msg(char *cmd, int error_code);
 
 void	expandor(char *token, char **envp);
+
+
+void	echo(int option, char *argument);
 
 #endif
