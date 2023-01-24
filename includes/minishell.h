@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/01/24 15:40:44 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/01/24 16:20:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ void	expandor(char *token, char **envp);
 
 
 void	echo(int option, char *argument);
-
+char	*check_escape_seq(char *argument, int index);
 #endif
