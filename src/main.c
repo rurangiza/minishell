@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:21:06 by Arsene            #+#    #+#             */
-/*   Updated: 2023/01/23 16:49:44 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/01/24 13:02:22 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,25 @@
 int	main(int arg_count, char **arg_list, char **envp)
 {
 	t_data	data;
+	t_cmd	cmd;
 	int		status;
-
-	load_data(&data, arg_count, arg_list, envp);
 	
-	t_cmd cmd;
+	load_data(&data, arg_count, arg_list, envp);
 	while (1)
 	{
-		// Lexor
-		char *str = readline("\033[30mminishell >\033[0m ");
+		char	*str = readline("\033[30mminishell >\033[0m ");
 		add_history(str);
-		// Parser
-		/*
-		 * EXPANDER:
-		 * Takes the parser tokens as argument and interprete the environment variables into their corresponding value
-		 * It also handles subshells, creates pipes and handles all the opening of input-/output-redirections and storing the correct ones in the executor tokens
-		*/
 		pid_t pid = fork();
 		if (pid == 0)
 		{
 			char **tab = ft_split(str, ' ');
 			expandor(tab[0], envp);
-			/*
-			 * EXECUTOR:
-			 * executes the command. If the given command is an inbuilt, it will just run the command in the same process, if it isn't it will create a child process to run the command in
-			*/
+			
 			init_cmd(envp, str, &cmd);
-			execve(cmd.path, cmd.args, NULL);
+			execve(cmd.path, cmd.args, envp);
 		}
 		waitpid(pid, &status, 0);
-	}
-	//ft_pipex(&data);
+	}	
 	return (EXIT_SUCCESS);
 }
 

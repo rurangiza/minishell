@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 14:41:31 by arurangi          #+#    #+#             */
-/*   Updated: 2023/01/23 16:34:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/01/24 11:59:58 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	*init_cmd(char **envp, char *args, t_cmd *cmd)
 			if (paths_list == NULL)
 				return (NULL);
 			cmd->path = validated_path(paths_list, args);
+			break ;
 		}
 		index++;
 	}
