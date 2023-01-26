@@ -1,0 +1,7 @@
+INCLUDES		= includes/minishell.h
+LIBFT = libft
+	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} -c $< -o $@
+${NAME}:	${OBJS} ${INCLUDES}
+			make -C $(LIBFT)
+				make clean -C $(LIBFT)
+				make fclean -C $(LIBFT)

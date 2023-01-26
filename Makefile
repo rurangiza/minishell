@@ -1,4 +1,5 @@
 SRCS			= 	srcs/main.c \
+					srcs/parser.c \
 
 INCLUDES		= includes/minishell.h
 
@@ -9,7 +10,7 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror -lreadline
+CCFLAGS 	= -Wall -Wextra -Werror -lreadline -fsanitize=address -g
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} -c $< -o $@

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/23 14:40:13 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:27:16 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,28 @@ typedef struct s_cmd
 	char **cmd_path;
 	char **cmd_args;
 }	 t_cmd;
+
+typedef struct s_lexer
+{
+	char **tokens;
+}	t_lexer;
+
+typedef struct s_parser
+{
+	int op_count;
+	char **cmd_path;
+	
+}	t_parser;
+
+typedef struct s_token
+{
+	char **cmd;
+	int outfile;
+	int infile;
+}	t_token;
+
+void	parser(t_lexer *lexer, t_token *token, char **envp);
+char	*find_path(char **envp);
+char *get_cmd(char *str, char **cmd_path);
 
 #endif

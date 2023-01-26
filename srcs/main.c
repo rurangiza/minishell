@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/23 14:48:32 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:06:29 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,37 @@ char *get_cmd(char *str, char **cmd_path)
 	return (NULL);
 }
 
-void execute(t_cmd *cmd, char *str, char **envp)
+void execute(t_token *parsed, char **envp)
 {
-	cmd->path = find_path(envp);
-	cmd->cmd_path = ft_split(cmd->path, ':');
-	cmd->cmd_args = ft_split(str, ' ');
-	cmd->cmd = get_cmd(cmd->cmd_args[0], cmd->cmd_path);
-	execve(cmd->cmd, cmd->cmd_args, envp);
+	execve(parsed->cmd[0], parsed->cmd, envp);
 	
 }
 
+void	lexerinho(char *prompt, t_lexer *lexer)
+{
+	lexer->tokens = ft_split(prompt, ' ');
+}
 
 int	main(int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
-	char *str;
-	t_cmd cmd;
-	pid_t process;
 
+	char *str;
+	t_lexer lexer;
+	t_token *parsed;
+	
+	parsed = NULL;
 	while (1)
 	{
 		str = readline("$> ");
 		add_history(str);
-		process = fork();
-		if (process == 0)
-			execute(&cmd, str, envp);
-		waitpid(process, NULL, 0);
+		lexerinho(str, &lexer);
+		parser(&lexer, &parsed, envp);
+		// process = fork();
+		// if (process == 0)
+		// 	execute(&parsed, envp);
+		// waitpid(process, NULL, 0);
 	}
 	return (0);
 }
