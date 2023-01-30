@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/30 09:36:32 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/01/30 10:18:34 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,7 @@ char *get_cmd(char *str, char **cmd_path)
 
 void execute(t_token *parsed, char **envp)
 {
-	(void)envp;
-	printf("%s\n", parsed->cmd[0]);
-	
-	//execve(parsed->cmd[0], parsed->cmd, envp);
-	
+	execve(parsed[0].cmd_path, parsed[0].cmd, envp);
 }
 
 void	lexerinho(char *prompt, t_lexer *lexer)
@@ -59,7 +55,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 
 	char *str;
-	//pid_t process;
+	pid_t process;
 	t_lexer lexer;
 	t_token *parsed;
 	
@@ -69,11 +65,11 @@ int	main(int ac, char **av, char **envp)
 		str = readline("$> ");
 		add_history(str);
 		lexerinho(str, &lexer);
-		parser(&lexer, parsed, envp);
-		// process = fork();
-		// if (process == 0)
-		// 	execute(parsed, envp);
-		// waitpid(process, NULL, 0);
+		parsed = parser(&lexer, envp);
+		process = fork();
+		if (process == 0)
+			execute(parsed, envp);
+		waitpid(process, NULL, 0);
 	}
 	return (0);
 }

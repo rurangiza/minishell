@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/30 09:44:25 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/01/30 10:36:41 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,10 @@ void	get_cmd_line_3(t_lexer *lexer, t_token *token, t_parser *pars, int i)
 	k = 0;
 	if (get_cmd(lexer->tokens[n], pars->cmd_path))
 	{
-		token[i].cmd[k] = get_cmd(lexer->tokens[n], pars->cmd_path);
+		token[i].cmd[k] = ft_strdup(lexer->tokens[n]);
+		token[i].cmd_path = get_cmd(lexer->tokens[n], pars->cmd_path);
 		printf("%s\n", token[i].cmd[k]);
+		printf("%s\n", token[i].cmd_path);
 		k++;
 		n++;
 	} 
@@ -102,6 +104,7 @@ void	get_cmd_line_3(t_lexer *lexer, t_token *token, t_parser *pars, int i)
 		k++;
 		n++;
 	}
+	token[i].cmd[k] = 0;
 }
 
 void	get_file(t_lexer *lexer, t_token *token, t_parser *pars, int i)
@@ -118,6 +121,7 @@ void	get_file(t_lexer *lexer, t_token *token, t_parser *pars, int i)
 		if (ft_strncmp(lexer->tokens[n], "-", 1))
 		{
 			token[i].infile = open(lexer->tokens[n], O_RDONLY);
+			printf("%d\n", token[i].infile);
 			if(token[i].infile < 0)
 				printf("error infile : %s\n", lexer->tokens[n]);
 			break ;
@@ -139,7 +143,7 @@ void	get_cmd_line_2(t_lexer *lexer, t_token *token, t_parser *pars, int i)
 	k = 0;
 	n = get_index(lexer, i);
 	option = option_count(lexer, n);
-	token[i].cmd = malloc(sizeof(char *) * (option));
+	token[i].cmd = malloc(sizeof(char *) * (option + 1));
 	if (!token[i].cmd)
 		return ;
 	printf("------------- : %d\n", i);
@@ -147,24 +151,27 @@ void	get_cmd_line_2(t_lexer *lexer, t_token *token, t_parser *pars, int i)
 	get_file(lexer, token, pars, i);
 }
 
-void get_cmd_line(t_lexer *lexer, t_token *token, t_parser *pars)
+t_token  *get_cmd_line(t_lexer *lexer, t_parser *pars)
 {
 	int i;
+	t_token *token;
 	
 	token = malloc(sizeof(t_token) * (pars->op_count + 1));
 	if (!token)
-		return ;
+		return (NULL);
 	i = 0;
 	while (i < pars->op_count + 1)
 	{
 		get_cmd_line_2(lexer, token, pars, i);	
 		i++;
 	}
+	return (token);
 }
 
-void parser(t_lexer *lexer, t_token *token, char **envp)
+t_token  *parser(t_lexer *lexer, char **envp)
 {
 	t_parser pars;
+	t_token *token;
 	char *path;
 	int i;
 	
@@ -172,5 +179,6 @@ void parser(t_lexer *lexer, t_token *token, char **envp)
 	pars.op_count = count_operations(lexer);
 	path = find_path(envp);
 	pars.cmd_path = ft_split(path, ':');
-	get_cmd_line(lexer, token, &pars);
+	token = get_cmd_line(lexer, &pars);
+	return (token);
 }

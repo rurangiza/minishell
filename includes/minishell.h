@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/01/30 09:39:40 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/01/30 10:05:32 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,12 @@ typedef struct s_parser
 typedef struct s_token
 {
 	char **cmd;
+	char *cmd_path;
 	int outfile;
 	int infile;
 }	t_token;
 
-void	parser(t_lexer *lexer, t_token *token, char **envp);
+t_token *parser(t_lexer *lexer, char **envp);
 char	*find_path(char **envp);
 char *get_cmd(char *str, char **cmd_path);
 
