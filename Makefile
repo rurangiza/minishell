@@ -10,7 +10,7 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror -lreadline -fsanitize=address -g
+CCFLAGS 	= -Wall -Wextra -Werror -lreadline -g -fsanitize=address
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} -c $< -o $@
