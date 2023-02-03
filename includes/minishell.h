@@ -3,72 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/01/24 16:20:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:06:55 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-# include "../src/library/libft.h"
-# include <stdio.h>
-# include <unistd.h>
-# include <sys/wait.h>
-# include <fcntl.h>
-# include <string.h>
-
+#include "../src/library/libft.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
+#include <sys/stat.h> // fstat ?
 
-# define TRUE 1
-# define FALSE 0
+# define READ 0
+# define WRITE 1
+# define TRUE	1
+# define FALSE	0
 
-# define P_READ 0
-# define P_WRITE 1
+typedef struct s_token
+{
+	char	**cmd;
+	char	*cmd_path;
+	int		infile;
+	int		outfile;
+}	t_token;
 
-typedef struct s_cmd {
-	char	*path;
-	char	**args;
-}	t_cmd;
+typedef enum e_state {
+    _single	= 0,
+    _last	= 1,
+    _middle	= 2
+} t_state;
 
-typedef struct s_data {
-	pid_t	pid[2];
-	int		pipe_ends[2];
-	int		arg_count;
-	char	**arg_list;
-	char	**envp;
-}	t_data;
+/* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
-void	ft_pipex(t_data *data);
+void	execute(t_token *tree, int size);
 
-/* ~~~~~~ INITTIALIZTION ~~~~~~~ */
-void	load_data(t_data *data, int arg_count, char **arg_list, char **envp);
+void    child_process(t_token *tree, t_state cmd_type, int index, int *pipends, int prevpipe);
+void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
 
-/* ~~~~~~~~~~ PROCESS ~~~~~~~~~ */
-void	first_child(t_data *data, int *pipe);
-void	last_child(t_data *data);
-void	parent_process(pid_t pid, int *pipe_ends, int index, int arg_count);
+void	single_child(t_token *token);
+void	last_child(t_token *token, int prevpipe);
+void	average_child(t_token *token, int index, int prevpipe, int *pipends);
 
-/* ~~~~~~~~~ PARSING ~~~~~~~~~ */
-char	*init_cmd(char **envp, char *args, t_cmd *cmd);
-
-char	*validated_path(char **paths_list, char *args);
-int		count_words(char *str);
-char	*cut_first_word(char *str);
-
-/* ~~~~~~~~ ERROR HANDLING ~~~~~~ */
-void	exit_msg(void);
-void	exit_nofile_msg(char *filename);
-void	exit_wrongcmd_msg(char *cmd, int error_code);
-
-void	expandor(char *token, char **envp);
+int		get_cmd_type(int size, int index);
 
 
+/* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(int option, char *argument);
 char	*check_escape_seq(char *argument, int index);
+
+/* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
+void	ft_free_matrix(char **matrix);
+
+/* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
+void	exit_msg(void);
+
 #endif

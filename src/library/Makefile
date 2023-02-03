@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/05 13:53:56 by arurangi          #+#    #+#              #
-#    Updated: 2023/01/16 10:54:43 by arurangi         ###   ########.fr        #
+#    Updated: 2023/02/03 13:57:35 by Arsene           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,23 +44,23 @@ RM			=	rm -f
 OBJS	=	${SRCS:.c=.o}
 OBJSB	=	${SRCSB:.c=.o}
 ${NAME}:	${OBJS}
-				@${COMPILER} -c ${SRCS}
-				@ar rcs ${NAME} ${OBJS}
+				${COMPILER} -c ${SRCS}
+				ar rcs ${NAME} ${OBJS}
 
 %.o: 		%.c
-				@$(COMPILER) $(C_FLAGS) -Imlx -c $< -o $@
+				$(COMPILER) $(C_FLAGS) -Imlx -c $< -o $@
 
 # RULES
 all:		${NAME}
 
 bonus:		${OBJS} ${OBJSB}
-				@ar rcs ${NAME} ${OBJS} ${OBJSB}
+				ar rcs ${NAME} ${OBJS} ${OBJSB}
 
 clean:
-				@${RM} ${OBJS} $(OBJSB)
+				${RM} ${OBJS} $(OBJSB)
 
 fclean:		clean
-				@${RM} ${NAME}
+				${RM} ${NAME}
 
 re:			fclean all
 

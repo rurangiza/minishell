@@ -3,73 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:21:06 by Arsene            #+#    #+#             */
-/*   Updated: 2023/01/24 15:42:31 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/03 14:11:46 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-/*
- * Pipex
- * Recreating the UNIX mechanism known as pipe "|"
-*/
-
-int	main(int arg_count, char **arg_list, char **envp)
+int	main(int arg_count, char **arg_list)
 {
-	t_data	data;
-	t_cmd	cmd;
-	int		status;
+	if (arg_count != 1)
+		return (EXIT_FAILURE);
+	(void)arg_list;
 	
-	load_data(&data, arg_count, arg_list, envp);
-	while (1)
+	system("clear");
+	while (TRUE)
 	{
-		char	*str = readline("\033[30mminishell >\033[0m ");
-		add_history(str);
-		pid_t pid = fork();
-		if (pid == 0)
+		/* Prompt: get user input */
+		char *user_input = readline("\033[1mminishell $\033[0m ");
+		add_history(user_input);
+		
+		/* Parsing: divide into pipes & tokens (commands) */
+		char **pipeline = ft_split(user_input, '|');
+		int pipeline_size = 0;
+		while (pipeline[pipeline_size])
+			pipeline_size++;
+		t_token *tokens = malloc(sizeof(t_token) * pipeline_size);
+		for (int i = 0; i < pipeline_size; i++)
 		{
-			char **tab = ft_split(str, ' ');
-			expandor(tab[0], envp);
-			if (ft_strncmp(tab[0], "echo", 4) == 0)
-				echo(FALSE, str + 4);
-			else
-			{
-				init_cmd(envp, str, &cmd);
-				execve(cmd.path, cmd.args, envp);
-			}
+			tokens[i].cmd = ft_split(pipeline[i], ' ');
+			tokens[i].infile = -1;
+			tokens[i].outfile = -1;
 		}
-		waitpid(pid, &status, 0);
-	}	
-	return (EXIT_SUCCESS);
-}
 
-void	ft_pipex(t_data *data)
-{
-	pid_t	pid;
-	int		pipe_ends[2];
-	int		index;
-
-	index = 2;
-	while (index <= data->arg_count - 2)
-	{
-		if (pipe(pipe_ends) == -1)
-			exit_msg();
-		pid = fork();
-		if (pid == -1)
-			exit_msg();
-		else if (pid == 0)
-		{
-			if (index == 2)
-				first_child(data, pipe_ends);
-			else
-				last_child(data);
-		}
-		parent_process(pid, pipe_ends, index, data->arg_count);
-		index++;
+		/* Run the commands */
+		execute(tokens, pipeline_size);
+		
+		/* Terminate program */
+		ft_free_matrix(pipeline);
+		free(user_input);
 	}
+	return (0);
 }
 
 

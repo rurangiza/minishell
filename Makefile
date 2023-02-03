@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/10 15:24:07 by arurangi          #+#    #+#              #
-#    Updated: 2023/01/24 15:08:39 by arurangi         ###   ########.fr        #
+#    Updated: 2023/02/03 13:53:55 by Arsene           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,24 +18,20 @@ LIBFT	=	./src/library/libft.a
 LIBFT_DIR	=	./src/library/
 SRC_DIR		=	./src/
 BONUS_DIR	=	./src/bonus/
+BUILT_INS	=	./src/built-ins/
 
 # SOURCE FILES
 SOURCE_FILES	=	${SRC_DIR}main.c \
-					${SRC_DIR}parsing.c \
-					${SRC_DIR}processes.c \
-					${SRC_DIR}init.c \
+					${SRC_DIR}execution.c \
 					${SRC_DIR}errors.c \
-					${SRC_DIR}expander.c \
-					src/built-ins/echo.c \
-					
+					${BUILT_INS}echo.c \
 
 # VARIABLES
 COMPILER	= 	gcc
-C_FLAGS		=	-Wall -Wextra -Werror
+C_FLAGS		=	-Wall -Wextra -Werror 
 rm			=	rm -f
 
 OBJ			=	${SOURCE_FILES:.c=.o}
-OBJB		=	${BONUS_FILES:.c=.o}
 
 # RULES
 %.o: 		%.c
@@ -50,16 +46,12 @@ $(LIBFT):
 all:		$(NAME)
 
 clean:
-				make -C $(LIBFT_DIR) fclean
+				@make -C $(LIBFT_DIR) fclean
 				rm -f $(OBJ) core
-				rm -f $(OBJB) core
 
 fclean:		clean
 				$(RM) $(NAME)
 
 re:			fclean all
 
-bonus:		${OBJB} $(LIBFT)
-			$(COMPILER) $(OBJB) $(LIBFT_DIR)libft.a -o $(NAME)
-
-.PHONY:		all clean fclean re bonus
+.PHONY:		all clean fclean re
