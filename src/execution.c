@@ -6,19 +6,19 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/03 14:18:46 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/03 14:28:30 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute(t_token *tree, int size)
+void	execute(t_token *tree, int nbr_of_pipes)
 {
 	int	index = 0, pipends[2], prevpipe = 69;
 	
-	while (index < size)
+	while (index < nbr_of_pipes)
 	{
-        t_state cmd_type = get_cmd_type(size, index);
+        t_state cmd_type = get_cmd_type(nbr_of_pipes, index);
         if (cmd_type == _middle)
 		{
 			if (pipe(pipends) == -1)

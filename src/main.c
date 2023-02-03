@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:21:06 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/03 14:11:46 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/03 14:27:19 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ int	main(int arg_count, char **arg_list)
 		
 		/* Parsing: divide into pipes & tokens (commands) */
 		char **pipeline = ft_split(user_input, '|');
-		int pipeline_size = 0;
-		while (pipeline[pipeline_size])
-			pipeline_size++;
-		t_token *tokens = malloc(sizeof(t_token) * pipeline_size);
-		for (int i = 0; i < pipeline_size; i++)
+		int nbr_of_pipes = 0;
+		while (pipeline[nbr_of_pipes])
+			nbr_of_pipes++;
+		t_token *tokens = malloc(sizeof(t_token) * nbr_of_pipes);
+		for (int i = 0; i < nbr_of_pipes; i++)
 		{
 			tokens[i].cmd = ft_split(pipeline[i], ' ');
 			tokens[i].infile = -1;
@@ -39,7 +39,7 @@ int	main(int arg_count, char **arg_list)
 		}
 
 		/* Run the commands */
-		execute(tokens, pipeline_size);
+		execute(tokens, nbr_of_pipes);
 		
 		/* Terminate program */
 		ft_free_matrix(pipeline);
