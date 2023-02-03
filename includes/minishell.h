@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/03 14:06:55 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/03 19:45:34 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ typedef enum e_state {
     _middle	= 2
 } t_state;
 
+#define CRED     "\x1b[31m"
+#define CGREEN   "\x1b[32m"
+#define CYELLOW  "\x1b[33m"
+#define CBLUE    "\x1b[34m"
+#define CMAGENTA "\x1b[35m"
+#define CCYAN    "\x1b[36m"
+#define CWHITE    "\x1b[36m"
+#define CBOLD   "\x1b[1m"
+#define CRESET   "\x1b[0m"
+
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
 void	execute(t_token *tree, int size);
@@ -54,6 +64,8 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends);
 
 int		get_cmd_type(int size, int index);
 
+char	*heredoc(char *limiter);
+
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(int option, char *argument);
@@ -64,5 +76,7 @@ void	ft_free_matrix(char **matrix);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
+
+void    printshell(void);
 
 #endif

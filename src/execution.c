@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/03 14:28:30 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/03 19:26:36 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,30 +44,56 @@ void    child_process(t_token *tree, t_state cmd_type, int index, int *pipends, 
         average_child(&tree[index], index, prevpipe, pipends);
 }
 
-void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
+void	single_child(t_token *token)
 {
-    int status;
+	int	error_code;
+	char *stash = NULL;
+	
+	if (token->infile != -1)
+	{
+		dup2(token->infile, STDIN_FILENO);
+		close(token->infile);
+	}
+	if (ft_strncmp(token->cmd[0], "<<", 2) == 0)
+		stash = heredoc(token->cmd[1]);
+	if (token->outfile != -1)
+	{
+		//fdout = dup(STDOUT_FILENO);
+		dup2(token->outfile, STDOUT_FILENO);
+		close(token->outfile);
+	}
+	if (stash != NULL)
+	{
+		write(STDOUT_FILENO, stash, ft_strlen(stash));
+		exit(0);
+	}
+	error_code = execvp(token->cmd[0], token->cmd);
+	if (error_code == -1)
+		exit_msg();
+}
 
-    if (cmd_type == _middle)
-    {
-        close(pipends[WRITE]);
-        *prevpipe = pipends[READ];
-    }
-    else if (cmd_type == _last)
-        close(*prevpipe);
-    waitpid(child_pid, &status, 0);
-	if (WIFEXITED(status))
+void	last_child(t_token *token, int prevpipe)
+{
+	int error_code;
+
+	// Handling infiles
+	if (token->infile != -1)
 	{
-		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
-			exit(WEXITSTATUS(status));
+		dup2(token->infile, STDIN_FILENO);
+		close(token->infile);
 	}
-	if (WIFSIGNALED(status))
+	else
+		dup2(prevpipe, STDIN_FILENO);
+	close(prevpipe);
+	// Handling outfiles
+	if (token->outfile != -1)
 	{
-		if (WTERMSIG(status) == SIGTERM)
-			exit_msg();
-		else if (WTERMSIG(status) == SIGKILL)
-			exit_msg();
+		dup2(token->outfile, STDOUT_FILENO);
+		close(token->outfile);
 	}
+	error_code = execvp(token->cmd[0], token->cmd);
+	if (error_code == -1)
+		exit_msg();
 }
 
 void	average_child(t_token *token, int index, int prevpipe, int *pipends)
@@ -100,54 +126,28 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends)
 		exit_msg();
 }
 
-void	single_child(t_token *token)
+void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
 {
-	int	error_code;
-	
-	if (token->infile != -1)
-	{
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
-	}
-	if (token->outfile != -1)
-	{
-		dup2(token->outfile, STDOUT_FILENO);
-		close(token->outfile);
-	}
-	error_code = execvp(token->cmd[0], token->cmd);
-	if (error_code == -1)
-		exit_msg();
-}
+    int status;
 
-void	last_child(t_token *token, int prevpipe)
-{
-	int error_code;
-
-	// Handling infiles
-	if (token->infile != -1)
+    if (cmd_type == _middle)
+    {
+        close(pipends[WRITE]);
+        *prevpipe = pipends[READ];
+    }
+    else if (cmd_type == _last)
+        close(*prevpipe);
+    waitpid(child_pid, &status, 0);
+	if (WIFEXITED(status))
 	{
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
+		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
+			exit(WEXITSTATUS(status));
 	}
-	else
-		dup2(prevpipe, STDIN_FILENO);
-	close(prevpipe);
-	// Handling outfiles
-	if (token->outfile != -1)
+	if (WIFSIGNALED(status))
 	{
-		dup2(token->outfile, STDOUT_FILENO);
-		close(token->outfile);
+		if (WTERMSIG(status) == SIGTERM)
+			exit_msg();
+		else if (WTERMSIG(status) == SIGKILL)
+			exit_msg();
 	}
-	error_code = execvp(token->cmd[0], token->cmd);
-	if (error_code == -1)
-		exit_msg();
-}
-
-int get_cmd_type(int size, int index)
-{
-    if (size == 1)
-        return (_single);
-    else if (index == size - 1 && index != 0)
-        return (_last);
-    return (_middle);
 }

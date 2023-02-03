@@ -6,7 +6,7 @@
 #    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/10 15:24:07 by arurangi          #+#    #+#              #
-#    Updated: 2023/02/03 13:53:55 by Arsene           ###   ########.fr        #
+#    Updated: 2023/02/03 18:56:54 by Arsene           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ BUILT_INS	=	./src/built-ins/
 SOURCE_FILES	=	${SRC_DIR}main.c \
 					${SRC_DIR}execution.c \
 					${SRC_DIR}errors.c \
+					${SRC_DIR}utils.c \
 					${BUILT_INS}echo.c \
 
 # VARIABLES
@@ -38,7 +39,7 @@ OBJ			=	${SOURCE_FILES:.c=.o}
 				$(COMPILER) $(C_FLAGS) -c $< -o $@
 
 $(NAME): 	$(OBJ) $(LIBFT)
-				$(COMPILER) $(C_FLAGS) -lreadline $(OBJ) $(LIBFT_DIR)libft.a -o ${NAME}
+				$(COMPILER) $(C_FLAGS) -lreadline $(OBJ) $(LIBFT_DIR)libft.a -o ${NAME} -g
 
 $(LIBFT):
 				make -C $(LIBFT_DIR)
