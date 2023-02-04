@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/03 20:17:55 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/04 10:35:50 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int get_cmd_type(int size, int index)
 
 char	*heredoc(char *limiter)
 {
-	char *stash;
+	char *stash = NULL;
 	char *buffer = NULL;
 	
 	while (TRUE)
@@ -36,6 +36,7 @@ char	*heredoc(char *limiter)
 		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0
             && ft_strlen(buffer) - 1 == ft_strlen(limiter))
 			break ;
+	
 		stash = ft_strjoin_mod(stash, buffer);
 	}
 	//write(STDOUT_FILENO, stash, ft_strlen(stash));
