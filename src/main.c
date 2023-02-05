@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:21:06 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/03 19:58:19 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/05 16:22:13 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	main(int arg_count, char **arg_list)
 		while (pipeline[nbr_of_pipes])
 			nbr_of_pipes++;
 
-		// int fdout = open("oufile", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		//int fdout = open("oufile", O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		int fdin = open("oufile", O_RDONLY , 0644);
 		// if (!fdout)
 		// 	return (1);
 		t_token *tokens = malloc(sizeof(t_token) * nbr_of_pipes);
@@ -43,6 +44,7 @@ int	main(int arg_count, char **arg_list)
 			tokens[i].outfile = -1;
 		}
 		//tokens[0].outfile = fdout;
+		tokens[0].infile = fdin;
 		/* Run the commands */
 		execute(tokens, nbr_of_pipes);
 

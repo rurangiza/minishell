@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/03 19:26:36 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/05 16:19:34 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,10 +117,8 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends)
 		close(token->outfile);
 	}
 	else
-	{
 		dup2(pipends[WRITE], STDOUT_FILENO);
-		close(pipends[WRITE]);
-	}
+	close(pipends[WRITE]);
 	error_code = execvp(token->cmd[0], token->cmd);
 	if (error_code == -1)
 		exit_msg();
@@ -140,14 +138,16 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
     waitpid(child_pid, &status, 0);
 	if (WIFEXITED(status))
 	{
+		//exit(WEXITSTATUS(status));
 		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
-			exit(WEXITSTATUS(status));
+			return ;
+			
 	}
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGTERM)
-			exit_msg();
+			return ;
 		else if (WTERMSIG(status) == SIGKILL)
-			exit_msg();
+			return ;
 	}
 }
