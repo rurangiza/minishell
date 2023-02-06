@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/04 10:37:29 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:37:32 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,18 @@ int get_cmd_type(int size, int index)
     return (_middle);
 }
 
-char	*heredoc(char *limiter)
+int	heredoc(char *limiter)
 {
-	char *stash = NULL;
-	char *buffer = NULL;
+	char	*stash = NULL;
+	char	*buffer = NULL;
+	//int		tempfile = open("tmp_xyz95d4e", O_RDWR | O_CREAT | O_TRUNC, 0777);
+
+	int ends[2];
+	pipe(ends);
 	
 	while (TRUE)
 	{
-		write(1, "heredoc> ", 9);
+		write(1, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
         if (!buffer)
             exit_msg(); // if I simply return NULL, execve will run
@@ -39,5 +43,8 @@ char	*heredoc(char *limiter)
 		stash = ft_strjoin_mod(stash, buffer);
 	}
 	free(buffer);
-	return (stash);
+	write(ends[1], stash, ft_strlen(stash));
+	free(stash);
+	close(ends[1]);
+	return (ends[0]);
 }

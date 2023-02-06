@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/05 16:19:34 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/06 10:38:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,23 @@ void	single_child(t_token *token)
 {
 	int	error_code;
 	char *stash = NULL;
-	
+
 	if (token->infile != -1)
 	{
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
+		if (token->infile == HERE_DOC)
+		{
+			int tempfile = heredoc(token->delimiter);
+			dup2(tempfile, STDIN_FILENO);
+			close(tempfile);
+		}
+		else
+		{
+			dup2(token->infile, STDIN_FILENO);
+			close(token->infile);
+		}
 	}
-	if (ft_strncmp(token->cmd[0], "<<", 2) == 0)
-		stash = heredoc(token->cmd[1]);
+	// if (ft_strncmp(token->cmd[0], "<<", 2) == 0)
+	// 	stash = heredoc(token->cmd[1]);
 	if (token->outfile != -1)
 	{
 		//fdout = dup(STDOUT_FILENO);

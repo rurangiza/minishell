@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/03 19:45:34 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/06 09:46:05 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define WRITE 1
 # define TRUE	1
 # define FALSE	0
+# define HERE_DOC 999
 
 typedef struct s_token
 {
@@ -33,6 +34,7 @@ typedef struct s_token
 	char	*cmd_path;
 	int		infile;
 	int		outfile;
+	char	*delimiter;
 }	t_token;
 
 typedef enum e_state {
@@ -64,7 +66,7 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends);
 
 int		get_cmd_type(int size, int index);
 
-char	*heredoc(char *limiter);
+int	heredoc(char *limiter);
 
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
