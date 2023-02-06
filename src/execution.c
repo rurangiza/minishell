@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 14:20:24 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:48:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,17 @@ void	last_child(t_token *token, int prevpipe)
 	// Handling infiles
 	if (token->infile != -1)
 	{
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
+		if (token->infile == HERE_DOC) // init to HERE_DOC macro
+		{
+			token->infile = heredoc(token->delimiter, token->variable_expdr); // Have a delimiter member in struct
+			dup2(token->infile, STDIN_FILENO);
+			close(token->infile);
+		}
+		else
+		{
+			dup2(token->infile, STDIN_FILENO);
+			close(token->infile);
+		}
 	}
 	else
 		dup2(prevpipe, STDIN_FILENO);
@@ -110,8 +119,17 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends)
 	// Handle infiles
 	if (token->infile != -1)
 	{
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
+		if (token->infile == HERE_DOC) // init to HERE_DOC macro
+		{
+			token->infile = heredoc(token->delimiter, token->variable_expdr); // Have a delimiter member in struct
+			dup2(token->infile, STDIN_FILENO);
+			close(token->infile);
+		}
+		else
+		{
+			dup2(token->infile, STDIN_FILENO);
+			close(token->infile);
+		}
 	}
 	else if (index > 0)
 		dup2(prevpipe, STDIN_FILENO);

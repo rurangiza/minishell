@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 14:40:13 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:44:12 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int get_cmd_type(int size, int index)
  * - parsing:init: pass down ENVP
  * - parsing:init : pass down LIMITER
 */
-
 int	heredoc(char *limiter, int var_expand)
 {
 	char	*stash = NULL;
@@ -64,6 +63,8 @@ char *expand_variable(char *buffer)
 	int		start;
 	int		end;
 	char	*tmp;
+	char	*variable;
+	char	*expanded;
 	
 	// Find start
 	start = ft_strchr_mod(buffer, '$') + 1;
@@ -72,9 +73,9 @@ char *expand_variable(char *buffer)
 	while (buffer[end] && !ft_isspace(buffer[end]))
 		end++;
 	// Isolate the variable
-	char *variable = ft_substr(buffer, start, end - start);
+	variable = ft_substr(buffer, start, end - start);
 	// Check if variable exists in envp
-	char *expanded = getenv(variable);
+	expanded = getenv(variable);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
 	else
@@ -103,12 +104,6 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 		if (!s2)
 			return (NULL);
 	}
-	// if (!s3)
-	// {
-	// 	s3 = ft_strdup("");
-	// 	if (!s3)
-	// 		return (NULL);
-	// }
 	tmp = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(s2)) + ft_strlen(s3) + 1));
 	if (!tmp)
 		return (NULL);
@@ -125,14 +120,3 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 	free(s1);
 	return (tmp);
 }
-
-// int main(void)
-// {
-// 	char *s1 = "hello";
-// 	char *s2 = " mister ";
-// 	char *s3 = " dongy";
-
-// 	char *result = ft_strjoin_trio(s1, s2, s3);
-// 	printf("%s\n", result);
-// 	return (0);
-// }
