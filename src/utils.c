@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 14:44:12 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:03:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int get_cmd_type(int size, int index)
  * - parsing:init: pass down ENVP
  * - parsing:init : pass down LIMITER
 */
+
 int	heredoc(char *limiter, int var_expand)
 {
 	char	*stash = NULL;
 	char	*buffer = NULL;
-
-	int ends[2];
+	int		ends[2];
+	
 	pipe(ends);
-
 	while (TRUE)
 	{
 		write(1, "> ", 2);

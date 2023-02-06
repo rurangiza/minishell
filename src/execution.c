@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 14:48:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:00:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	last_child(t_token *token, int prevpipe)
 {
 	int error_code;
 
-	// Handling infiles
+	// INPUT redirections
 	if (token->infile != -1)
 	{
 		if (token->infile == HERE_DOC) // init to HERE_DOC macro
@@ -100,7 +100,7 @@ void	last_child(t_token *token, int prevpipe)
 	else
 		dup2(prevpipe, STDIN_FILENO);
 	close(prevpipe);
-	// Handling outfiles
+	// OUTPUT redirections
 	if (token->outfile != -1)
 	{
 		dup2(token->outfile, STDOUT_FILENO);
