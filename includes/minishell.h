@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/06 13:24:58 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:20:14 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends);
 
 int		get_cmd_type(int size, int index);
 
-int	heredoc(char *limiter, char **envp, int var_expdr);
-
+int		heredoc(char *limiter, int var_expdr);
+char	*expand_variable(char *buffer);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(int option, char *argument);
@@ -82,6 +82,8 @@ void	ft_free_matrix(char **matrix);
 void	exit_msg(void);
 
 void    printshell(void);
+
+
 
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 13:33:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:40:13 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int get_cmd_type(int size, int index)
  * - parsing:init: pass down ENVP
  * - parsing:init : pass down LIMITER
 */
-int	heredoc(char *limiter, char **envp, int var_expand)
+
+int	heredoc(char *limiter, int var_expand)
 {
 	char	*stash = NULL;
 	char	*buffer = NULL;
@@ -42,60 +43,45 @@ int	heredoc(char *limiter, char **envp, int var_expand)
 		buffer = get_next_line(STDIN_FILENO);
         if (!buffer)
             exit_msg(); // if I simply return NULL, execve will run
-		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0
-            && ft_strlen(buffer) - 1 == ft_strlen(limiter))
-			{
-				free(buffer);
-				break ;
-			}
-		// Interprete environment variables
-		if (ft_strchr_mod(buffer, '$') != -1 && var_expand == TRUE)
+		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0 && ft_strlen(buffer) - 1 == ft_strlen(limiter))
 		{
-			// Find start
-			int start = ft_strchr_mod(buffer, '$') + 1;
-			// Find end
-			int end = start;
-			while (buffer[end] && !ft_isspace(buffer[end]))
-				end++;
-			// Isolate the variable
-			char *variable = ft_substr(buffer, start, end - start);
-			// Check if variable exists in envp
-
-			//getenv(variable);
-			
-			int index = 0;
-			while (envp[index])
-			{
-				if (ft_strnstr(envp[index], variable, ft_strlen(variable)) && envp[index][ft_strlen(variable)] == '=') // hello [HOME] nothing
-				{
-					// if so, join its content to start of buffer
-					char *s1 = ft_substr(buffer, 0, start - 1);					
-					char *s2 = envp[index] + ft_strlen(variable) + 1;
-					char *s3 = buffer + end;
-					char *tmp = ft_strjoin_trio(s1, s2, s3);
-					free(variable);
-					stash = ft_strjoin_mod(stash, tmp);
-					index = -1;
-					break ;
-				}
-				index++;
-			}
-			if (index != -1)
-			{
-				// else, join start of buffer with rest ignoring the variable part
-				char *s1 = ft_substr(buffer, 0, start - 1);
-				char *s2 = buffer + end;
-				char *tmp = ft_strjoin_mod(s1, s2); // to free
-				stash = ft_strjoin_mod(stash, tmp);
-			}
+			free(buffer);
+			break ;
 		}
-		else
-			stash = ft_strjoin_mod(stash, buffer);
+		// Interprete environment variables
+		while (ft_strchr_mod(buffer, '$') != -1 && var_expand == TRUE)
+			buffer = expand_variable(buffer);
+		stash = ft_strjoin_mod(stash, buffer);
 	}
 	write(ends[1], stash, ft_strlen(stash));
 	free(stash);
 	close(ends[1]);
 	return (ends[0]);
+}
+
+char *expand_variable(char *buffer)
+{
+	int		start;
+	int		end;
+	char	*tmp;
+	
+	// Find start
+	start = ft_strchr_mod(buffer, '$') + 1;
+	// Find end
+	end = start;
+	while (buffer[end] && !ft_isspace(buffer[end]))
+		end++;
+	// Isolate the variable
+	char *variable = ft_substr(buffer, start, end - start);
+	// Check if variable exists in envp
+	char *expanded = getenv(variable);
+	if (expanded)
+		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
+	else
+		tmp = ft_strjoin_mod(ft_substr(buffer, 0, start - 1), buffer + end);
+	free(variable);
+	free(buffer);
+	return (tmp);
 }
 
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
@@ -105,18 +91,18 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 	int		k;
 	char	*tmp;
 
-	// if (!s1)
-	// {
-	// 	s1 = ft_strdup("");
-	// 	if (!s1)
-	// 		return (NULL);
-	// }
-	// if (!s2)
-	// {
-	// 	s2 = ft_strdup("");
-	// 	if (!s2)
-	// 		return (NULL);
-	// }
+	if (!s1)
+	{
+		s1 = ft_strdup("");
+		if (!s1)
+			return (NULL);
+	}
+	if (!s2)
+	{
+		s2 = ft_strdup("");
+		if (!s2)
+			return (NULL);
+	}
 	// if (!s3)
 	// {
 	// 	s3 = ft_strdup("");
@@ -136,9 +122,7 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 	while (s3[k])
 		tmp[i++] = s3[k++];
 	tmp[ft_strlen(s1) + ft_strlen(s2) + ft_strlen(s3)] = '\0';
-	// free(s1);
-	// free(s2);
-	// free(s3);
+	free(s1);
 	return (tmp);
 }
 

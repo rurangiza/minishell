@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 13:25:04 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 14:20:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	single_child(t_token *token)
 	{
 		if (token->infile == HERE_DOC) // init to HERE_DOC macro
 		{
-			token->infile = heredoc(token->delimiter, token->envp, token->variable_expdr); // Have a delimiter member in struct
+			token->infile = heredoc(token->delimiter, token->variable_expdr); // Have a delimiter member in struct
 			dup2(token->infile, STDIN_FILENO);
 			close(token->infile);
 		}
