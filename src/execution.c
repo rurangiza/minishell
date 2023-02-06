@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 10:38:11 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:25:04 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ void	single_child(t_token *token)
 
 	if (token->infile != -1)
 	{
-		if (token->infile == HERE_DOC)
+		if (token->infile == HERE_DOC) // init to HERE_DOC macro
 		{
-			int tempfile = heredoc(token->delimiter);
-			dup2(tempfile, STDIN_FILENO);
-			close(tempfile);
+			token->infile = heredoc(token->delimiter, token->envp, token->variable_expdr); // Have a delimiter member in struct
+			dup2(token->infile, STDIN_FILENO);
+			close(token->infile);
 		}
 		else
 		{
@@ -63,11 +63,8 @@ void	single_child(t_token *token)
 			close(token->infile);
 		}
 	}
-	// if (ft_strncmp(token->cmd[0], "<<", 2) == 0)
-	// 	stash = heredoc(token->cmd[1]);
 	if (token->outfile != -1)
 	{
-		//fdout = dup(STDOUT_FILENO);
 		dup2(token->outfile, STDOUT_FILENO);
 		close(token->outfile);
 	}

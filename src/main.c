@@ -6,13 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:21:06 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 09:50:09 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:36:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int arg_count, char **arg_list)
+int	main(int arg_count, char **arg_list, char **envp)
 {
 	if (arg_count != 1)
 		return (EXIT_FAILURE);
@@ -42,10 +42,12 @@ int	main(int arg_count, char **arg_list)
 			tokens[i].cmd = ft_split(pipeline[i], ' ');
 			tokens[i].infile = -1;
 			tokens[i].outfile = -1;
+			tokens[i].delimiter = "stop";
+			tokens[i].envp = envp;
+			tokens[i].variable_expdr = TRUE;
 		}
 		//tokens[0].outfile = fdout;
 		tokens[0].infile = HERE_DOC;
-		tokens[0].delimiter = "stop";
 		/* Run the commands */
 		execute(tokens, nbr_of_pipes);
 

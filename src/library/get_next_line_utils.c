@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 10:07:39 by Arsene            #+#    #+#             */
-/*   Updated: 2022/12/15 10:53:46 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/02/06 12:18:49 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int	ft_strchr_mod(const char *s, char ch)
 {
 	int		index;
 
+	index = 0;
 	if (s && ch)
 	{
-		index = 0;
 		while (s[index])
 		{
 			if (s[index] == ch)

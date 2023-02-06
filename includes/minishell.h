@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/06 09:46:05 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:24:58 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_token
 	int		infile;
 	int		outfile;
 	char	*delimiter;
+	char	**envp;
+	int		variable_expdr;
 }	t_token;
 
 typedef enum e_state {
@@ -66,7 +68,7 @@ void	average_child(t_token *token, int index, int prevpipe, int *pipends);
 
 int		get_cmd_type(int size, int index);
 
-int	heredoc(char *limiter);
+int	heredoc(char *limiter, char **envp, int var_expdr);
 
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
@@ -80,5 +82,9 @@ void	ft_free_matrix(char **matrix);
 void	exit_msg(void);
 
 void    printshell(void);
+
+
+/* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
+char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 
 #endif
