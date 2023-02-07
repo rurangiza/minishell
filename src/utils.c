@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/07 16:56:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:58:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int get_pipeline_position(int size, int index)
         return (_last);
     return (_middle);
 }
-
 
 /*
  * REQUIREMENTS
