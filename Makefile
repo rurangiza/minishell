@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/10 15:24:07 by arurangi          #+#    #+#              #
-#    Updated: 2023/02/03 18:56:54 by Arsene           ###   ########.fr        #
+#    Updated: 2023/02/07 16:30:43 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SOURCE_FILES	=	${SRC_DIR}main.c \
 					${SRC_DIR}execution.c \
 					${SRC_DIR}errors.c \
 					${SRC_DIR}utils.c \
+					${SRC_DIR}redirections.c \
 					${BUILT_INS}echo.c \
 
 # VARIABLES

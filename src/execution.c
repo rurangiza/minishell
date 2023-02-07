@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 15:00:06 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:54:39 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	execute(t_token *tree, int nbr_of_pipes)
 {
-	int	index = 0, pipends[2], prevpipe = 69;
-	
+	int	index = 0, pipends[2], prevpipe = 69, pipeline_position;
+
 	while (index < nbr_of_pipes)
 	{
-        t_state cmd_type = get_cmd_type(nbr_of_pipes, index);
-        if (cmd_type == _middle)
+        pipeline_position = get_pipeline_position(nbr_of_pipes, index);
+        if (pipeline_position == _middle)
 		{
 			if (pipe(pipends) == -1)
 				exit_msg();
@@ -28,118 +28,69 @@ void	execute(t_token *tree, int nbr_of_pipes)
         if (pid == -1)
             exit_msg();
         else if (pid == 0)
-            child_process(tree, cmd_type, index, pipends, prevpipe);
-        parent_process(pid, cmd_type, pipends, &prevpipe);
+		{
+			if (pipeline_position == _single) 
+				single_child(&tree[index]);
+			else if (pipeline_position == _last)
+				last_child(&tree[index], prevpipe);
+			else
+				middle_child(&tree[index], index, prevpipe, pipends);
+		}
+        parent_process(pid, pipeline_position, pipends, &prevpipe);
 		index++;
 	}
 }
 
-void    child_process(t_token *tree, t_state cmd_type, int index, int *pipends, int prevpipe)
-{
-    if (cmd_type == _single) // no need to use pipe
-        single_child(&tree[index]);
-    else if (cmd_type == _last) // no need to create a pipe, need to redirect output
-        last_child(&tree[index], prevpipe);
-    else // create pipe, redirect I/O
-        average_child(&tree[index], index, prevpipe, pipends);
-}
-
+/*
+ * - no need to use pipe
+*/
 void	single_child(t_token *token)
 {
 	int	error_code;
-	char *stash = NULL;
 
 	if (token->infile != -1)
-	{
-		if (token->infile == HERE_DOC) // init to HERE_DOC macro
-		{
-			token->infile = heredoc(token->delimiter, token->variable_expdr); // Have a delimiter member in struct
-			dup2(token->infile, STDIN_FILENO);
-			close(token->infile);
-		}
-		else
-		{
-			dup2(token->infile, STDIN_FILENO);
-			close(token->infile);
-		}
-	}
+		redirect_in(token);
 	if (token->outfile != -1)
-	{
-		dup2(token->outfile, STDOUT_FILENO);
-		close(token->outfile);
-	}
-	if (stash != NULL)
-	{
-		write(STDOUT_FILENO, stash, ft_strlen(stash));
-		exit(0);
-	}
+		redirect_out(token);
 	error_code = execvp(token->cmd[0], token->cmd);
 	if (error_code == -1)
 		exit_msg();
 }
 
+/*
+ * - no need to create a pipe, need to redirect output
+*/
 void	last_child(t_token *token, int prevpipe)
 {
 	int error_code;
 
-	// INPUT redirections
 	if (token->infile != -1)
-	{
-		if (token->infile == HERE_DOC) // init to HERE_DOC macro
-		{
-			token->infile = heredoc(token->delimiter, token->variable_expdr); // Have a delimiter member in struct
-			dup2(token->infile, STDIN_FILENO);
-			close(token->infile);
-		}
-		else
-		{
-			dup2(token->infile, STDIN_FILENO);
-			close(token->infile);
-		}
-	}
+		redirect_in(token);
 	else
 		dup2(prevpipe, STDIN_FILENO);
 	close(prevpipe);
-	// OUTPUT redirections
 	if (token->outfile != -1)
-	{
-		dup2(token->outfile, STDOUT_FILENO);
-		close(token->outfile);
-	}
+		redirect_out(token);
 	error_code = execvp(token->cmd[0], token->cmd);
 	if (error_code == -1)
 		exit_msg();
 }
 
-void	average_child(t_token *token, int index, int prevpipe, int *pipends)
+/*
+ * - create pipe, redirect I/O
+*/
+void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	int error_code;
 	
 	close(pipends[READ]);
-	// Handle infiles
 	if (token->infile != -1)
-	{
-		if (token->infile == HERE_DOC) // init to HERE_DOC macro
-		{
-			token->infile = heredoc(token->delimiter, token->variable_expdr); // Have a delimiter member in struct
-			dup2(token->infile, STDIN_FILENO);
-			close(token->infile);
-		}
-		else
-		{
-			dup2(token->infile, STDIN_FILENO);
-			close(token->infile);
-		}
-	}
+		redirect_in(token);
 	else if (index > 0)
 		dup2(prevpipe, STDIN_FILENO);
 	close(prevpipe);
-	// Handle outfiles
 	if (token->outfile != -1)
-	{
-		dup2(token->outfile, STDOUT_FILENO);
-		close(token->outfile);
-	}
+		redirect_out(token);
 	else
 		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
@@ -162,10 +113,8 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
     waitpid(child_pid, &status, 0);
 	if (WIFEXITED(status))
 	{
-		//exit(WEXITSTATUS(status));
 		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
 			return ;
-			
 	}
 	if (WIFSIGNALED(status))
 	{

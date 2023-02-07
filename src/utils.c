@@ -6,13 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/06 15:03:11 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:56:22 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int get_cmd_type(int size, int index)
+int get_pipeline_position(int size, int index)
 {
     if (size == 1)
         return (_single);
@@ -70,7 +70,7 @@ char *expand_variable(char *buffer)
 	start = ft_strchr_mod(buffer, '$') + 1;
 	// Find end
 	end = start;
-	while (buffer[end] && !ft_isspace(buffer[end]))
+	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"')
 		end++;
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);

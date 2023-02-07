@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/06 14:20:14 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:57:32 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_token
 	char	*delimiter;
 	char	**envp;
 	int		variable_expdr;
+	int		state;
 }	t_token;
 
 typedef enum e_state {
@@ -59,14 +60,16 @@ typedef enum e_state {
 
 void	execute(t_token *tree, int size);
 
-void    child_process(t_token *tree, t_state cmd_type, int index, int *pipends, int prevpipe);
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
 
 void	single_child(t_token *token);
 void	last_child(t_token *token, int prevpipe);
-void	average_child(t_token *token, int index, int prevpipe, int *pipends);
+void	middle_child(t_token *token, int index, int prevpipe, int *pipends);
 
-int		get_cmd_type(int size, int index);
+void	redirect_in(t_token *token);
+void	redirect_out(t_token *token);
+
+int		get_pipeline_position(int size, int index);
 
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
