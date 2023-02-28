@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 13:16:38 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:36:07 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 		}
 		i++;
 	}
-	*j += i;
+	*j = i;
 	return (cmd);
 }
 
@@ -234,19 +234,19 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		j++;
 		i++;
 	}
-	for(int k = 0; k < prompt->pipe_nb + 1; k++)
-	{
-		printf(CBLUE"$$$$$$$$$$$$$$\n"CRESET);
-		if (prompt->cmds[k].cmd[0] == NULL)
-			printf("cmds = null\n");
-		for(int l = 0; prompt->cmds[k].cmd[l]; l++)
-		{
-			printf("cmds = %s\n", prompt->cmds[k].cmd[l]);
-		}
-		printf("--------\n");
-		printf("cmd_path = %s\n", prompt->cmds[k].cmd_path);
-		// printf("%s\n", prompt->cmds[k].delimiter);
-		printf("--------\n");
-		printf("infile :%d outfile :%d\n", prompt->cmds[k].infile, prompt->cmds[k].outfile);
-	}
+	// for(int k = 0; k < prompt->pipe_nb + 1; k++)
+	// {
+	// 	printf(CBLUE"$$$$$$$$$$$$$$\n"CRESET);
+	// 	if (prompt->cmds[k].cmd[0] == NULL)
+	// 		printf("cmds = null\n");
+	// 	for(int l = 0; prompt->cmds[k].cmd[l]; l++)
+	// 	{
+	// 		printf("cmds = %s\n", prompt->cmds[k].cmd[l]);
+	// 	}
+	// 	printf("--------\n");
+	// 	printf("cmd_path = %s\n", prompt->cmds[k].cmd_path);
+	// 	// printf("%s\n", prompt->cmds[k].delimiter);
+	// 	printf("--------\n");
+	// 	printf("infile :%d outfile :%d\n", prompt->cmds[k].infile, prompt->cmds[k].outfile);
+	// }
 }

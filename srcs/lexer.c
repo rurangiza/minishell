@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 13:14:52 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:36:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,10 +273,10 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	expander(&lexer, envp);
 	lexer.tokens = token(&lexer);
 	delete_quotes(lexer.tokens);
-	while (lexer.tokens[i])
-	{
-		printf("%s\n", lexer.tokens[i]);
-		i++;
-	}
+	// while (lexer.tokens[i])
+	// {
+	// 	printf("%s\n", lexer.tokens[i]);
+	// 	i++;
+	// }
 	return (lexer);
 }
