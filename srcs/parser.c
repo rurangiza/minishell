@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 18:05:03 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/28 18:08:09 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void	init_cmd(t_token *cmd)
 	cmd->infile = -2;
 	cmd->outfile = -2;
 	cmd->delimiter = NULL;
-	cmd->here_doc = -1;
+	cmd->heredoc_mode = -1;
 	cmd->cmd_path = NULL;
 	cmd->cmd = NULL;
 }
@@ -169,11 +169,11 @@ void	check_heredoc_mod(char *str, t_token *cmd)
 	{
 		if (str[i] == '\"' || str[i] == '\'')
 		{
-			cmd->here_doc = 0;
+			cmd->heredoc_mode = FALSE;
 			break ;
 		}
 		else
-			cmd->here_doc = 1;
+			cmd->heredoc_mode = TRUE;
 		i++;
 	}
 }

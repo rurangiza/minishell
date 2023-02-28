@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 17:53:29 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/28 18:08:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ typedef struct s_lexer
 
 typedef struct s_token
 {
-	char *delimiter;
-	char **cmd;
-	char *cmd_path;
-	int outfile;
-	int infile;
+	char	*delimiter;
+	int		heredoc_mode;
+	char	**cmd;
+	char	*cmd_path;
+	int		outfile;
+	int		infile;
 }	t_token;
 
 typedef struct s_prompt
