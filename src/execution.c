@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/07 16:54:39 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/28 15:17:00 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	execute(t_token *tree, int nbr_of_pipes)
 {
-	int	index = 0, pipends[2], prevpipe = 69, pipeline_position;
+	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
 
 	while (index < nbr_of_pipes)
 	{
-        pipeline_position = get_pipeline_position(nbr_of_pipes, index);
-        if (pipeline_position == _middle)
+        cmd_type = get_cmd_type(nbr_of_pipes, index);
+        if (cmd_type == _middle)
 		{
 			if (pipe(pipends) == -1)
 				exit_msg();
@@ -29,21 +29,27 @@ void	execute(t_token *tree, int nbr_of_pipes)
             exit_msg();
         else if (pid == 0)
 		{
-			if (pipeline_position == _single) 
+			if (cmd_type == _single) 
 				single_child(&tree[index]);
-			else if (pipeline_position == _last)
+			else if (cmd_type == _last)
 				last_child(&tree[index], prevpipe);
 			else
 				middle_child(&tree[index], index, prevpipe, pipends);
 		}
-        parent_process(pid, pipeline_position, pipends, &prevpipe);
+        parent_process(pid, cmd_type, pipends, &prevpipe);
 		index++;
 	}
 }
 
-/*
- * - no need to use pipe
-*/
+int get_cmd_type(int size, int index)
+{
+    if (size == 1)
+        return (_single);
+    else if (index == size - 1 && index != 0)
+        return (_last);
+    return (_middle);
+}
+
 void	single_child(t_token *token)
 {
 	int	error_code;
@@ -57,9 +63,6 @@ void	single_child(t_token *token)
 		exit_msg();
 }
 
-/*
- * - no need to create a pipe, need to redirect output
-*/
 void	last_child(t_token *token, int prevpipe)
 {
 	int error_code;
@@ -76,9 +79,6 @@ void	last_child(t_token *token, int prevpipe)
 		exit_msg();
 }
 
-/*
- * - create pipe, redirect I/O
-*/
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	int error_code;

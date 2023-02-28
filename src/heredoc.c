@@ -1,25 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/03 17:49:50 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/28 14:25:44 by arurangi         ###   ########.fr       */
+/*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
+/*   Updated: 2023/02/28 15:17:20 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int get_pipeline_position(int size, int index)
-{
-    if (size == 1)
-        return (_single);
-    else if (index == size - 1 && index != 0)
-        return (_last);
-    return (_middle);
-}
 
 int	heredoc(char *limiter, int var_expand)
 {

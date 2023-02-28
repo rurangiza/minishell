@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/28 14:24:11 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/28 15:16:10 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends);
 void	redirect_in(t_token *token);
 void	redirect_out(t_token *token);
 
-int		get_pipeline_position(int size, int index);
+int		get_cmd_type(int size, int index);
 
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);

@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/10 15:24:07 by arurangi          #+#    #+#              #
-#    Updated: 2023/02/07 16:30:43 by arurangi         ###   ########.fr        #
+#    Updated: 2023/02/28 15:18:05 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ BUILT_INS	=	./src/built-ins/
 SOURCE_FILES	=	${SRC_DIR}main.c \
 					${SRC_DIR}execution.c \
 					${SRC_DIR}errors.c \
-					${SRC_DIR}utils.c \
 					${SRC_DIR}redirections.c \
+					${SRC_DIR}heredoc.c \
 					${BUILT_INS}echo.c \
 
 # VARIABLES
