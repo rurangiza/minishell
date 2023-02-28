@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 15:28:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/07 16:59:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:24:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # define WRITE 1
 # define TRUE	1
 # define FALSE	0
-# define HERE_DOC 999
+# define HERE_DOC -3
 
 typedef struct s_token
 {
