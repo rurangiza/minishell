@@ -1,5 +1,8 @@
 SRCS			= 	srcs/main.c \
 					srcs/parser.c \
+					srcs/expander.c \
+					srcs/tokens.c \
+					srcs/lexer.c \
 
 INCLUDES		= includes/minishell.h
 
