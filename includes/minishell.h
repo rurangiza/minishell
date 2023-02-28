@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 12:56:21 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:56:28 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_lexer
 typedef struct s_token
 {
 	char *delimiter;
+	int	here_doc;
 	char **cmd;
 	char *cmd_path;
 	int outfile;
@@ -66,5 +67,9 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 
 void parser(t_prompt *prompt, t_lexer *lexer, char **envp);
 char	*find_path(char **envp);
+void	delete_quotes(char **tokens);
+char *delete_quotes_1(char *str, char c);
+int	get_size(char *str, char c);
+
 
 #endif

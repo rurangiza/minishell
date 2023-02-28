@@ -6,7 +6,11 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/02/28 13:36:07 by arurangi         ###   ########.fr       */
+=======
+/*   Updated: 2023/02/28 15:06:20 by akorompa         ###   ########.fr       */
+>>>>>>> 2931aaba83088582cb8562d8c189a0bbd9ab9c2f
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +158,91 @@ void	init_cmd(t_token *cmd)
 {
 	cmd->infile = -2;
 	cmd->outfile = -2;
+	cmd->delimiter = NULL;
+	cmd->here_doc = -1;
 	cmd->cmd_path = NULL;
 	cmd->cmd = NULL;
+}
+
+void	check_heredoc_mod(char *str, t_token *cmd)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' || str[i] == '\'')
+		{
+			cmd->here_doc = 0;
+			break ;
+		}
+		else
+			cmd->here_doc = 1;
+		i++;
+	}
+}
+
+int is_sep(char *sep, char c)
+{
+	int i;
+	
+	i = 0;
+	while (sep[i])
+	{
+		if (sep[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int get_size_delimiter(char *str)
+{
+	int i;
+	int count;
+	
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (is_sep("\'\"", str[i]))
+			i++;
+		else
+		{
+			count++;
+			i++;
+		}
+	}
+	return(count);
+}
+
+char	*get_delimiter(char *str)
+{
+	int i;
+	int j;
+	int len;
+	char *delimiter;
+
+	len = get_size_delimiter(str);
+	delimiter = malloc(sizeof(char) * (len + 1));
+	if (!delimiter)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while(str[i])
+	{
+		if (is_sep("\'\"", str[i]))
+			i++;
+		else
+		{
+			delimiter[j] = str[i];
+			i++;
+			j++;
+		}
+	}
+	delimiter[j] = 0;
+	free(str);
+	return(delimiter);
 }
 
 t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
@@ -164,6 +251,7 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	t_token cmd;
 	
 	i = *j;
+	printf("i = %d\n", i);
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
@@ -185,7 +273,8 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 			if (tokens[i + 1] && tokens[i + 1][0] == '<' && tokens[i + 2])
 			{
 				cmd.infile = -3;
-				cmd.delimiter = ft_strdup(tokens[i + 2]);
+				check_heredoc_mod(tokens[i + 2], &cmd);
+				cmd.delimiter = get_delimiter(tokens[i + 2]);
 				i++;
 			}
 			else
@@ -234,6 +323,7 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		j++;
 		i++;
 	}
+<<<<<<< HEAD
 	// for(int k = 0; k < prompt->pipe_nb + 1; k++)
 	// {
 	// 	printf(CBLUE"$$$$$$$$$$$$$$\n"CRESET);
@@ -249,4 +339,22 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 	// 	printf("--------\n");
 	// 	printf("infile :%d outfile :%d\n", prompt->cmds[k].infile, prompt->cmds[k].outfile);
 	// }
+=======
+	for(int k = 0; k < prompt->pipe_nb + 1; k++)
+	{
+		printf(CBLUE"$$$$$$$$$$$$$$\n"CRESET);
+		// if (prompt->cmds[k].cmd[0] == NULL)
+		// 	printf("cmds = null\n");
+		// for(int l = 0; prompt->cmds[k].cmd[l]; l++)
+		// {
+		// 	printf("cmds = %s\n", prompt->cmds[k].cmd[l]);
+		// }
+		printf("heredoc = %d\n", prompt->cmds[k].here_doc);
+		printf("--------\n");
+		printf("cmd_path = %s\n", prompt->cmds[k].cmd_path);
+		printf("delimiter = %s\n", prompt->cmds[k].delimiter);
+		printf("--------\n");
+		printf("infile :%d outfile :%d\n", prompt->cmds[k].infile, prompt->cmds[k].outfile);
+	}
+>>>>>>> 2931aaba83088582cb8562d8c189a0bbd9ab9c2f
 }
