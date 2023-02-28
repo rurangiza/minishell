@@ -1,33 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 17:54:21 by arurangi         ###   ########.fr       */
+/*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
+/*   Updated: 2023/02/28 15:34:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **envp)
+void	redirect_in(t_token *token)
 {
-	(void)ac;
-	(void)av;
-	char *user_input;
-	t_prompt prompt;
-	t_lexer lexer;
-
-	while (1)
+	if (token->infile == HERE_DOC)
 	{
-		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		add_history(user_input);
-		lexer = lexerinho(user_input, envp);
-		parser(&prompt, &lexer, envp);
-		execute(prompt.cmds, prompt.pipe_nb);
-		free(user_input);
+		token->infile = heredoc(token->delimiter, token->variable_expdr);
+		dup2(token->infile, STDIN_FILENO);
+		close(token->infile);
 	}
-	return (0);
+	else
+	{
+		dup2(token->infile, STDIN_FILENO);
+		close(token->infile);
+	}
+}
+
+void	redirect_out(t_token *token)
+{
+	dup2(token->outfile, STDOUT_FILENO);
+	close(token->outfile);
 }

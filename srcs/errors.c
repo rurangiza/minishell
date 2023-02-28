@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 17:54:21 by arurangi         ###   ########.fr       */
+/*   Created: 2023/01/14 16:32:04 by arurangi          #+#    #+#             */
+/*   Updated: 2023/02/28 15:39:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **envp)
+void	exit_msg(void)
 {
-	(void)ac;
-	(void)av;
-	char *user_input;
-	t_prompt prompt;
-	t_lexer lexer;
+	perror("pipex");
+	exit(errno);
+}
 
-	while (1)
-	{
-		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		add_history(user_input);
-		lexer = lexerinho(user_input, envp);
-		parser(&prompt, &lexer, envp);
-		execute(prompt.cmds, prompt.pipe_nb);
-		free(user_input);
-	}
-	return (0);
+void	exit_wrongcmd_msg(char *cmd, int error_code)
+{
+	write(2, "zsh: command not found: ", 24);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, "\n", 1);
+	exit(error_code);
+}
+
+void	exit_nofile_msg(char *filename)
+{
+	write(2, "zsh: no such file or directory: ", 33);
+	write(2, filename, ft_strlen(filename));
+	write(2, "\n", 1);
+	exit(0);
 }
