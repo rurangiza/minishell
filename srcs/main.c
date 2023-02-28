@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 13:14:47 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/02/28 13:27:39 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	main(int ac, char **av, char **envp)
 	char *str;
 	t_prompt prompt;
 	t_lexer lexer;
+
+	system("clear");
 
 	while (1)
 	{

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 13:14:52 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/02/28 14:57:11 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,20 +229,29 @@ void	delete_quotes(char **tokens)
 	i = 0;
 	while(tokens[i])
 	{
-		j = 0;
-		while (tokens[i][j])
+		if (tokens[i] && tokens[i][0] == '<')
 		{
-			if (tokens[i][j] == '\'')
+			i++;
+			if (tokens[i] && tokens[i][0] == '<' && tokens[i + 1])
+				i += 2;
+		}
+		j = 0;
+		if (tokens[i])
+		{
+			while (tokens[i][j])
 			{
-				tokens[i] = delete_quotes_1(tokens[i], '\'');
-				break ;	
+				if (tokens[i][j] == '\'')
+				{
+					tokens[i] = delete_quotes_1(tokens[i], '\'');
+					break ;	
+				}
+				else if (tokens[i][j] == '\"')
+				{
+					tokens[i] = delete_quotes_1(tokens[i], '\"');
+					break ;
+				}
+				j++;
 			}
-			else if (tokens[i][j] == '\"')
-			{
-				tokens[i] = delete_quotes_1(tokens[i], '\"');
-				break ;
-			}
-			j++;
 		}
 		i++;
 	}
@@ -275,8 +284,9 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	delete_quotes(lexer.tokens);
 	while (lexer.tokens[i])
 	{
-		printf("%s\n", lexer.tokens[i]);
+		printf("{%d} %s\n", i, lexer.tokens[i]);
 		i++;
 	}
+	printf("{%d} %s\n", i, lexer.tokens[i]);
 	return (lexer);
 }
