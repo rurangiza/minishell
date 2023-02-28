@@ -3,25 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/02/28 13:27:39 by akorompa         ###   ########.fr       */
+=======
+/*   Updated: 2023/02/28 17:54:21 by arurangi         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void execute(t_token *parsed, char **envp)
-{
-	execve(parsed[0].cmd_path, parsed[0].cmd, envp);
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
-	char *str;
+	char *user_input;
 	t_prompt prompt;
 	t_lexer lexer;
 
@@ -29,14 +28,12 @@ int	main(int ac, char **av, char **envp)
 
 	while (1)
 	{
-		str = readline(CGREEN CBOLD"minishell $> "CRESET);
-		add_history(str);
-		lexer = lexerinho(str, envp);
+		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
+		add_history(user_input);
+		lexer = lexerinho(user_input, envp);
 		parser(&prompt, &lexer, envp);
-		// process = fork();
-		// if (process == 0)
-		// 	execute(parsed, envp);
-		// waitpid(process, NULL, 0);
+		execute(prompt.cmds, prompt.pipe_nb);
+		free(user_input);
 	}
 	return (0);
 }

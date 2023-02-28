@@ -1,8 +1,24 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
+#    Updated: 2023/02/28 17:54:32 by arurangi         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 SRCS			= 	srcs/main.c \
 					srcs/parser.c \
 					srcs/expander.c \
 					srcs/tokens.c \
 					srcs/lexer.c \
+					srcs/execution.c \
+					srcs/redirection.c \
+					srcs/heredoc.c \
+					srcs/erros.c \
 
 INCLUDES		= includes/minishell.h
 
