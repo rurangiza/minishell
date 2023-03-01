@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/02/28 17:54:32 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/01 08:53:50 by Arsene           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRCS			= 	srcs/main.c \
 					srcs/execution.c \
 					srcs/redirection.c \
 					srcs/heredoc.c \
-					srcs/erros.c \
+					srcs/errors.c \
+					srcs/utils.c \
 
 INCLUDES		= includes/minishell.h
 

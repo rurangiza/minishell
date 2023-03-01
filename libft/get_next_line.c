@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 18:11:55 by arurangi          #+#    #+#             */
-/*   Updated: 2023/02/28 18:11:56 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:48:29 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ static char	*trim_right(char *raw_line)
 static char	*trim_left(char *stash)
 {
 	char	*trimmed_stash;
-	int		i;
+	size_t	i;
 	int		j;
 
 	i = 0;

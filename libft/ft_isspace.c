@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr_mod.c                                    :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/28 18:15:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/01 08:41:56 by Arsene           ###   ########.fr       */
+/*   Created: 2023/03/01 08:41:37 by Arsene            #+#    #+#             */
+/*   Updated: 2023/03/01 08:41:49 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/* 
+ * Check whether ch is a space or not
+*/
+
 #include "libft.h"
 
-int	ft_strchr_mod(const char *s, char ch)
+int	ft_isspace(char ch)
 {
-	int		index;
-
-	index = 0;
-	if (s && ch)
-	{
-		while (s[index])
-		{
-			if (s[index] == ch)
-				return (index);
-			index++;
-		}
-	}
-	return (-1);
+	if ((ch >= 9 && ch <= 13) || ch == 32)
+		return (1);
+	return (0);
 }

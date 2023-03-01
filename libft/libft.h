@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 11:25:02 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:36:19 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 08:47:47 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
+# include <stdio.h>
 
 # define BUFFER_SIZE 1
 
@@ -75,5 +76,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 char	*get_next_line(int fd);
 char	*ft_strjoin_mod(char *stash, char *buffer);
+int		ft_strchr_mod(const char *s, char ch);
+int		ft_isspace(char ch);
+char	*free_stash(char *stash);
 
 #endif

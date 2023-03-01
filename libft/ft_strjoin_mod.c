@@ -6,9 +6,11 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:33:57 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/01 08:36:05 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 08:50:11 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "libft.h"
 
 char	*ft_strjoin_mod(char *stash, char *buffer)
 {

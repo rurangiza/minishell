@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:31:59 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 08:54:52 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
+#include <errno.h>
 
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"
@@ -109,5 +110,6 @@ void	exit_msg(void);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
+char	*expand_variable(char *buffer);
 
 #endif
