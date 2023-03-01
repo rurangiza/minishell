@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:33:18 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 14:06:13 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,14 @@ void	delete_quotes(char **tokens)
 	i = 0;
 	while(tokens[i])
 	{
+		if (tokens[i] && tokens[i][0] == '<')
+		{
+			i++;
+			if (tokens[i] && tokens[i][0] == '<' && tokens[i + 1])
+				i += 2;
+		}
 		j = 0;
-		while (tokens[i][j])
+		while (tokens[i] && tokens[i][j])
 		{
 			if (tokens[i][j] == '\'')
 			{

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 13:59:39 by akorompa          #+#    #+#             */
-/*   Updated: 2022/10/07 15:35:25 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:17:53 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
-	while (str[i] != '\0')
-		i++;
+	if (str)
+	{
+		while (str[i] != '\0')
+			i++;
+	}
 	return (i);
 }

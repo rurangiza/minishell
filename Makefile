@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
+#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/01 08:53:50 by Arsene           ###   ########.fr        #
+#    Updated: 2023/03/01 14:11:06 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ CC			= gcc
 CCFLAGS 	= -Wall -Wextra -Werror -lreadline -g -fsanitize=address
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} -c $< -o $@
 
 all:		${NAME}
 
