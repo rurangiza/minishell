@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/01 13:47:42 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:26:37 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	execute(t_token *token, int nbr_of_pipes)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
 
+	printf("Executing...\n");
 	while (index < nbr_of_pipes)
 	{
         cmd_type = get_cmd_type(nbr_of_pipes, index);
@@ -54,6 +55,7 @@ void	single_child(t_token *token)
 {
 	int	error_code;
 
+	printf("-> single_child\n");
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
@@ -67,6 +69,7 @@ void	last_child(t_token *token, int prevpipe)
 {
 	int error_code;
 
+	printf("-> last_child\n");
 	if (token->infile != -1)
 		redirect_in(token);
 	else
@@ -83,18 +86,23 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	int error_code;
 	
+	printf("-> middle_child\n");
 	close(pipends[READ]);
 	if (token->infile != -1)
 		redirect_in(token);
 	else if (index > 0)
 		dup2(prevpipe, STDIN_FILENO);
 	close(prevpipe);
+	printf("infile: %i, outfile: %i\n", token->infile, token->outfile);
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
-		dup2(pipends[WRITE], STDOUT_FILENO);
+	{
+		printf("---- got here\n");
+		//printf("error_code = %i\n", error_code);
+		error_code = dup2(pipends[WRITE], STDOUT_FILENO);
+	}
 	close(pipends[WRITE]);
-	
 	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
