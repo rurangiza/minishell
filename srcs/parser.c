@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 15:33:11 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:35:27 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int get_outfile_apmod(char *str)
 	
 	if (!str)
 		return (-2);
-	outfile = open(str, O_APPEND | O_RDWR);
+	outfile = open(str, O_APPEND | O_RDWR | O_CREAT, 0644);
 	if (outfile < 0)
 		return (-1);
 	return (outfile);
