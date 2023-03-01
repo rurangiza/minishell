@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:55:22 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 15:45:02 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ int    ft_strchr_mod(const char *s, char ch)
     {
         while (s[index])
         {
-			if (s[index] == '\'')
-			{
-				index++;
-				while(s[index] != '\'')
-					index++;
-			}
+			// if (s[index] == '\'')
+			// {
+			// 	index++;
+			// 	while(s[index] != '\'')
+			// 		index++;
+			// }
             if (s[index] == ch)
                 return (index);
             index++;
