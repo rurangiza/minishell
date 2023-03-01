@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 13:36:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:33:18 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,9 +253,9 @@ t_lexer	lexerinho(char *prompt, char **envp)
 {
 	(void)envp;
 	t_lexer lexer;
-	int i;
+	//int i;
 
-	i = 0;
+	//i = 0;
 	if (check_quotes(prompt) == -1)
 	{
 		printf("syntax error\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 18:08:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:31:59 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ typedef enum e_state {
     _middle	= 2
 } t_state;
 
-/* ~~~~~~~~~~~ LEXER ~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
 t_lexer	lexerinho(char *prompt, char **envp);
 char	**token(t_lexer *lexer);
 
-/* ~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
 void	expander(t_lexer *lexer, char **envp);
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 

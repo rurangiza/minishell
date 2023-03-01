@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/28 18:08:09 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 08:32:58 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ char *get_cmd_path(char *str, char **path)
 int	get_cmd_len(char **tokens, int i)
 {
 	int len;
-	int j;
+	//int j;
 	
-	j = 1;
+	//j = 1;
 	len = 0;
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
