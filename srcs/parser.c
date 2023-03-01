@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 12:01:16 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 13:31:48 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,8 @@ char **get_cmd(char **tokens, int i)
 
 void	init_cmd(t_token *cmd)
 {
-	cmd->infile = -2;
-	cmd->outfile = -2;
+	cmd->infile = -1;
+	cmd->outfile = -1;
 	cmd->delimiter = NULL;
 	cmd->heredoc_mode = -1;
 	cmd->cmd_path = NULL;

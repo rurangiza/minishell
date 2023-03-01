@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 11:25:02 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:47:47 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 13:17:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,9 @@ char	*ft_strjoin_mod(char *stash, char *buffer);
 int		ft_strchr_mod(const char *s, char ch);
 int		ft_isspace(char ch);
 char	*free_stash(char *stash);
+
+// int	error_msg(int return_code, char *message, ...);
+// int	success_msg(int return_code, char *message, ...);
+// int	info_msg(int return_code, char *message, ...);
 
 #endif

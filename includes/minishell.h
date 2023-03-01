@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 11:33:01 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 13:32:10 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define TRUE	1
 # define FALSE	0
 # define HERE_DOC -3
+# define NO_REDIR -1
 
 typedef struct s_lexer
 {
