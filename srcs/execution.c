@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/01 13:33:16 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 13:47:42 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,10 @@ void	single_child(t_token *token)
 {
 	int	error_code;
 
-	//printf("-> single_child\n");
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	//error_code = execvp(token->cmd[0], token->cmd);
-	//printf("infile = %i\noutfile = %i\n", token->infile, token->outfile);
 	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
@@ -70,7 +67,6 @@ void	last_child(t_token *token, int prevpipe)
 {
 	int error_code;
 
-	//printf("-> last_child\n");
 	if (token->infile != -1)
 		redirect_in(token);
 	else
@@ -78,8 +74,6 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-	//error_code = execvp(token->cmd[0], token->cmd);
-	//printf("infile = %i\noutfile = %i\n", token->infile, token->outfile);
 	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
@@ -89,7 +83,6 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	int error_code;
 	
-	//printf("-> middle_child\n");
 	close(pipends[READ]);
 	if (token->infile != -1)
 		redirect_in(token);
@@ -102,7 +95,6 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
 	
-	//printf("infile = %i\noutfile = %i\n", token->infile, token->outfile);
 	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
