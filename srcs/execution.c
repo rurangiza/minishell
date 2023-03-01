@@ -6,13 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/02/28 15:31:14 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/01 12:00:42 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute(t_token *tree, int nbr_of_pipes)
+void	execute(t_token *token, int nbr_of_pipes)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
 
@@ -30,11 +30,11 @@ void	execute(t_token *tree, int nbr_of_pipes)
         else if (pid == 0)
 		{
 			if (cmd_type == _single) 
-				single_child(&tree[index]);
+				single_child(&token[index]);
 			else if (cmd_type == _last)
-				last_child(&tree[index], prevpipe);
+				last_child(&token[index], prevpipe);
 			else
-				middle_child(&tree[index], index, prevpipe, pipends);
+				middle_child(&token[index], index, prevpipe, pipends);
 		}
         parent_process(pid, cmd_type, pipends, &prevpipe);
 		index++;
@@ -58,7 +58,8 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	error_code = execvp(token->cmd[0], token->cmd);
+	//error_code = execvp(token->cmd[0], token->cmd);
+	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
 }
@@ -74,7 +75,8 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-	error_code = execvp(token->cmd[0], token->cmd);
+	//error_code = execvp(token->cmd[0], token->cmd);
+	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
 }
@@ -94,7 +96,8 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	else
 		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
-	error_code = execvp(token->cmd[0], token->cmd);
+	//error_code = execvp(token->cmd[0], token->cmd);
+	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
 }

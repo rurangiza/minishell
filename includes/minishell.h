@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:54:52 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 11:33:01 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ typedef struct s_lexer
 
 typedef struct s_token
 {
-	char	*delimiter;
-	int		heredoc_mode;
 	char	**cmd;
 	char	*cmd_path;
 	int		outfile;
 	int		infile;
+	char	**envp;
+	char	*delimiter;
+	int		heredoc_mode;
 }	t_token;
 
 typedef struct s_prompt

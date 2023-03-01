@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 08:32:58 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/01 12:01:16 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,6 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	t_token cmd;
 	
 	i = *j;
-	printf("i = %d\n", i);
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
@@ -319,4 +318,8 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		j++;
 		i++;
 	}
+	//printf("--- End of Parser!! ---\n");
+	prompt->pipe_nb += 1; // CHECK THIS
+	// printf("number of commands: %i\n", prompt->pipe_nb);
+	//printf("%s\n", prompt->cmds[0].cmd[0]);
 }
