@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 13:31:52 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:16:22 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,21 @@ int is_valid_cmd(char *str, char **path)
 		}
 		free(cmd);
 		path++;
+	}
+	return (0);
+}
+
+int	is_built_in(char *str)
+{
+	if(ft_strncmp(str, "echo", 4) == 0
+		|| ft_strncmp(str, "cd", 2) == 0
+		|| ft_strncmp(str, "pwd", 3) == 0
+		|| ft_strncmp(str, "export", 6) == 0
+		|| ft_strncmp(str, "unset", 5) == 0
+		|| ft_strncmp(str, "env", 3) == 0
+		|| ft_strncmp(str, "exit", 4) == 0)
+	{
+		return (1);
 	}
 	return (0);
 }
@@ -127,6 +142,27 @@ int	get_cmd_len(char **tokens, int i)
 		i++;
 	}
 	return(len);
+}
+
+char **get_built_in(char **tokens, int i)
+{
+	char **cmd;
+	int j;
+	int len;
+
+	j = 0;
+	len = get_cmd_len(tokens, i);
+	cmd = malloc(sizeof(char *) * (len + 1));
+	if (!cmd)
+		return (NULL);
+	while (j < len)
+	{
+		cmd[j] = ft_strdup(tokens[i]);
+		i++;
+		j++;
+	}
+	cmd[j] = 0;
+	return (cmd);
 }
 
 char **get_cmd(char **tokens, int i)
@@ -272,11 +308,20 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
-		if (tokens[i] && is_valid_cmd(tokens[i], prompt->path))
+		if (tokens[i])
 		{
-			cmd.cmd_path = get_cmd_path(tokens[i], prompt->path);
-			cmd.cmd = get_cmd(tokens, i);
-			break ;
+			if (is_built_in(tokens[i]))
+			{
+				cmd.cmd_path = NULL;
+				cmd.cmd = get_built_in(tokens, i);
+				break ;
+			}
+			else if (is_valid_cmd(tokens[i], prompt->path))
+			{
+				cmd.cmd_path = get_cmd_path(tokens[i], prompt->path);
+				cmd.cmd = get_cmd(tokens, i);
+				break ;
+			}
 		}
 		if (tokens[i][0] == '<' || tokens[i][0] == '>')
 			i++;
