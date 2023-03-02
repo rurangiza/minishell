@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 14:18:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:50:24 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,12 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	error_code = execve(token->cmd_path, token->cmd, token->envp);
-	if (error_code == -1)
-		exit_msg();
+
+	if (is_builtin(token->cmd[0]))
+		execute_builtins(token);
+	else
+		execve(token->cmd_path, token->cmd, token->envp);
+	exit_msg();
 }
 
 void	last_child(t_token *token, int prevpipe)
@@ -96,20 +99,17 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-	error_code = execve(token->cmd_path, token->cmd, token->envp);
-	if (error_code == -1)
-		exit_msg();
+		
+	if (is_builtin(token->cmd[0]))
+		execute_builtins(token);
+	else
+		execve(token->cmd_path, token->cmd, token->envp);
+	exit_msg();
 }
 
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	int error_code;
-
-	if (is_builtin(token->cmd[0]))
-	{
-		execute_builtins(token);
-		exit(EXIT_SUCCESS);
-	}
 
 	close(pipends[READ]);
 	if (token->infile != -1)
@@ -132,9 +132,11 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 
 	close(pipends[WRITE]);
 	
-	error_code = execve(token->cmd_path, token->cmd, token->envp);
-	if (error_code == -1)
-		exit_msg();
+	if (is_builtin(token->cmd[0]))
+		execute_builtins(token);
+	else
+		execve(token->cmd_path, token->cmd, token->envp);
+	exit_msg();
 }
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
@@ -169,8 +171,8 @@ void	execute_builtins(t_token *token)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
 		cd(token);
-	else if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
-		pwd(token);
+	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
+		pwd();
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
 		export(token);
 	else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
