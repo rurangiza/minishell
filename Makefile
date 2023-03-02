@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/02 15:32:02 by akorompa         ###   ########.fr        #
+#    Updated: 2023/03/02 15:49:47 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ SRCS			= 	srcs/main.c \
 					srcs/checker.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
+					built-ins/echo.c \
+					built-ins/unset.c \
 
 INCLUDES		= includes/minishell.h
 
