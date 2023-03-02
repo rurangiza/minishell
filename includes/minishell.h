@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 15:50:27 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:13:43 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ void	execute_builtins(t_token *token);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
-char	*check_escape_seq(char *argument, int index);
 void	pwd(t_token *token);
 void	env(t_token *tokens);
 void	export(t_token *tokens);
+void	unset(t_token *token);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);

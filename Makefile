@@ -6,7 +6,7 @@
 #    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/02 15:50:42 by akorompa         ###   ########.fr        #
+#    Updated: 2023/03/02 17:13:34 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS			= 	srcs/main.c \
 					built-ins/env.c \
 					built-ins/export.c \
 					built-ins/echo.c \
+					built-ins/unset.c \
 
 INCLUDES		= includes/minishell.h
 

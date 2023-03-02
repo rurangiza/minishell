@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 17:07:34 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:13:52 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	execute(t_token *token, int nbr_of_pipes)
 	// Count nbr of cat command at beginning of line
 	int cat_counter = 0;
 	index = 0;
-	if (index == 0 && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
 	{
 		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
 		{
@@ -80,7 +80,7 @@ void	single_child(t_token *token)
 		redirect_out(token);
 
 	// Execute commands
-	if (is_builtin(token->cmd[0]))
+	if (token->cmd && is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
 		execve(token->cmd_path, token->cmd, token->envp);
@@ -171,8 +171,8 @@ void	execute_builtins(t_token *token)
 		pwd(token);
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
 		export(token);
-	// else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
-	// 	unset(token);
+	else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
+		unset(token);
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
 		env(token);
 	// else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
