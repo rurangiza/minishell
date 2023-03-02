@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 13:55:00 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:18:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 
 	if (is_builtin(token->cmd[0]))
 	{
-		execute_builtin();
-		exit();
+		execute_builtins(token);
+		exit(EXIT_SUCCESS);
 	}
 
 	close(pipends[READ]);
@@ -161,4 +161,22 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 		else if (WTERMSIG(status) == SIGKILL)
 			return ;
 	}
+}
+
+void	execute_builtins(t_token *token)
+{
+	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
+		echo(token);
+	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
+		cd(token);
+	else if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
+		pwd(token);
+	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
+		export(token);
+	else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
+		unset(token);
+	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
+		env(token);
+	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
+		exit(token);
 }

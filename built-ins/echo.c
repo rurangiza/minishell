@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/01 13:50:48 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:07:53 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	echo(int option, char *argument)
 	int		index;
 	char	type;
 
-	
 	type = 'a';
 	index = 0;
 	while (ft_isspace(argument[index]))
