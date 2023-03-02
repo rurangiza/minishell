@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 11:38:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:54:03 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	if (index != 0)
 		close(prevpipe);
 
-	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL)
+	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL && index == 0)
 		exit(0);
 
 	if (token->outfile != -1)
