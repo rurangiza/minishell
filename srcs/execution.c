@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 14:55:32 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:31:05 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,18 +163,18 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 
 void	execute_builtins(t_token *token)
 {
-	// if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
-	// 	echo(token);
+	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
+		echo(token);
 	// else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
 	// 	cd(token);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
-		pwd();
+		pwd(token);
 	// else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
 	// 	export(token);
 	// else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
 	// 	unset(token);
-	// else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
-	// 	env(token);
+	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
+		env(token);
 	// else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	// 	exit(token);
 }
