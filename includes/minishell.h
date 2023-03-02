@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 14:52:26 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:05:53 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*expand_variable(char *buffer);
 void	execute_builtins(t_token *token);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
-void	echo(t_token token);
+void	echo(t_token *token);
 char	*check_escape_seq(char *argument, int index);
 int		pwd(void);
 

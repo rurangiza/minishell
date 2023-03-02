@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/02 14:41:43 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:25:51 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,24 @@
 
 void	echo(t_token *token)
 {
-	int index = 1;
+	size_t index = 1;
+	int newline_mode = 1;
 
-	while (token->cmd[index])
+	if (token->cmd[index] && ft_strncmp(token->cmd[index], "-n", 2) == 0 && !token->cmd[index][2])
 	{
-		if (ft_strncmp(token->cmd[index], "-n", 2) && (ft_isspace(token->cmd[index] + 2) || token->cmd[index] + 2) == '\n')
-		write(token->outfile, token->cmd[index], ft_strlen(token->cmd[index]));
-		if (index > 0 && index < ft_strlen(token->cmd[index]) - 1)
-			write(token->outfile, " ", 1);
+		newline_mode = 0;
 		index++;
 	}
+	while (token->cmd[index])
+	{
+		write(STDOUT_FILENO, token->cmd[index], ft_strlen(token->cmd[index]));
+		if (index > 0 && index < ft_strlen(token->cmd[index]) - 1)
+			write(STDOUT_FILENO, " ", 1);
+		index++;
+	}
+	if (newline_mode == 1)
+		write(STDOUT_FILENO, "\n", 1);
+	exit(1);
 	// int		index;
 	// char	type;
 
