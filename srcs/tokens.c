@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/02/09 17:35:53 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:24:04 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ static int get_nb_token(char *str)
 	if (str[i] && str[1] == '\0')
 		return (1);
 	if (str[i] == '|' || str[i] == '>' || str[i] == '<')
+	{
+		if (str[i + 1])
+			count++;
 		i++;
+	}
 	while(str[i])
 	{
 		if (str[i] == '\'')
@@ -76,6 +80,8 @@ static int get_nb_token(char *str)
 			if (str[i + 1] && str[i + 1] != '<')
 				count++;
 		}
+		if (!str[i])
+			break ;
 		i++;
 	}
 	return (count);

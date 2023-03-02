@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 14:06:13 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:14:08 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char *ft_get_words(char *prompt)
 		str[i] = prompt[i];
 		i++;
 	}
-	str[i] = '\0';
+	str[i] = 0;
 	return(str);
 }
 
