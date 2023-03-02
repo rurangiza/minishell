@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 15:32:22 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 17:07:34 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,8 @@ void	execute_builtins(t_token *token)
 	// 	cd(token);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
 		pwd(token);
-	// else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
-	// 	export(token);
+	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
+		export(token);
 	// else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
 	// 	unset(token);
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
