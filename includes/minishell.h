@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 10:49:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:54:21 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ char	*find_path(char **envp);
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
 void	execute(t_token *tree, int size);
-void	execute_v2(t_token *token, int nbr_of_pipes);
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
 
@@ -116,5 +115,8 @@ void	exit_msg(void);
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*expand_variable(char *buffer);
+
+/* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
+int		is_builtin(char *cmd);
 
 #endif
