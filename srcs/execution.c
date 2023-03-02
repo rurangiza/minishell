@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 14:50:24 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:53:22 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	single_child(t_token *token)
 	if (token->outfile != -1)
 		redirect_out(token);
 
+	// Execute commands
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
@@ -99,7 +100,8 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-		
+
+	// Execute commands
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
@@ -129,9 +131,9 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
 			printf("Error with DUP2()\n");
 	}	
-
 	close(pipends[WRITE]);
 	
+	// Execute commands
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
