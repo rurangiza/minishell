@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/03/02 13:09:10 by akorompa         ###   ########.fr       */
-=======
-/*   Updated: 2023/03/02 13:03:22 by arurangi         ###   ########.fr       */
->>>>>>> c6bcda626f8beb4ecb8cf545ff08d323cc4fe381
+/*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
+/*   Updated: 2023/03/02 13:31:52 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
