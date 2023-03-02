@@ -6,16 +6,49 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 10:21:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:38:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// void	execute_v2(t_token *token, int nbr_of_pipes)
+// {
+// 	int	index = 0, **pipends, prevpipe = 69, cmd_type;
+
+// 	// Allocate memory for each pipes
+// 	pipends = malloc(sizeof(int *) * nbr_of_pipes - 1);
+// 	for (int i = 0; i < nbr_of_pipes - 1; i++)
+// 		pipends[i] = malloc(sizeof(int) * 2);
+
+// 	// Execute all commands
+// 	while (index < nbr_of_pipes)
+// 	{
+// 		cmd_type = get_cmd_type(nbr_of_pipes, index);
+// 		if (pipe(pipends[index]) == -1)
+// 			exit_msg();
+//         pid_t pid = fork();
+//         if (pid == -1)
+//             exit_msg();
+//         else if (pid == 0)
+// 		{
+// 			if (token->infile != -1)
+// 				redirect_in(token);
+// 			if (token->outfile != -1)
+// 				redirect_out(token);
+// 			execve(token->cmd_path, token->cmd, token->envp);
+// 			exit_msg();
+// 		}
+//         parent_process(pid, cmd_type, pipends[index], &prevpipe);
+// 		index++;
+// 	}
+// }
+
 void	execute(t_token *token, int nbr_of_pipes)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
 
+	int cat_counter = 0;
 	while (index < nbr_of_pipes)
 	{
         cmd_type = get_cmd_type(nbr_of_pipes, index);
@@ -38,6 +71,23 @@ void	execute(t_token *token, int nbr_of_pipes)
 		}
         parent_process(pid, cmd_type, pipends, &prevpipe);
 		index++;
+	}
+	
+	index = 0;
+	if (index == 0 && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+	{
+		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+		{
+			cat_counter++;
+			index++;
+		}
+	}
+	
+	char *tmp;
+	for (int i = 0; i < cat_counter; i++)
+	{
+		tmp = get_next_line(STDIN_FILENO);
+		free(tmp);
 	}
 }
 
@@ -91,6 +141,9 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	if (index != 0)
 		close(prevpipe);
 
+	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL)
+		exit(0);
+
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
@@ -98,7 +151,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
 			printf("Error with DUP2()\n");
 	}	
-	
+
 	close(pipends[WRITE]);
 	
 	error_code = execve(token->cmd_path, token->cmd, token->envp);
