@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/01 17:01:09 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 10:21:34 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,19 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 		redirect_in(token);
 	else if (index > 0)
 		dup2(prevpipe, STDIN_FILENO);
-	close(prevpipe);
+	if (index != 0)
+		close(prevpipe);
 
-	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL)
-		exit(0);
-	
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
 	{
-		//printf("error_code = %i\n", error_code);
 		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
 			printf("Error with DUP2()\n");
-	}
+	}	
+	
 	close(pipends[WRITE]);
+	
 	error_code = execve(token->cmd_path, token->cmd, token->envp);
 	if (error_code == -1)
 		exit_msg();
