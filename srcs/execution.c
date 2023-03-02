@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 14:56:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:57:47 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,11 @@ int get_cmd_type(int size, int index)
 
 void	single_child(t_token *token)
 {
-	int	error_code;
-
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
+
 	// Execute commands
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
@@ -90,8 +89,6 @@ void	single_child(t_token *token)
 
 void	last_child(t_token *token, int prevpipe)
 {
-	int error_code;
-
 	if (token->infile != -1)
 		redirect_in(token);
 	else
@@ -99,6 +96,7 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
+
 	// Execute commands
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
@@ -109,8 +107,6 @@ void	last_child(t_token *token, int prevpipe)
 
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
-	int error_code;
-
 	close(pipends[READ]);
 	if (token->infile != -1)
 		redirect_in(token);
@@ -167,18 +163,18 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 
 void	execute_builtins(t_token *token)
 {
-	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
-		echo(token);
-	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
-		cd(token);
-	else if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
-		pwd(token);
-	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
-		export(token);
-	else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
-		unset(token);
-	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
-		env(token);
-	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
-		exit(token);
+	// if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
+	// 	echo(token);
+	// else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
+	// 	cd(token);
+	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
+		pwd();
+	// else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
+	// 	export(token);
+	// else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
+	// 	unset(token);
+	// else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
+	// 	env(token);
+	// else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
+	// 	exit(token);
 }

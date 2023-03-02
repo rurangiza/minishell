@@ -6,7 +6,7 @@
 #    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/01 14:11:06 by akorompa         ###   ########.fr        #
+#    Updated: 2023/03/02 14:44:34 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ SRCS			= 	srcs/main.c \
 					srcs/heredoc.c \
 					srcs/errors.c \
 					srcs/utils.c \
+					srcs/checker.c \
+					built-ins/pwd.c \
 
 INCLUDES		= includes/minishell.h
 
