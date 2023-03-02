@@ -6,48 +6,58 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/02 14:07:53 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:41:43 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	echo(int option, char *argument)
+void	echo(t_token *token)
 {
-	int		index;
-	char	type;
+	int index = 1;
 
-	type = 'a';
-	index = 0;
-	while (ft_isspace(argument[index]))
-		index++;
-	if (argument[index] == '"')
-		type = 'b';
-	while (argument[index] && argument[index] != '|')
+	while (token->cmd[index])
 	{
-		if (argument[index] == '"')
-			index++;
-		else
-		{
-			if (argument[index] == '\\')
-			{
-				char *seq = check_escape_seq(argument, index);
-				if (seq != NULL)
-				{
-					write(1, &seq, 1);
-					free(seq);
-					index++;
-				}
-			}
-			else	
-				write(1, &argument[index], 1);
-			index++;
-		}
-		while (type == 'a' && ft_isspace(argument[index]) && ft_isspace(argument[index - 1]) && argument[index])
-			index++;
+		if (ft_strncmp(token->cmd[index], "-n", 2) && (ft_isspace(token->cmd[index] + 2) || token->cmd[index] + 2) == '\n')
+		write(token->outfile, token->cmd[index], ft_strlen(token->cmd[index]));
+		if (index > 0 && index < ft_strlen(token->cmd[index]) - 1)
+			write(token->outfile, " ", 1);
+		index++;
 	}
-	if (option == FALSE)
-		write(1, "\n", 1);
+	// int		index;
+	// char	type;
+
+	// type = 'a';
+	// index = 0;
+	// while (ft_isspace(argument[index]))
+	// 	index++;
+	// if (argument[index] == '"')
+	// 	type = 'b';
+	// while (argument[index] && argument[index] != '|')
+	// {
+	// 	if (argument[index] == '"')
+	// 		index++;
+	// 	else
+	// 	{
+	// 		if (argument[index] == '\\')
+	// 		{
+	// 			char *seq = check_escape_seq(argument, index);
+	// 			if (seq != NULL)
+	// 			{
+	// 				write(1, &seq, 1);
+	// 				free(seq);
+	// 				index++;
+	// 			}
+	// 		}
+	// 		else	
+	// 			write(1, &argument[index], 1);
+	// 		index++;
+	// 	}
+	// 	while (type == 'a' && ft_isspace(argument[index]) && ft_isspace(argument[index - 1]) && argument[index])
+	// 		index++;
+	// }
+	// if (option == FALSE)
+	// 	write(1, "\n", 1);
 }
 
 char	*check_escape_seq(char *argument, int index)

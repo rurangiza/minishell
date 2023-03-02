@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 14:18:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:34:45 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,12 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	error_code = execve(token->cmd_path, token->cmd, token->envp);
-	if (error_code == -1)
-		exit_msg();
+	// Execute commands
+	if (is_builtin(token->cmd[0]))
+		execute_builtins(token);
+	else
+		execve(token->cmd_path, token->cmd, token->envp);
+	exit_msg();
 }
 
 void	last_child(t_token *token, int prevpipe)
@@ -96,20 +99,17 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-	error_code = execve(token->cmd_path, token->cmd, token->envp);
-	if (error_code == -1)
-		exit_msg();
+	// Execute commands
+	if (is_builtin(token->cmd[0]))
+		execute_builtins(token);
+	else
+		execve(token->cmd_path, token->cmd, token->envp);
+	exit_msg();
 }
 
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	int error_code;
-
-	if (is_builtin(token->cmd[0]))
-	{
-		execute_builtins(token);
-		exit(EXIT_SUCCESS);
-	}
 
 	close(pipends[READ]);
 	if (token->infile != -1)
@@ -129,12 +129,14 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
 			printf("Error with DUP2()\n");
 	}	
-
 	close(pipends[WRITE]);
 	
-	error_code = execve(token->cmd_path, token->cmd, token->envp);
-	if (error_code == -1)
-		exit_msg();
+	// Execute commands
+	if (is_builtin(token->cmd[0]))
+		execute_builtins(token);
+	else
+		execve(token->cmd_path, token->cmd, token->envp);
+	exit_msg();
 }
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)

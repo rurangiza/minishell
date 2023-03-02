@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 13:54:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:27:09 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
-void	echo(int option, char *argument);
+void	echo(t_token token);
 char	*check_escape_seq(char *argument, int index);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
