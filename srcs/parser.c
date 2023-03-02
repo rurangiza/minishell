@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:31:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 15:35:27 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:03:22 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,7 +292,6 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 				cmd.infile = -3;
 				check_heredoc_mod(tokens[i + 2], &cmd);
 				cmd.delimiter = get_delimiter(tokens[i + 2]);
-				printf("%s\n", cmd.delimiter);
 				i++;
 			}
 			else
