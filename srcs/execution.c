@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 11:54:03 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:14:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	execute(t_token *token, int nbr_of_pipes)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
 
-	int cat_counter = 0;
 	while (index < nbr_of_pipes)
 	{
         cmd_type = get_cmd_type(nbr_of_pipes, index);
@@ -73,6 +72,8 @@ void	execute(t_token *token, int nbr_of_pipes)
 		index++;
 	}
 	
+	// Count nbr of cat command at beginning of line
+	int cat_counter = 0;
 	index = 0;
 	if (index == 0 && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
 	{
@@ -82,11 +83,14 @@ void	execute(t_token *token, int nbr_of_pipes)
 			index++;
 		}
 	}
-	
+	// Prompt user for input
+	// as many times as there are cats
 	char *tmp;
 	for (int i = 0; i < cat_counter; i++)
 	{
 		tmp = get_next_line(STDIN_FILENO);
+		if (tmp == NULL)
+			break ;
 		free(tmp);
 	}
 }
