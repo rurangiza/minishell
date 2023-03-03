@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 17:05:06 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:48:53 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	print_export(char **envp)
 		j = i + 1;
 		while (j < len)
 		{
-			if (ft_strncmp(envp[i], envp[j],))
+			//if (ft_strncmp(envp[i], envp[j],)) COMMENTÉ POUR POUVOIR COMPILER (Arsene)
 			j++;
 		}
 		
@@ -49,9 +49,11 @@ void	export(t_token *tokens)
 {
 	char **matrix;
 
-	if (!tokens[1])
-	{
-		print_export(tokens->envp);
-	}
+	(void)tokens;
+	(void)matrix;
+	// if (!tokens[1])
+	// {
+	// 	print_export(tokens->envp);
+	// }
 	exit (0);
 }

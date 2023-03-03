@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/02 17:13:52 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/03 16:51:45 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,32 @@ void	execute(t_token *token, int nbr_of_pipes)
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
-        pid_t pid = fork();
-        if (pid == -1)
-            exit_msg();
-        else if (pid == 0)
+		
+		if (token[index].cmd[1] && ft_strncmp(token[index].cmd[1], "unset", 5) == 0)
 		{
-			if (cmd_type == _single) 
-				single_child(&token[index]);
-			else if (cmd_type == _last)
-				last_child(&token[index], prevpipe);
-			else
-				middle_child(&token[index], index, prevpipe, pipends);
+			
+			printf("------ here\n");
+			unset(token);
+			printf(CBLUE"---- EXECUTE() -----\n"CRESET);
+			for (int i = 0; g_environment[i]; i++)
+				printf("%s\n", g_environment[i]);
 		}
-        parent_process(pid, cmd_type, pipends, &prevpipe);
+		else
+		{
+			pid_t pid = fork();
+			if (pid == -1)
+				exit_msg();
+			else if (pid == 0)
+			{
+				if (cmd_type == _single)
+					single_child(&token[index]);
+				else if (cmd_type == _last)
+					last_child(&token[index], prevpipe);
+				else
+					middle_child(&token[index], index, prevpipe, pipends);
+			}
+			parent_process(pid, cmd_type, pipends, &prevpipe);
+		}
 		index++;
 	}
 	
@@ -83,7 +96,7 @@ void	single_child(t_token *token)
 	if (token->cmd && is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
-		execve(token->cmd_path, token->cmd, token->envp);
+		execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
@@ -177,4 +190,8 @@ void	execute_builtins(t_token *token)
 		env(token);
 	// else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	// 	exit(token);
+
+	// printf(CBLUE"---- EXECUTE_BUILTINS() -----\n"CRESET);
+	// for (int i = 0; g_environment[i]; i++)
+	// 	printf("%s\n", g_environment[i]);
 }
