@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/03 16:52:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/04 08:42:17 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	unset(t_token *token)
 	}
 	g_environment[position] = NULL;
 	
-	printf(CBLUE"---- UNSET() -----\n"CRESET);
-	for (int i = 0; i < position - 1; i++)
-		printf("%s\n", g_environment[i]);
+	// printf(CBLUE"---- UNSET() -----\n"CRESET);
+	// for (int i = 0; i < position - 1; i++)
+	// 	printf("[%i] %s\n", i, g_environment[i]);
 	return ;
 	
 	printf("------------ Hello\n");

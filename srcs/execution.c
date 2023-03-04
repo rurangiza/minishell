@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/03 16:51:45 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/04 08:42:10 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,13 @@ void	execute(t_token *token, int nbr_of_pipes)
 				exit_msg();
 		}
 		
-		if (token[index].cmd[1] && ft_strncmp(token[index].cmd[1], "unset", 5) == 0)
+		if (token[index].cmd && token[index].cmd[0] && ft_strncmp(token[index].cmd[0], "unset", 5) == 0)
 		{
 			
-			printf("------ here\n");
 			unset(token);
-			printf(CBLUE"---- EXECUTE() -----\n"CRESET);
-			for (int i = 0; g_environment[i]; i++)
-				printf("%s\n", g_environment[i]);
+			// printf(CBLUE"---- EXECUTE() -----\n"CRESET);
+			// for (int i = 0; g_environment[i]; i++)
+			// 	printf("%s\n", g_environment[i]);
 		}
 		else
 		{
@@ -94,10 +93,15 @@ void	single_child(t_token *token)
 
 	// Execute commands
 	if (token->cmd && is_builtin(token->cmd[0]))
+	{
 		execute_builtins(token);
+		exit(0);
+	}
 	else
+	{
 		execve(token->cmd_path, token->cmd, g_environment);
-	exit_msg();
+		exit_msg();
+	}
 }
 
 void	last_child(t_token *token, int prevpipe)
