@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/02 13:53:39 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/04 14:27:01 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ int	is_builtin(char *cmd)
 		|| ft_strncmp(cmd, "unset", 5) == 0
 		|| ft_strncmp(cmd, "env", 3) == 0
 		|| ft_strncmp(cmd, "exit", 4) == 0)
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
+}
+
+int	is_variable_to_be_deleted(char *target, char *source)
+{
+	int	src_len = ft_strlen(source);
+	
+	if (ft_strncmp(target, source, src_len) == 0 && target[src_len] == '=')
+		return (TRUE);
+	return (FALSE);
 }

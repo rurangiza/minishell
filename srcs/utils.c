@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/01 08:54:43 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/04 15:25:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,32 @@ char *expand_variable(char *buffer)
 	free(variable);
 	free(buffer);
 	return (tmp);
+}
+
+void	hanging_cats(t_token *token)
+{
+	int index;
+	int cat_counter;
+	
+	/* Count nbr of cat command at beginning of line */
+	cat_counter = 0;
+	index = 0;
+	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+	{
+		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+		{
+			cat_counter++;
+			index++;
+		}
+	}
+	
+	/* Prompt user for input as many times as there are cats */
+	char *tmp;
+	for (int i = 0; i < cat_counter; i++)
+	{
+		tmp = get_next_line(STDIN_FILENO);
+		if (tmp == NULL)
+			break ;
+		free(tmp);
+	}
 }

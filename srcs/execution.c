@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/04 08:42:10 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/04 16:05:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,9 @@ void	execute(t_token *token, int nbr_of_pipes)
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
-		
+
 		if (token[index].cmd && token[index].cmd[0] && ft_strncmp(token[index].cmd[0], "unset", 5) == 0)
-		{
-			
 			unset(token);
-			// printf(CBLUE"---- EXECUTE() -----\n"CRESET);
-			// for (int i = 0; g_environment[i]; i++)
-			// 	printf("%s\n", g_environment[i]);
-		}
 		else
 		{
 			pid_t pid = fork();
@@ -51,28 +45,7 @@ void	execute(t_token *token, int nbr_of_pipes)
 		}
 		index++;
 	}
-	
-	// Count nbr of cat command at beginning of line
-	int cat_counter = 0;
-	index = 0;
-	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
-	{
-		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
-		{
-			cat_counter++;
-			index++;
-		}
-	}
-	// Prompt user for input
-	// as many times as there are cats
-	char *tmp;
-	for (int i = 0; i < cat_counter; i++)
-	{
-		tmp = get_next_line(STDIN_FILENO);
-		if (tmp == NULL)
-			break ;
-		free(tmp);
-	}
+	hanging_cats(token);
 }
 
 int get_cmd_type(int size, int index)

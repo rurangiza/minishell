@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/03 16:05:45 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/04 16:05:48 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@
 
 extern char **g_environment;
 
-char 	**g_environment;;
+char 	**g_environment;
 
 typedef struct s_lexer
 {
@@ -90,7 +90,7 @@ char	*find_path(char **envp);
 
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
-void	execute(t_token *tree, int size);
+void	execute(t_token *token, int nbr_of_pipes);
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
 
@@ -128,5 +128,8 @@ char	*expand_variable(char *buffer);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
+int		is_variable_to_be_deleted(char *target, char *source);
+
+void	hanging_cats(t_token *token);
 
 #endif

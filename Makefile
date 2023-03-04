@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/02 17:13:34 by akorompa         ###   ########.fr        #
+#    Updated: 2023/03/04 14:32:55 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRCS			= 	srcs/main.c \
 					srcs/errors.c \
 					srcs/utils.c \
 					srcs/checker.c \
+					srcs/memory_mgmt.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \
@@ -42,6 +43,7 @@ CCFLAGS 	= -Wall -Wextra -Werror -lreadline -g -fsanitize=address
 	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} -c $< -o $@
 
 all:		${NAME}
+			./minishell
 
 ${NAME}:	${OBJS} ${INCLUDES}
 			make -C $(LIBFT)

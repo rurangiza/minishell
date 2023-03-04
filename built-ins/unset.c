@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/04 08:42:17 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/04 16:01:00 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,56 @@
  * getenv: get an environment variable 
  * tgetenv
  * 
+ * env: If no utility is specified, env prints out the names and values 
+ * of the variables in the environment, with one name/value pair per line.
+ * 
 */
 
 void	unset(t_token *token)
 {
 	// Checks whether variable exists
 	if (!token->cmd[1] || getenv(token->cmd[1]) == NULL)
+		return ;
+	// Save content of environment in buffer except the line I'll delete
+	char **copy;
+
+	int size = 0;
+	while (g_environment[size])
+		size++;
+	copy = malloc(sizeof(char *) * (size + 1));
+
+	int src_index = 0;
+	int copy_index = 0;
+	while (src_index < size && g_environment[src_index])
+	{
+		if (!is_variable_to_be_deleted(g_environment[src_index], token->cmd[1]))
+		{
+			copy[copy_index] = ft_strdup(g_environment[src_index]);
+			copy_index++;
+		}
+		src_index++;
+	}
+	copy[copy_index] = NULL;
+	ft_free_matrix(g_environment);
+
+	g_environment = copy;
+
+	for (int i = 0; g_environment[i]; i++)
+		printf("%s\n", g_environment[i]);
+	//exit(0);
+}
+
+
+void	unset_shift(t_token *token)
+{
+	int position;
+	
+	// Checks whether variable exists
+	if (!token->cmd[1] || getenv(token->cmd[1]) == NULL)
 		exit(EXIT_FAILURE);
 
 	// Find position
-	int position = 0;
+	position = 0;
 	while (g_environment[position])
 	{
 		if (ft_strncmp(g_environment[position], token->cmd[1], ft_strlen(token->cmd[1])) == 0
@@ -39,60 +79,18 @@ void	unset(t_token *token)
 		}
 		position++;
 	}
-
 	// Shift elements of the matrix to LEFT
-	free(g_environment[position++]);
-	while (g_environment[position])
+	g_environment[position] = NULL;
+	position += 1;
+	while (g_environment[position] && position > 0)
 	{
+		//printf(CYELLOW"[%i] copying... | %s\n"CRESET, position, g_environment[position]);
+		
 		g_environment[position - 1] = ft_strdup(g_environment[position]);
-		free(g_environment[position]);
+		g_environment[position] = NULL;
+		//free(g_environment[position]);
 		position++;
 	}
 	g_environment[position] = NULL;
-	
-	// printf(CBLUE"---- UNSET() -----\n"CRESET);
-	// for (int i = 0; i < position - 1; i++)
-	// 	printf("[%i] %s\n", i, g_environment[i]);
-	return ;
-	
-	printf("------------ Hello\n");
-
-
-	// // Save content of environment in buffer except the line I'll delete
-	// int size = 0;
-	// while (environment[size]) // Count number of lines minus one (the one I'll remove)
-	// 	size++;
-	// size -= 1;
-	// char **buffer = malloc(sizeof(char *) * (size + 1)); // Allocate matrix (- 1)
-
-	// int src_index = 0;
-	// int buffer_index = 0;
-	// while (src_index < size && environment[src_index]) // Allocate memory for new table
-	// {
-	// 	// Sauter la variable que je veux supprimer
-	// 	if (ft_strncmp(environment[src_index], token->cmd[1], ft_strlen(token->cmd[1])) == 0
-	// 		&& environment[src_index][ft_strlen(token->cmd[1])] == '=')
-	// 	{
-	// 		src_index++;
-	// 	}
-	// 	// Allouer le reste
-	// 	buffer[buffer_index] = ft_strdup(environment[src_index]);
-
-	// 	buffer_index++;
-	// 	src_index++;
-	// }
-	// buffer[buffer_index] = NULL;
-
-	// // Free old environment
-	// int index = 0;
-	// while (environment[index])
-	// 	free(environment[index++]);
-	// free(environment);
-
-	// // Save new environment
-	// environment = buffer;
-	
-	// for (int i = 0; environment[i]; i++)
-	// 	printf("%s\n", environment[i]);
-	//exit(EXIT_SUCCESS);
+	//exit(0);
 }
