@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/06 10:40:45 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:36:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	execute(t_token *token, int nbr_of_pipes)
 				exit_msg();
 		}
 		
-		if (is_builtin(token[index].cmd[0]))
+		if (token[index].cmd && is_builtin(token[index].cmd[0]))
 			execute_builtins(token);
 		else
 		{
