@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/04 14:32:55 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/06 10:38:42 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS			= 	srcs/main.c \
 					built-ins/export.c \
 					built-ins/echo.c \
 					built-ins/unset.c \
+					built-ins/cd.c \
 
 INCLUDES		= includes/minishell.h
 

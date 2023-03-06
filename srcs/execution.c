@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/06 10:31:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:40:45 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,8 @@ void	execute_builtins(t_token *token)
 {
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
-	// else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
-	// 	cd(token);
+	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
+		cd(token);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
 		pwd(token);
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)

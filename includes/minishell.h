@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 10:15:19 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:36:01 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 void	export(t_token *tokens);
 void	unset(t_token *token);
-void	unset_shift(t_token *token);
+void	cd(t_token *token);
+//void	unset_shift(t_token *token);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);

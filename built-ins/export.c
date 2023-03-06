@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/03 10:48:53 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:42:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,4 @@ void	export(t_token *tokens)
 	// {
 	// 	print_export(tokens->envp);
 	// }
-	exit (0);
 }

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/02 15:33:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:42:28 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,4 @@ void	echo(t_token *token)
 	}
 	if (newline_mode == 1)
 		write(STDOUT_FILENO, "\n", 1);
-	exit(EXIT_SUCCESS);
 }
