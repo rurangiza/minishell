@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/06 16:58:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 17:06:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ void	cd(t_token *token)
 		// cd only sends to /Users/arurangi
 		free(path);
 		//path = ft_strjoin("/Users/", ft_substr(path));
-		path = ft_strdup("/Users/");
+		int pos_name = 6;
+		while (path[pos_name] != '/')
+			pos_name++;
+			
+		char *user_name = ft_substr(path, 6, pos_name);
+		printf("--User_name = %s\n", user_name);
+		path = ft_strjoin("/Users/", user_name);
 	}
 
 	printf("\033[33mnew:\033[0m %s\n", path);
