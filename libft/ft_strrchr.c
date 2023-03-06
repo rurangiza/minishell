@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 16:58:55 by akorompa          #+#    #+#             */
-/*   Updated: 2022/10/17 15:32:38 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:12:48 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,22 @@ char	*ft_strrchr(const char *str, int c)
 		j--;
 	}
 	return (NULL);
+}
+
+// Returns index of the last occurence
+int	ft_strrchr_mod(const char *str, int c)
+{
+	int	length;
+
+	length = ft_strlen(str);
+	if ((char)c == '\0')
+		return (length);
+	length--;
+	while (length >= 0)
+	{
+		if (str[length] == (char)c)
+			return (length);
+		length--;
+	}
+	return (-1);
 }

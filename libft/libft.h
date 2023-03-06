@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 11:25:02 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/01 13:17:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 11:13:59 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char	*ft_strchr(const char *str, int n);
 char	*ft_strdup(const char *s1);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
 char	*ft_strrchr(const char *str, int c);
+int		ft_strrchr_mod(const char *str, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s1, char const *set);
