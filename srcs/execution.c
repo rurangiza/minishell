@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/06 09:37:37 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:31:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	execute(t_token *token, int nbr_of_pipes)
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
-
-		if (token[index].cmd && token[index].cmd[0] && ft_strncmp(token[index].cmd[0], "unset", 5) == 0)
-			unset(token);
+		
+		if (is_builtin(token[index].cmd[0]))
+			execute_builtins(token);
 		else
 		{
 			pid_t pid = fork();
@@ -79,6 +79,7 @@ void	single_child(t_token *token)
 
 void	last_child(t_token *token, int prevpipe)
 {
+	printf("----- Last\n");
 	if (token->infile != -1)
 		redirect_in(token);
 	else

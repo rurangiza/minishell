@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 09:23:16 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:15:19 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
-#include <errno.h>
+# include <errno.h>
+# include <dirent.h>
 
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"

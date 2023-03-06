@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:56:40 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 09:36:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:20:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,4 @@ void	env(t_token *tokens)
 		printf("%s\n", g_environment[i]);
 		i++;
 	}
-	exit (0);
 }
