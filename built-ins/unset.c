@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/04 16:01:00 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 10:05:30 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,10 @@ void	unset(t_token *token)
 	ft_free_matrix(g_environment);
 
 	g_environment = copy;
-
-	for (int i = 0; g_environment[i]; i++)
-		printf("%s\n", g_environment[i]);
-	//exit(0);
 }
 
 
+/*
 void	unset_shift(t_token *token)
 {
 	int position;
@@ -87,6 +84,7 @@ void	unset_shift(t_token *token)
 		//printf(CYELLOW"[%i] copying... | %s\n"CRESET, position, g_environment[position]);
 		
 		g_environment[position - 1] = ft_strdup(g_environment[position]);
+		//g_environment[position - 1] = g_environment[position];
 		g_environment[position] = NULL;
 		//free(g_environment[position]);
 		position++;
@@ -94,3 +92,4 @@ void	unset_shift(t_token *token)
 	g_environment[position] = NULL;
 	//exit(0);
 }
+*/

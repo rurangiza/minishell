@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/04 16:05:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/06 09:37:37 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	last_child(t_token *token, int prevpipe)
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
-		execve(token->cmd_path, token->cmd, token->envp);
+		execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
@@ -121,7 +121,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	if (is_builtin(token->cmd[0]))
 		execute_builtins(token);
 	else
-		execve(token->cmd_path, token->cmd, token->envp);
+		execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
