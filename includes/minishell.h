@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/07 10:18:31 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:29:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ typedef struct s_token
 typedef struct s_prompt
 {
 	t_token	*cmds;
-	char **path;
-	char **envp;
-	int pipe_nb;
+	char	**path;
+	char	**envp;
+	int		pipe_nb;
+	t_list	previous_dir;
 }	t_prompt;
 
 typedef enum e_state {
@@ -115,7 +116,7 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 void	export(t_token *tokens);
 void	unset(t_token *token);
-void	cd(t_token *token);
+void	cd(char *directory);
 //void	unset_shift(t_token *token);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
@@ -128,11 +129,13 @@ void	exit_msg(void);
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*expand_variable(char *buffer);
+char	*get_userdir(void);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
 int		is_variable_to_be_deleted(char *target, char *source);
 int		is_in_environment(char *variable);
+int		is_special_symbol(char *directory);
 
 void	hanging_cats(t_token *token);
 

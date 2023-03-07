@@ -6,45 +6,56 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/06 17:06:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:28:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	cd(t_token *token)
+void	cd(char *directory)
 {
-	char	current_dir[100];
-	char	*path;
+	char	*path = NULL;
 
-	ft_bzero(current_dir, 100);
-    //Getting the current working directory
-	getcwd(current_dir, 1000);
-	
-	printf("\033[33mcurrent:\033[0m %s\n", current_dir);
-
-	//Changing the current working directory
-	path = ft_substr(current_dir, 0, ft_strlen(current_dir));
-	//if (ft_strncmp(token->cmd[1], "..", 2) != 0)
-	if (token->cmd[1])
-		path = ft_strjoin_trio(path, "/", token->cmd[1]);
+	if (!directory)
+		path = get_userdir();
+	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
+	{
+		if (directory[0] == '-')
+		{
+			path = ft_strdup(getenv("OLDPWD"));
+			printf("OLDPWD = %s\n", path);
+		}
+		else if (directory[0] == '~')
+			path = get_userdir();
+		else if (directory[0] == '/')
+		{
+			path = ft_strdup("/");
+		}
+	}
 	else
 	{
-		// cd only sends to /Users/arurangi
-		free(path);
-		//path = ft_strjoin("/Users/", ft_substr(path));
-		int pos_name = 6;
-		while (path[pos_name] != '/')
-			pos_name++;
-			
-		char *user_name = ft_substr(path, 6, pos_name);
-		printf("--User_name = %s\n", user_name);
-		path = ft_strjoin("/Users/", user_name);
+		path = ft_strdup(getcwd(NULL, 0));
+		if (ft_strlen(path) == 1 && ft_strncmp(path, "/", 1) == 0)
+			path = ft_strjoin(path, directory);
+		else
+			path = ft_strjoin_trio(path, "/", directory);
+		
 	}
-
-	printf("\033[33mnew:\033[0m %s\n", path);
-
-	//return ;
+	printf(CRED"%s\n"CRESET, path);
     if (chdir(path) == -1)
 		perror(CRED"chdir"CRESET);
+	
+	free(path);
+}
+
+char	*get_userdir(void)
+{
+	char	*username;
+	char	*path;
+
+	username = ft_strdup(getenv("USER"));
+	if (username == NULL)
+		return (NULL);
+	path = ft_strdup("/Users/");
+	return (ft_strjoin(path, username));
 }

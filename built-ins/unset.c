@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/07 10:17:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 10:28:16 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	unset(t_token *token)
 	// Checks whether variable exists
 	if (!token->cmd[1] && !is_in_environment(token->cmd[1]))
 	{
-		printf("");
+		printf("bash: unset: %s: invalid option\n", token->cmd[1]);
+		printf("unset: usage: unset [-f] [-v] [name ...]\n");
 		return ;
 	}
 
