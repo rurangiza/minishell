@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/07 10:28:16 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:31:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
  * of the variables in the environment, with one name/value pair per line.
  * 
 */
+
 
 void	unset(t_token *token)
 {
