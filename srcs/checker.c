@@ -6,12 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/04 14:27:01 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 10:18:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/* check whether a string {cmd} matches with the list of built-ins */
 int	is_builtin(char *cmd)
 {
 	if (ft_strncmp(cmd, "echo", 4) == 0
@@ -25,6 +26,7 @@ int	is_builtin(char *cmd)
 	return (FALSE);
 }
 
+/* Check if current item in environemnt is the target */
 int	is_variable_to_be_deleted(char *target, char *source)
 {
 	int	src_len = ft_strlen(source);
@@ -32,4 +34,22 @@ int	is_variable_to_be_deleted(char *target, char *source)
 	if (ft_strncmp(target, source, src_len) == 0 && target[src_len] == '=')
 		return (TRUE);
 	return (FALSE);
+}
+
+/* Check whether a variable {token} is in the global environment */
+int is_in_environment(char *variable)
+{
+    int index;
+    int variable_length;
+
+    variable_length = ft_strlen(variable);
+    index = 0;
+    while (g_environment[index])
+    {
+        if (ft_strncmp(g_environment[index], variable, variable_length) == 0
+            && g_environment[index][variable_length] == '=')
+            return (1);
+        index++;
+    }
+    return (0);
 }
