@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 11:21:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 10:18:31 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ char	*expand_variable(char *buffer);
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
 int		is_variable_to_be_deleted(char *target, char *source);
+int		is_in_environment(char *variable);
 
 void	hanging_cats(t_token *token);
 
