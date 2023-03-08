@@ -6,13 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/07 10:40:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/08 11:40:02 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	create_global_environment(char **envp)
+void	init_environment(char **envp)
 {
 	//char	**buffer;
 	int		index;
@@ -30,6 +30,12 @@ void	create_global_environment(char **envp)
 	g_environment[index] = NULL;
 }
 
+void	init_directory_history(t_prompt *prompt)
+{
+	char *content = ft_strdup(getcwd(NULL, 0));
+	ft_lstadd_front(&prompt->directory_history, ft_lstnew(content));
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char *user_input;
@@ -38,7 +44,8 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	create_global_environment(envp);
+	init_environment(envp);
+	init_directory_history(&prompt);
 
 	system("clear"); // DELETE THIS
 	while (1)
@@ -51,7 +58,7 @@ int	main(int ac, char **av, char **envp)
 		for (int i = 0; i < prompt.pipe_nb; i++)
 			prompt.cmds[i].envp = envp;
 		
-		execute(prompt.cmds, prompt.pipe_nb);
+		execute(prompt.cmds, &prompt);
 		free(user_input);
 	}
 	return (0);

@@ -6,19 +6,19 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/07 12:35:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/08 09:38:43 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute(t_token *token, int nbr_of_pipes)
+void	execute(t_token *token, t_prompt *prompt)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
 
-	while (index < nbr_of_pipes)
+	while (index < prompt->pipe_nb)
 	{
-        cmd_type = get_cmd_type(nbr_of_pipes, index);
+        cmd_type = get_cmd_type(prompt->pipe_nb, index);
         if (cmd_type == _middle)
 		{
 			if (pipe(pipends) == -1)
@@ -26,7 +26,7 @@ void	execute(t_token *token, int nbr_of_pipes)
 		}
 		
 		if (token[index].cmd && is_builtin(token[index].cmd[0]))
-			execute_builtins(token);
+			execute_builtins(token, prompt);
 		else
 		{
 			pid_t pid = fork();
@@ -63,23 +63,12 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-
-	// Execute commands
-	if (token->cmd && is_builtin(token->cmd[0]))
-	{
-		execute_builtins(token);
-		exit(0);
-	}
-	else
-	{
-		execve(token->cmd_path, token->cmd, g_environment);
-		exit_msg();
-	}
+	execve(token->cmd_path, token->cmd, g_environment);
+	exit_msg();
 }
 
 void	last_child(t_token *token, int prevpipe)
 {
-	printf("----- Last\n");
 	if (token->infile != -1)
 		redirect_in(token);
 	else
@@ -87,12 +76,7 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-
-	// Execute commands
-	if (is_builtin(token->cmd[0]))
-		execute_builtins(token);
-	else
-		execve(token->cmd_path, token->cmd, g_environment);
+	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
@@ -117,12 +101,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 			printf("Error with DUP2()\n");
 	}	
 	close(pipends[WRITE]);
-	
-	// Execute commands
-	if (is_builtin(token->cmd[0]))
-		execute_builtins(token);
-	else
-		execve(token->cmd_path, token->cmd, g_environment);
+	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
@@ -152,12 +131,12 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 	}
 }
 
-void	execute_builtins(t_token *token)
+void	execute_builtins(t_token *token, t_prompt *prompt)
 {
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
-		cd(token->cmd[1]);
+		cd(token->cmd[1], prompt);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
 		pwd(token);
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
@@ -168,8 +147,4 @@ void	execute_builtins(t_token *token)
 		env(token);
 	// else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	// 	exit(token);
-
-	// printf(CBLUE"---- EXECUTE_BUILTINS() -----\n"CRESET);
-	// for (int i = 0; g_environment[i]; i++)
-	// 	printf("%s\n", g_environment[i]);
 }

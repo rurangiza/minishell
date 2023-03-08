@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/07 16:30:50 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/08 10:49:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_prompt
 	char	**path;
 	char	**envp;
 	int		pipe_nb;
-	t_list	previous_dir;
+	t_list	*directory_history;
 }	t_prompt;
 
 typedef enum e_state {
@@ -92,7 +92,7 @@ char	*find_path(char **envp);
 
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
-void	execute(t_token *token, int nbr_of_pipes);
+void	execute(t_token *token, t_prompt *prompt);
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
 
@@ -108,7 +108,7 @@ int		get_cmd_type(int size, int index);
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
-void	execute_builtins(t_token *token);
+void	execute_builtins(t_token *token, t_prompt *prompt);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -116,7 +116,7 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 int		export(t_token *tokens);
 void	unset(t_token *token);
-void	cd(char *directory);
+void	cd(char *directory, t_prompt *prompt);
 //void	unset_shift(t_token *token);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
