@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/08 16:28:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:55:39 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,24 @@
 void	cd(char *directory, t_prompt *prompt)
 {
 	char	*path = NULL;
-	//char	*oldwd = getcwd(NULL, 0);
-		
+	char	*newold = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
+	
+	(void)prompt;
 	if (!directory)
 		path = get_userdir();
 	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
 	{
 		if (directory[0] == '-')
 		{
-			path = get_previous_directory(prompt);
-			printf("%s\n", prompt->directory_history->content);
-			//printf("%s\n", path);
+			path = get_previous_directory();
+			if (path == NULL)
+			{
+				free(newold);
+				printf("bash: cd: OLDPWD not set\n");
+				return ;
+			}
+			else
+				printf("%s\n", path);
 		}
 		else if (directory[0] == '~')
 			path = get_userdir();
@@ -41,21 +48,13 @@ void	cd(char *directory, t_prompt *prompt)
 			path = ft_strjoin_trio(path, "/", directory);
 	}
     if (chdir(path) == -1)
+	{
+		free(newold);
 		perror(CRED"chdir"CRESET);
+	}
 	else
-		update_directory_history(prompt, path);
-	//else if (!(ft_strlen(directory) == 1 && is_special_symbol(directory) && directory[0] == '-'))
-	
-	// t_list	*tmp = prompt->directory_history;
-	// printf(CBLUE"~~~~~~~~~ DIRECTORY HISTORY ~~~~~~~~~\n"CRESET);
-	// while (tmp && tmp->content)
-	// {
-	// 	printf(CBLUE"• %s\n"CRESET, tmp->content);
-	// 	if (!tmp->next)
-	// 		break ;
-	// 	tmp = tmp->next;
-	// }
-	
+		update_oldpwd(newold);
+	free(path);
 }
 
 char	*get_userdir(void)
@@ -70,69 +69,58 @@ char	*get_userdir(void)
 	return (ft_strjoin(path, username));
 }
 
-char	*get_previous_directory(t_prompt *prompt)
+char	*get_previous_directory(void)
 {
-	// int index = 0;
+	int index = 0;
 
-	// (void)prompt;
-	// while (g_environment[index])
-	// {
-	// 	if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
-	// 	{
-	// 		printf("%s\n", g_environment[index]);
-	// 		return (ft_substr(g_environment[index], 7, ft_strlen(g_environment[index])));
-	// 	}
-	// 	index++;
-	// }
-	// return (NULL);
-		
-	char	*tmp;
-	
-	if (ft_lstsize(prompt->directory_history) > 1)
+	while (g_environment[index])
 	{
-		tmp = prompt->directory_history->content;
-		free(prompt->directory_history->content);
-		prompt->directory_history->content = ft_strdup(getcwd(NULL, 0));
-		return (tmp);
+		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
+			return (ft_substr(g_environment[index], 7, ft_strlen(g_environment[index])));
+		index++;
 	}
-	else
-		return (prompt->directory_history->content);
+	return (NULL);
 }
 
-void	update_directory_history(t_prompt *prompt, char *path)
+void	update_oldpwd(char *newold)
 {
-	// int index = 0;
+	int	index;
 
-	// (void)prompt;
-	// while (g_environment[index])
-	// {
-	// 	if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
-	// 	{
-	// 		//free(g_environment[index]);
-	// 		g_environment[index] = ft_strdup(oldwd);
-	// 	}
-	// 	if (ft_strncmp(g_environment[index], "PWD=", 4) == 0)
-	// 	{
-	// 		//free(g_environment[index]);
-	// 		g_environment[index] = ft_strdup(cwd);
-	// 	}
-	// 	index++;
-	// }
-	
-	t_list *current;
-	t_list *second_last;
-	
-	ft_lstadd_front(&prompt->directory_history, ft_lstnew(path));
-	if (ft_lstsize(prompt->directory_history) > 1)
+	index = 0;
+	while (g_environment[index])
 	{
-		current = prompt->directory_history;
-		second_last = NULL;
-		while (current && current->content && current->next != NULL)
+		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
 		{
-			second_last = current;
-			current = current->next;
+			free(g_environment[index]);
+			g_environment[index] = newold;
+			return ;
 		}
-		free(second_last->next->content);
-		second_last->next = NULL;
+		index++;
 	}
+	add_missing_oldpwd(newold);
+}
+
+void	add_missing_oldpwd(char *newold)
+{
+	int size;
+	int i;
+	char **tmp;
+
+	size = 0;
+	while (g_environment[size])
+		size++;
+	size += 1;
+	tmp = malloc((size + 1) * sizeof(char *));
+	
+	tmp[0] = newold;
+	
+	i = 1;
+	int j = 0;
+	while (g_environment[j])
+	{
+		tmp[i++] = ft_strdup(g_environment[j++]);
+	}
+	tmp[i] = NULL;
+	ft_free_matrix(g_environment);
+	g_environment = tmp;
 }

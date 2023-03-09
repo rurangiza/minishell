@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/08 13:58:10 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:18:21 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,33 @@
 
 void	init_environment(char **envp)
 {
-	//char	**buffer;
-	int		index;
+	int		size;
+	int		original_index;
+	//char	*cwd;
 
-	index = 0;
-	while (envp[index])
-		index++;
-	g_environment = malloc(sizeof(char *) * (index + 1));
-	index = 0;
-	while (envp[index])
+	size = 0;
+	while (envp[size])
+		size++;
+	if (getenv("OLDPWD") != NULL)
+		size--;
+	g_environment = malloc((size + 1) * sizeof(char *));
+	// cwd = ft_strdup(getcwd(NULL, 0));
+	// g_environment[0] = ft_strjoin_mod(ft_strdup("OLDPWD="), cwd);
+	original_index = 0;
+	int global_index = 0;
+	while (envp[original_index])
 	{
-		g_environment[index] = ft_strdup(envp[index]);
-		index++;
+		if (ft_strncmp(envp[original_index], "OLDPWD=", 7) != 0)
+			g_environment[global_index++] = ft_strdup(envp[original_index]);
+		original_index++;
 	}
-	g_environment[index] = NULL;
+	g_environment[global_index] = NULL;
 }
 
-void	init_directory_history(t_prompt *prompt)
-{
-	char *content = ft_strdup(getcwd(NULL, 0));
-	ft_lstadd_front(&prompt->directory_history, ft_lstnew(content));
-}
+// void	init_directory_history(t_prompt *prompt)
+// {
+// 	ft_lstadd_front(&prompt->directory_history, ft_lstnew(content));
+// }
 
 int	main(int ac, char **av, char **envp)
 {
@@ -45,7 +51,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	init_environment(envp);
-	init_directory_history(&prompt);
+	//init_directory_history(&prompt);
 
 	system("clear"); // DELETE THIS
 	while (1)
