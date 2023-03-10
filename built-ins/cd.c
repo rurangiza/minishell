@@ -6,36 +6,35 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/09 21:55:39 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/10 12:26:24 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	cd(char *directory, t_prompt *prompt)
+void	cd(char *directory)
 {
 	char	*path = NULL;
 	char	*newold = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
 	
-	(void)prompt;
+	//path = get_userdir();
 	if (!directory)
-		path = get_userdir();
+		path = get_variable_in_environment("HOME=");
 	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
 	{
 		if (directory[0] == '-')
 		{
-			path = get_previous_directory();
+			path = get_variable_in_environment("OLDPWD=");
 			if (path == NULL)
 			{
 				free(newold);
-				printf("bash: cd: OLDPWD not set\n");
 				return ;
 			}
 			else
 				printf("%s\n", path);
 		}
 		else if (directory[0] == '~')
-			path = get_userdir();
+			path = ft_strdup(getenv("HOME"));
 		else if (directory[0] == '/')
 			path = ft_strdup("/");
 	}
@@ -49,24 +48,40 @@ void	cd(char *directory, t_prompt *prompt)
 	}
     if (chdir(path) == -1)
 	{
+		printf("bash: cd: %s: No such file or directory\n", directory);
 		free(newold);
-		perror(CRED"chdir"CRESET);
 	}
 	else
 		update_oldpwd(newold);
 	free(path);
 }
 
-char	*get_userdir(void)
+char	*get_variable_in_environment(char *variable)
 {
-	char	*username;
-	char	*path;
+	int index = 0;
+	int	var_length = ft_strlen(variable);
 
-	username = ft_strdup(getenv("USER"));
-	if (username == NULL)
-		return (NULL);
-	path = ft_strdup("/Users/");
-	return (ft_strjoin(path, username));
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], variable, var_length) == 0)
+			return (ft_substr(g_environment[index], var_length, ft_strlen(g_environment[index])));
+		index++;
+	}
+	write(1, "bash: cd: ", 10);
+	index = 0;
+	while (variable[index] && variable[index] != '=')
+		write(1, &variable[index++], 1);
+	write(1, ": not set\n", 10);
+	return (NULL);
+	//char	*username;
+	//char	*path;
+
+	// username = ft_strdup(getenv("USER"));
+	// if (username == NULL)
+	// 	return (NULL);
+	// path = ft_strdup("/Users/");
+	//path = ft_strdup(getenv("HOME"));
+	//return (ft_strjoin(path, username));
 }
 
 char	*get_previous_directory(void)

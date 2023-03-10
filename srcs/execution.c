@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/08 09:38:43 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/10 11:17:11 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ void	execute(t_token *token, t_prompt *prompt)
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
-		
 		if (token[index].cmd && is_builtin(token[index].cmd[0]))
-			execute_builtins(token, prompt);
+			execute_builtins(token);
 		else
 		{
 			pid_t pid = fork();
@@ -131,12 +130,12 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 	}
 }
 
-void	execute_builtins(t_token *token, t_prompt *prompt)
+void	execute_builtins(t_token *token)
 {
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
-		cd(token->cmd[1], prompt);
+		cd(token->cmd[1]);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
 		pwd(token);
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)

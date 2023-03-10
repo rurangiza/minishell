@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/10 11:14:10 by Arsene           ###   ########.fr       */
+/*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
+/*   Updated: 2023/03/10 11:07:26 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	main(int ac, char **av, char **envp)
+void	init_environment(char **envp)
 {
-	char		*user_input;
-	t_prompt	prompt;
-	t_lexer		lexer;
+	int		index;
 
-	(void)ac;
-	(void)av;
-	init_environment(envp);
-	system("clear"); // DELETE THIS
-	while (1)
+	index = 0;
+	while (envp[index])
+		index++;
+	g_environment = malloc((index + 1) * sizeof(char *));
+	index = 0;
+	while (envp[index])
 	{
-		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		add_history(user_input);
-		lexer = lexerinho(user_input, envp);
-		parser(&prompt, &lexer, envp);
-		execute(prompt.cmds, &prompt);
-		free(user_input);
+		g_environment[index] = ft_strdup(envp[index]);
+		index++;
 	}
-	return (0);
+	g_environment[index] = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/09 21:55:37 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/10 12:11:09 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int		get_cmd_type(int size, int index);
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
-void	execute_builtins(t_token *token, t_prompt *prompt);
+void	execute_builtins(t_token *token);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -116,8 +116,11 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 int		export(t_token *tokens);
 void	unset(t_token *token);
-void	cd(char *directory, t_prompt *prompt);
+void	cd(char *directory);
 //void	unset_shift(t_token *token);
+
+/* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
+void	init_environment(char **envp);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
@@ -129,18 +132,20 @@ void	exit_msg(void);
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*expand_variable(char *buffer);
-char	*get_userdir(void);
+//char	*get_userdir(void);
+char	*get_variable_in_environment(char *variable);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
 int		is_variable_to_be_deleted(char *target, char *source);
 int		is_in_environment(char *variable);
 int		is_special_symbol(char *directory);
+int		is_valid_identifier(char *str);
 
 void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
-char	*get_previous_directory();
+//char	*get_previous_directory();
 void	update_oldpwd(char *newold);
 void	add_missing_oldpwd(char *newold);
 

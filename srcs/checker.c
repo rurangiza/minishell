@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/07 11:20:46 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/10 11:46:35 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,23 @@ int	is_special_symbol(char *directory)
 		return (1);
 	}
 	return (0);
+}
+
+int	is_valid_identifier(char *str)
+{
+	int index;
+
+	index = 0;
+	if (str)
+	{
+		while (str[index])
+		{
+			if (index == 0 && !ft_isalpha(str[index]))
+				return (0);
+			if (!ft_isalnum(str[index]) && str[index] != '_')
+				return (0);
+			index++;
+		}
+	}
+	return (1);
 }

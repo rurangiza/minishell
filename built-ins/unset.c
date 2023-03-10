@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/07 16:31:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/10 11:46:43 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ void	unset(t_token *token)
 {
 	// Checks whether variable exists
 	if (!token->cmd[1] && !is_in_environment(token->cmd[1]))
+		return ;
+	if (!is_valid_identifier(token->cmd[1]))
 	{
-		printf("bash: unset: %s: invalid option\n", token->cmd[1]);
-		printf("unset: usage: unset [-f] [-v] [name ...]\n");
+		printf("bash: unset: `%s': not a valid identifier\n", token->cmd[1]);
 		return ;
 	}
 

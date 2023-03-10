@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/06 10:38:42 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/10 11:10:59 by Arsene           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS			= 	srcs/main.c \
 					srcs/utils.c \
 					srcs/checker.c \
 					srcs/memory_mgmt.c \
+					srcs/initialization.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \
