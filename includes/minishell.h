@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/10 12:11:09 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/10 14:25:50 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	expander(t_lexer *lexer, char **envp);
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 
 void	parser(t_prompt *prompt, t_lexer *lexer, char **envp);
+int		is_valid_cmd(char *str, char **path);
 char	*find_path(char **envp);
 
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
@@ -128,6 +129,7 @@ void	dup_matrix(char **environment);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
+void	exit_wrongcmd_msg(char *cmd, int error_code);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);

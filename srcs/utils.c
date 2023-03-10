@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/07 12:50:42 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:32:44 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	hanging_cats(t_token *token)
 	/* Count nbr of cat command at beginning of line */
 	cat_counter = 0;
 	index = 0;
-	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL
+		&& token[index].infile == -1)
 	{
 		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
 		{

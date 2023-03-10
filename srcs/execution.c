@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/10 11:17:11 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/10 15:36:40 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 0);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
