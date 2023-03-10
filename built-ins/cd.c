@@ -6,7 +6,7 @@
 /*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/10 12:26:24 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/10 12:56:33 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ void	cd(char *directory)
 		else
 			path = ft_strjoin_trio(path, "/", directory);
 	}
+	if (!path)
+	{
+		free(newold);
+		return ;
+	}
     if (chdir(path) == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", directory);
@@ -71,7 +76,7 @@ char	*get_variable_in_environment(char *variable)
 	index = 0;
 	while (variable[index] && variable[index] != '=')
 		write(1, &variable[index++], 1);
-	write(1, ": not set\n", 10);
+	write(1, " not set\n", 9);
 	return (NULL);
 	//char	*username;
 	//char	*path;
