@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/13 15:17:41 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 15:31:29 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	execute(t_token *token, t_prompt *prompt)
 				return ;
 		}
 	}
-	free(pid_bucket);
+	if (prompt->pipe_nb > 0)
+		free(pid_bucket);
 }
 
 int get_cmd_type(int size, int index)

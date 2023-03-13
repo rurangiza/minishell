@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/10 11:10:59 by Arsene           ###   ########.fr        #
+#    Updated: 2023/03/13 15:30:45 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror -lreadline -g -fsanitize=address
+CCFLAGS 	= -Wall -Wextra -Werror -lreadline -g3 -fsanitize=address
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} -c $< -o $@
