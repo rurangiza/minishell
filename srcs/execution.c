@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/10 15:36:40 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/13 10:24:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	single_child(t_token *token)
 	if (token->outfile != -1)
 		redirect_out(token);
 	if (token->cmd == NULL)
-		exit_wrongcmd_msg("", 0);
+		exit_wrongcmd_msg("", 127);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
@@ -77,6 +77,8 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 127);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
@@ -91,6 +93,9 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	if (index != 0)
 		close(prevpipe);
 
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 127);
+
 	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL && index == 0)
 		exit(0);
 
@@ -100,7 +105,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	{
 		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
 			printf("Error with DUP2()\n");
-	}	
+	}
 	close(pipends[WRITE]);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
@@ -120,6 +125,7 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
     waitpid(child_pid, &status, 0);
 	if (WIFEXITED(status))
 	{
+		g_tools.exit_code = WEXITSTATUS(status);
 		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
 			return ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/10 14:25:50 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/13 09:18:48 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@
 extern char **g_environment;
 
 char 	**g_environment;
+
+typedef struct s_tools {
+	int		exit_code;
+	char	**environment;
+} t_tools;
+
+t_tools g_tools;
 
 typedef struct s_lexer
 {

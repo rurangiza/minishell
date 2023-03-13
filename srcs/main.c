@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/10 16:45:16 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/13 09:08:20 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	init_environment(envp);
 	system("clear"); // DELETE THIS
+	g_tools.exit_code = 0;
 	while (1)
 	{
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
