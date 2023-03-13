@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 16:32:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/13 10:16:43 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:10:45 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	exit_wrongcmd_msg(char *cmd, int error_code)
 	write(2, "zsh: command not found: ", 24);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, "\n", 1);
-	//g_tools.exit_code = 127;
-	//printf("%i\n", g_tools.exit_code);
 	exit(error_code);
 }
 

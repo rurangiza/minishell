@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/13 16:07:26 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:09:13 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	update_pwd(char *oldpwd, char *pwd)
 		}
 		index++;
 	}
-	if (found_oldpwd = 0)
+	if (found_oldpwd == 0)
 		add_missing_oldpwd(oldpwd);
 }
 
