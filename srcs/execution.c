@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/13 12:59:44 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 13:03:16 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@ void	execute(t_token *token, t_prompt *prompt)
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
 
-	pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
-	if (!pid_bucket)
-		return ;
+	if (prompt->pipe_nb > 0)
+	{
+		pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
+		if (!pid_bucket)
+			return ;
+	}
 	while (index < prompt->pipe_nb)
 	{
         cmd_type = get_cmd_type(prompt->pipe_nb, index);

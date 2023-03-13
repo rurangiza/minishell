@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/10 11:46:43 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/13 13:12:23 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,36 +28,39 @@
 
 void	unset(t_token *token)
 {
-	// Checks whether variable exists
-	if (!token->cmd[1] && !is_in_environment(token->cmd[1]))
-		return ;
-	if (!is_valid_identifier(token->cmd[1]))
+	int index = 1;
+
+	while (token->cmd[index] && is_in_environment(token->cmd[index]))
 	{
-		printf("bash: unset: `%s': not a valid identifier\n", token->cmd[1]);
-		return ;
-	}
-
-	// Save content of environment in buffer except the line I'll delete
-	char **copy;
-
-	int size = 0;
-	while (g_environment[size])
-		size++;
-	copy = malloc(sizeof(char *) * (size + 1));
-
-	int src_index = 0;
-	int copy_index = 0;
-	while (src_index < size && g_environment[src_index])
-	{
-		if (!is_variable_to_be_deleted(g_environment[src_index], token->cmd[1]))
+		if (!is_valid_identifier(token->cmd[index]))
 		{
-			copy[copy_index] = ft_strdup(g_environment[src_index]);
-			copy_index++;
+			printf("bash: unset: `%s': not a valid identifier\n", token->cmd[index]);
+			return ;
 		}
-		src_index++;
-	}
-	copy[copy_index] = NULL;
-	ft_free_matrix(g_environment);
+		// Save content of environment in buffer except the line I'll delete
+		char **copy;
 
-	g_environment = copy;
+		int size = 0;
+		while (g_environment[size])
+			size++;
+		copy = malloc(sizeof(char *) * (size + 1));
+
+		int src_index = 0;
+		int copy_index = 0;
+		while (src_index < size && g_environment[src_index])
+		{
+			if (!is_variable_to_be_deleted(g_environment[src_index], token->cmd[index]))
+			{
+				copy[copy_index] = ft_strdup(g_environment[src_index]);
+				copy_index++;
+			}
+			src_index++;
+		}
+		copy[copy_index] = NULL;
+		ft_free_matrix(g_environment);
+
+		g_environment = copy;
+		
+		index++;
+	}
 }
