@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/10 11:46:35 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/13 14:58:36 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 /* check whether a string {cmd} matches with the list of built-ins */
 int	is_builtin(char *cmd)
 {
-	if (ft_strncmp(cmd, "echo", 4) == 0
-		|| ft_strncmp(cmd, "cd", 2) == 0
-		|| ft_strncmp(cmd, "pwd", 3) == 0
-		|| ft_strncmp(cmd, "export", 6) == 0
-		|| ft_strncmp(cmd, "unset", 5) == 0
-		|| ft_strncmp(cmd, "env", 3) == 0
-		|| ft_strncmp(cmd, "exit", 4) == 0)
+	if ((ft_strncmp(cmd, "echo", 4) == 0 && !cmd[4])
+		|| (ft_strncmp(cmd, "cd", 2) == 0 && !cmd[2])
+		|| (ft_strncmp(cmd, "pwd", 3) == 0 && !cmd[3])
+		|| (ft_strncmp(cmd, "export", 6) == 0 && !cmd[6])
+		|| (ft_strncmp(cmd, "unset", 5) == 0 && !cmd[5])
+		|| (ft_strncmp(cmd, "env", 3) == 0 && !cmd[3])
+		|| (ft_strncmp(cmd, "exit", 4) == 0 && !cmd[4]))
 		return (TRUE);
 	return (FALSE);
 }

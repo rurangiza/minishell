@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/13 13:03:16 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 15:01:47 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,31 @@ void	execute(t_token *token, t_prompt *prompt)
         cmd_type = get_cmd_type(prompt->pipe_nb, index);
         if (cmd_type == _middle)
 		{
+			close(pipends[READ]);
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
-		if (token[index].cmd && is_builtin(token[index].cmd[0]))
-			execute_builtins(token);
-		else
+		pid_t pid = fork();
+		if (pid == -1)
+			exit_msg();
+		else if (pid == 0)
 		{
-			pid_t pid = fork();
-			if (pid == -1)
-				exit_msg();
-			else if (pid == 0)
-			{
-				if (cmd_type == _single)
-					single_child(&token[index]);
-				else if (cmd_type == _last)
-					last_child(&token[index], prevpipe);
-				else
-					middle_child(&token[index], index, prevpipe, pipends);
-			}
-			pid_bucket[index] = pid;
-			parent_process(pid, cmd_type, pipends, &prevpipe);
+			if (cmd_type == _single)
+				single_child(&token[index]);
+			else if (cmd_type == _last)
+				last_child(&token[index], prevpipe);
+			else
+				middle_child(&token[index], index, prevpipe, pipends);
 		}
+		pid_bucket[index] = pid;
+		//parent_process(pid, cmd_type, pipends, &prevpipe);
+		if (cmd_type == _middle)
+		{
+			close(pipends[WRITE]);
+			prevpipe = pipends[READ];
+		}
+		else if (cmd_type == _last)
+			close(prevpipe);
 		index++;
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
@@ -89,8 +92,16 @@ void	single_child(t_token *token)
 		redirect_out(token);
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
-	execve(token->cmd_path, token->cmd, g_environment);
-	exit_msg();
+	if (token->cmd && is_builtin(token->cmd[0]))
+	{
+		execute_builtins(token);
+		exit(0);
+	}
+	else
+	{
+		execve(token->cmd_path, token->cmd, g_environment);
+		exit_msg();
+	}
 }
 
 void	last_child(t_token *token, int prevpipe)
@@ -104,8 +115,16 @@ void	last_child(t_token *token, int prevpipe)
 		redirect_out(token);
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
-	execve(token->cmd_path, token->cmd, g_environment);
-	exit_msg();
+	if (token->cmd && is_builtin(token->cmd[0]))
+	{
+		execute_builtins(token);
+		exit(0);
+	}
+	else
+	{
+		execve(token->cmd_path, token->cmd, g_environment);
+		exit_msg();
+	}
 }
 
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
@@ -118,9 +137,6 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 		dup2(prevpipe, STDIN_FILENO);
 		close(prevpipe);
 	}
-	if (index != 0)
-		close(prevpipe);
-
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
@@ -129,9 +145,16 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
-
-	execve(token->cmd_path, token->cmd, g_environment);
-	exit_msg();
+	if (token->cmd && is_builtin(token->cmd[0]))
+	{
+		execute_builtins(token);
+		exit(0);
+	}
+	else
+	{
+		execve(token->cmd_path, token->cmd, g_environment);
+		exit_msg();
+	}
 }
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
@@ -141,7 +164,7 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
     {
         close(pipends[WRITE]);
         *prevpipe = pipends[READ];
-		close(pipends[READ]);
+		//close(pipends[READ]);
     }
     else if (cmd_type == _last)
         close(*prevpipe);
