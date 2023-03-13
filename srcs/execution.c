@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/13 10:24:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 12:59:44 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 void	execute(t_token *token, t_prompt *prompt)
 {
-	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
+	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
+	pid_t *pid_bucket;
 
+	pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
+	if (!pid_bucket)
+		return ;
 	while (index < prompt->pipe_nb)
 	{
         cmd_type = get_cmd_type(prompt->pipe_nb, index);
@@ -40,11 +44,29 @@ void	execute(t_token *token, t_prompt *prompt)
 				else
 					middle_child(&token[index], index, prevpipe, pipends);
 			}
+			pid_bucket[index] = pid;
 			parent_process(pid, cmd_type, pipends, &prevpipe);
 		}
 		index++;
 	}
-	hanging_cats(token);
+	for (int i = 0; i < prompt->pipe_nb; i++)
+	{
+		waitpid(pid_bucket[i], &status, 0);
+		if (WIFEXITED(status))
+		{
+			g_tools.exit_code = WEXITSTATUS(status);
+			if (WEXITSTATUS(status) != 0 && cmd_type == _last)
+				return ;
+		}
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGTERM)
+				return ;
+			else if (WTERMSIG(status) == SIGKILL)
+				return ;
+		}
+	}
+	free(pid_bucket);
 }
 
 int get_cmd_type(int size, int index)
@@ -89,53 +111,37 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	if (token->infile != -1)
 		redirect_in(token);
 	else if (index > 0)
+	{
 		dup2(prevpipe, STDIN_FILENO);
+		close(prevpipe);
+	}
 	if (index != 0)
 		close(prevpipe);
-
-	if (token->cmd == NULL)
-		exit_wrongcmd_msg("", 127);
-
-	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL && index == 0)
-		exit(0);
 
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
-	{
-		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
-			printf("Error with DUP2()\n");
-	}
+		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
+	
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 127);
+
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
 {
-    int status;
-
+	(void)child_pid;
     if (cmd_type == _middle)
     {
         close(pipends[WRITE]);
         *prevpipe = pipends[READ];
+		close(pipends[READ]);
     }
     else if (cmd_type == _last)
         close(*prevpipe);
-    waitpid(child_pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		g_tools.exit_code = WEXITSTATUS(status);
-		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
-			return ;
-	}
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGTERM)
-			return ;
-		else if (WTERMSIG(status) == SIGKILL)
-			return ;
-	}
 }
 
 void	execute_builtins(t_token *token)
