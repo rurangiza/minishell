@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/13 15:26:28 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:07:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ char	*get_previous_directory(void)
 void	update_pwd(char *oldpwd, char *pwd)
 {
 	int	index;
+	int	found_oldpwd;
 
+	found_oldpwd = 0;
 	index = 0;
 	while (g_environment[index])
 	{
@@ -108,6 +110,7 @@ void	update_pwd(char *oldpwd, char *pwd)
 		{
 			free(g_environment[index]);
 			g_environment[index] = oldpwd;
+			found_oldpwd = 1;
 		}
 		else if (ft_strncmp(g_environment[index], "PWD=", 4) == 0)
 		{
@@ -116,7 +119,8 @@ void	update_pwd(char *oldpwd, char *pwd)
 		}
 		index++;
 	}
-	add_missing_oldpwd(oldpwd);
+	if (found_oldpwd = 0)
+		add_missing_oldpwd(oldpwd);
 }
 
 void	add_missing_oldpwd(char *newold)
