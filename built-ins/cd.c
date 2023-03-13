@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/10 12:56:33 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/13 15:26:28 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	cd(char *directory)
 {
 	char	*path = NULL;
-	char	*newold = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
+	char	*oldpwd = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
+	char	*pwd;
 	
 	//path = get_userdir();
 	if (!directory)
@@ -27,7 +28,7 @@ void	cd(char *directory)
 			path = get_variable_in_environment("OLDPWD=");
 			if (path == NULL)
 			{
-				free(newold);
+				free(oldpwd);
 				return ;
 			}
 			else
@@ -48,16 +49,19 @@ void	cd(char *directory)
 	}
 	if (!path)
 	{
-		free(newold);
+		free(oldpwd);
 		return ;
 	}
     if (chdir(path) == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", directory);
-		free(newold);
+		free(oldpwd);
 	}
 	else
-		update_oldpwd(newold);
+	{
+		pwd = ft_strjoin(ft_strdup("PWD="), path);
+		update_pwd(oldpwd, pwd);
+	}
 	free(path);
 }
 
@@ -78,15 +82,6 @@ char	*get_variable_in_environment(char *variable)
 		write(1, &variable[index++], 1);
 	write(1, " not set\n", 9);
 	return (NULL);
-	//char	*username;
-	//char	*path;
-
-	// username = ft_strdup(getenv("USER"));
-	// if (username == NULL)
-	// 	return (NULL);
-	// path = ft_strdup("/Users/");
-	//path = ft_strdup(getenv("HOME"));
-	//return (ft_strjoin(path, username));
 }
 
 char	*get_previous_directory(void)
@@ -102,7 +97,7 @@ char	*get_previous_directory(void)
 	return (NULL);
 }
 
-void	update_oldpwd(char *newold)
+void	update_pwd(char *oldpwd, char *pwd)
 {
 	int	index;
 
@@ -112,12 +107,16 @@ void	update_oldpwd(char *newold)
 		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
 		{
 			free(g_environment[index]);
-			g_environment[index] = newold;
-			return ;
+			g_environment[index] = oldpwd;
+		}
+		else if (ft_strncmp(g_environment[index], "PWD=", 4) == 0)
+		{
+			free(g_environment[index]);
+			g_environment[index] = pwd;
 		}
 		index++;
 	}
-	add_missing_oldpwd(newold);
+	add_missing_oldpwd(oldpwd);
 }
 
 void	add_missing_oldpwd(char *newold)

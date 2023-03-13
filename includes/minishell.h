@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/13 09:18:48 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 15:25:22 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
 //char	*get_previous_directory();
-void	update_oldpwd(char *newold);
+void	update_pwd(char *oldpwd, char *pwd);
 void	add_missing_oldpwd(char *newold);
 
 #endif

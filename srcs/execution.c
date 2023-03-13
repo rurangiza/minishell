@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/13 15:01:47 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/13 15:17:41 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,12 @@ void	execute(t_token *token, t_prompt *prompt)
 		else if (pid == 0)
 		{
 			if (cmd_type == _single)
-				single_child(&token[index]);
+			{
+				if (token->cmd && is_builtin(token->cmd[0]))
+					execute_builtins(token);
+				else
+					single_child(&token[index]);
+			}
 			else if (cmd_type == _last)
 				last_child(&token[index], prevpipe);
 			else
@@ -92,16 +97,8 @@ void	single_child(t_token *token)
 		redirect_out(token);
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
-	if (token->cmd && is_builtin(token->cmd[0]))
-	{
-		execute_builtins(token);
-		exit(0);
-	}
-	else
-	{
-		execve(token->cmd_path, token->cmd, g_environment);
-		exit_msg();
-	}
+	execve(token->cmd_path, token->cmd, g_environment);
+	exit_msg();
 }
 
 void	last_child(t_token *token, int prevpipe)
