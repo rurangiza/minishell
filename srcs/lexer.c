@@ -6,11 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 09:45:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/10 11:28:08 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+
 
 static int count_words(char *prompt)
 {
@@ -19,6 +21,8 @@ static int count_words(char *prompt)
 
 	i = 0;
 	count = 0;
+	if (!prompt)
+		return (0);
 	while(prompt[i])
 	{
 		while(prompt[i] != '\0' && prompt[i] == ' ')
@@ -68,18 +72,22 @@ static int check_quotes(char *prompt)
 	i = 0;
 	count = 0;
 	count2 = 0;
-	while (prompt[i])
+	if (prompt)
 	{
-		if (prompt[i] == '\'')
-			count++;
-		else if(prompt[i] == '\"')
-			count2++;
-		i++;
+		while (prompt[i])
+		{
+			if (prompt[i] == '\'')
+				count++;
+			else if(prompt[i] == '\"')
+				count2++;
+			i++;
+		}
 	}
 	if (((count2 % 2) != 0) || ((count % 2) != 0))
 		return (-1);
 	else
-		return(0);
+		return (0);
+	return (0);
 }
 
 static int ft_word_len(char *prompt)
@@ -134,6 +142,8 @@ char **ft_cmd_lexer(char *prompt)
 
 	i = 0;
 	j = 0;
+	if (!prompt)
+		return (NULL);
 	if(count_words(prompt) == -1)
 	{
 		printf("syntax error\n");
@@ -259,9 +269,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 {
 	(void)envp;
 	t_lexer lexer;
-	//int i;
-
-	//i = 0;
+	
 	if (check_quotes(prompt) == -1)
 	{
 		printf("syntax error\n");
@@ -279,10 +287,5 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	expander(&lexer, envp);
 	lexer.tokens = token(&lexer);
 	delete_quotes(lexer.tokens);
-	// while (lexer.tokens[i])
-	// {
-	// 	printf("%s\n", lexer.tokens[i]);
-	// 	i++;
-	// }
 	return (lexer);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 10:46:03 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 13:05:15 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <dirent.h>
+# include <signal.h>
 
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"
@@ -126,6 +127,7 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 int		export(t_token *tokens);
 void	unset(t_token *token);
+void	my_exit(t_token *tokens);
 void	cd(char *directory);
 //void	unset_shift(t_token *token);
 
