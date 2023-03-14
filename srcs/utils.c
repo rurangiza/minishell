@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/10 15:32:44 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/14 10:51:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ char *expand_variable(char *buffer)
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);
 	// Check if variable exists in envp
-	expanded = getenv(variable);
+	//expanded = getenv(variable);
+	expanded = get_envp_variable(variable);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
 	else
@@ -75,31 +76,31 @@ char *expand_variable(char *buffer)
 	return (tmp);
 }
 
-void	hanging_cats(t_token *token)
-{
-	int index;
-	int cat_counter;
+// void	hanging_cats(t_token *token)
+// {
+// 	int index;
+// 	int cat_counter;
 	
-	/* Count nbr of cat command at beginning of line */
-	cat_counter = 0;
-	index = 0;
-	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL
-		&& token[index].infile == -1)
-	{
-		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
-		{
-			cat_counter++;
-			index++;
-		}
-	}
+// 	/* Count nbr of cat command at beginning of line */
+// 	cat_counter = 0;
+// 	index = 0;
+// 	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL
+// 		&& token[index].infile == -1)
+// 	{
+// 		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
+// 		{
+// 			cat_counter++;
+// 			index++;
+// 		}
+// 	}
 	
-	/* Prompt user for input as many times as there are cats */
-	char *tmp;
-	for (int i = 0; i < cat_counter; i++)
-	{
-		tmp = get_next_line(STDIN_FILENO);
-		if (tmp == NULL)
-			break ;
-		free(tmp);
-	}
-}
+// 	/* Prompt user for input as many times as there are cats */
+// 	char *tmp;
+// 	for (int i = 0; i < cat_counter; i++)
+// 	{
+// 		tmp = get_next_line(STDIN_FILENO);
+// 		if (tmp == NULL)
+// 			break ;
+// 		free(tmp);
+// 	}
+// }

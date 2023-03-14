@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/13 16:09:13 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:50:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ void	cd(char *directory)
 			path = ft_strdup(getenv("HOME"));
 		else if (directory[0] == '/')
 			path = ft_strdup("/");
+	}
+	else if (directory[0] == '/')
+	{
+		// Do this
+		path = ft_strdup(directory);
 	}
 	else
 	{

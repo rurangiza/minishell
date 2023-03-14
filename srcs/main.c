@@ -6,11 +6,12 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/13 09:08:20 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:49:18 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 
 int	main(int ac, char **av, char **envp)
 {
@@ -22,6 +23,18 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	init_environment(envp);
 	system("clear"); // DELETE THIS
+	// while (1)
+	// {
+	// 	printf("\033[32mVariable name:\033[0m ");
+	// 	char *buffer = malloc(sizeof(char) * 15);
+	// 	scanf("%s", buffer);
+	// 	char *varme = get_envp_variable(buffer);
+	// 	if (varme == NULL)
+	// 		printf("No such variable in environment\n\n");
+	// 	else
+	// 		printf("%s\n\n", varme);
+	// 	free(buffer);
+	// }
 	g_tools.exit_code = 0;
 	while (1)
 	{
