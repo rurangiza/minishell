@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/14 13:04:27 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:24:47 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	execute(t_token *token, t_prompt *prompt)
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
 
-	//printf("executing...\n");
+	printf("Pipe nbr = %i\n", prompt->pipe_nb);
+	
 	if (prompt->pipe_nb > 0)
 	{
 		pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
@@ -69,6 +70,8 @@ void	execute(t_token *token, t_prompt *prompt)
 			g_tools.exit_code = WEXITSTATUS(status);
 			if (WEXITSTATUS(status) != 0 && cmd_type == _last)
 				return ;
+			else if (prompt->pipe_nb == 1 && ft_strncmp("exit", token->cmd[0], 4) == 0)
+				exit(0);
 		}
 		if (WIFSIGNALED(status))
 		{
