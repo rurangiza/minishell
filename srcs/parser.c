@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/10 14:24:22 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/14 10:19:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,35 @@ char	*find_path(char **envp)
 		envp++;
 	}
 	return (*envp + 5);
+}
+/*
+ * Utile dans l'execution pour
+ * - verifier que PATH est present
+*/
+int is_valid_cmd_bis(char *str, char *path) 
+{
+	char *tmp;
+	char *cmd;
+	char **splited;
+
+	if (path == NULL)
+		return (0);
+	splited = ft_split(path, ':');
+	while (splited && *splited)
+	{
+		tmp = ft_strjoin(*splited, "/");
+		cmd = ft_strjoin(tmp, str);
+		free(tmp);
+		if (access(cmd, 0) == 0)
+		{
+			free(cmd);
+			return (1);
+		}
+		free(cmd);
+		splited++;
+	}
+	free(splited);
+	return (0);
 }
 
 int is_valid_cmd(char *str, char **path)

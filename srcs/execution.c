@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/13 20:50:32 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/14 10:14:20 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,30 @@ int get_cmd_type(int size, int index)
     return (_middle);
 }
 
+char	*find_pathway(void)
+{
+	int	index = 0;
+
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], "PATH=", 5) == 0)
+			return (&g_environment[index][5]);
+		index++;
+	}
+	return (NULL);
+}
+
 void	single_child(t_token *token)
 {
+	char *pathway = find_pathway();
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
+	else if (!is_valid_cmd_bis(token->cmd[0], pathway))
+		exit_wrongcmd_msg(token->cmd[0], 127);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }

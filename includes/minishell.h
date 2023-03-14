@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/13 15:25:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:12:30 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 
 void	parser(t_prompt *prompt, t_lexer *lexer, char **envp);
 int		is_valid_cmd(char *str, char **path);
+int		is_valid_cmd_bis(char *str, char *path);
 char	*find_path(char **envp);
 
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
