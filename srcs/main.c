@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 12:01:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 13:26:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	handler(int num)
-{
-	(void)num;
-	write(STDOUT_FILENO, "Won't die!\n", 11);
-	rl_redisplay();
-	return ;
-}
 
 void	check_user_input(char *input)
 {
@@ -54,14 +46,14 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	g_tools.exit_code = 0;
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
-	signal(SIGINT, handler);
 	system("clear"); // DELETE THIS
 	g_tools.exit_code = 0;
 	while (1)
 	{
-		printf("%d\n", EOF);
+		//printf("%d\n", EOF);
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
 		check_user_input(user_input);
 		add_history(user_input);
