@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/07 17:42:55 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/14 13:05:15 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ extern char **g_environment;
 
 char 	**g_environment;
 
+typedef struct s_tools {
+	int		exit_code;
+	char	**environment;
+} t_tools;
+
+t_tools g_tools;
+
 typedef struct s_lexer
 {
 	char **tokens;
@@ -66,9 +73,10 @@ typedef struct s_token
 typedef struct s_prompt
 {
 	t_token	*cmds;
-	char **path;
-	char **envp;
-	int pipe_nb;
+	char	**path;
+	char	**envp;
+	int		pipe_nb;
+	t_list	*directory_history;
 }	t_prompt;
 
 typedef enum e_state {
@@ -86,13 +94,16 @@ int	get_size(char *str, char c);
 /* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
 void	expander(t_lexer *lexer, char **envp);
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
+char	*get_envp_variable(char *variable);
 
 void	parser(t_prompt *prompt, t_lexer *lexer, char **envp);
+int		is_valid_cmd(char *str, char **path);
+int		is_valid_cmd_bis(char *str, char *path);
 char	*find_path(char **envp);
 
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
-void	execute(t_token *token, int nbr_of_pipes);
+void	execute(t_token *token, t_prompt *prompt);
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
 
@@ -116,9 +127,12 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 int		export(t_token *tokens);
 void	unset(t_token *token);
-void	cd(t_token *token);
 void	my_exit(t_token *tokens);
+void	cd(char *directory);
 //void	unset_shift(t_token *token);
+
+/* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
+void	init_environment(char **envp);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
@@ -126,16 +140,26 @@ void	dup_matrix(char **environment);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
+void	exit_wrongcmd_msg(char *cmd, int error_code);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*expand_variable(char *buffer);
+//char	*get_userdir(void);
+char	*get_variable_in_environment(char *variable);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
 int		is_variable_to_be_deleted(char *target, char *source);
 int		is_in_environment(char *variable);
+int		is_special_symbol(char *directory);
+int		is_valid_identifier(char *str);
 
 void	hanging_cats(t_token *token);
+
+void	update_directory_history(t_prompt *prompt, char *path);
+//char	*get_previous_directory();
+void	update_pwd(char *oldpwd, char *pwd);
+void	add_missing_oldpwd(char *newold);
 
 #endif

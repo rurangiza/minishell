@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 11:25:02 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 11:13:59 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 15:35:49 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <limits.h>
 # include <stdio.h>
+# include <stdarg.h>
 
 # define BUFFER_SIZE 1
 
@@ -83,6 +84,6 @@ char	*free_stash(char *stash);
 
 // int	error_msg(int return_code, char *message, ...);
 // int	success_msg(int return_code, char *message, ...);
-// int	info_msg(int return_code, char *message, ...);
+//int		info_msg(int return_code, char *message, ...);
 
 #endif

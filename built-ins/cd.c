@@ -6,45 +6,149 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/06 17:06:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:50:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	cd(t_token *token)
+void	cd(char *directory)
 {
-	char	current_dir[100];
-	char	*path;
-
-	ft_bzero(current_dir, 100);
-    //Getting the current working directory
-	getcwd(current_dir, 1000);
+	char	*path = NULL;
+	char	*oldpwd = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
+	char	*pwd;
 	
-	printf("\033[33mcurrent:\033[0m %s\n", current_dir);
-
-	//Changing the current working directory
-	path = ft_substr(current_dir, 0, ft_strlen(current_dir));
-	//if (ft_strncmp(token->cmd[1], "..", 2) != 0)
-	if (token->cmd[1])
-		path = ft_strjoin_trio(path, "/", token->cmd[1]);
+	//path = get_userdir();
+	if (!directory)
+		path = get_variable_in_environment("HOME=");
+	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
+	{
+		if (directory[0] == '-')
+		{
+			path = get_variable_in_environment("OLDPWD=");
+			if (path == NULL)
+			{
+				free(oldpwd);
+				return ;
+			}
+			else
+				printf("%s\n", path);
+		}
+		else if (directory[0] == '~')
+			path = ft_strdup(getenv("HOME"));
+		else if (directory[0] == '/')
+			path = ft_strdup("/");
+	}
+	else if (directory[0] == '/')
+	{
+		// Do this
+		path = ft_strdup(directory);
+	}
 	else
 	{
-		// cd only sends to /Users/arurangi
-		free(path);
-		//path = ft_strjoin("/Users/", ft_substr(path));
-		int pos_name = 6;
-		while (path[pos_name] != '/')
-			pos_name++;
-			
-		char *user_name = ft_substr(path, 6, pos_name);
-		printf("--User_name = %s\n", user_name);
-		path = ft_strjoin("/Users/", user_name);
+		path = ft_strdup(getcwd(NULL, 0));
+		if (ft_strlen(path) == 1 && ft_strncmp(path, "/", 1) == 0)
+			path = ft_strjoin(path, directory);
+		else
+			path = ft_strjoin_trio(path, "/", directory);
 	}
-
-	printf("\033[33mnew:\033[0m %s\n", path);
-
-	//return ;
+	if (!path)
+	{
+		free(oldpwd);
+		return ;
+	}
     if (chdir(path) == -1)
-		perror(CRED"chdir"CRESET);
+	{
+		printf("bash: cd: %s: No such file or directory\n", directory);
+		free(oldpwd);
+	}
+	else
+	{
+		pwd = ft_strjoin(ft_strdup("PWD="), path);
+		update_pwd(oldpwd, pwd);
+	}
+	free(path);
+}
+
+char	*get_variable_in_environment(char *variable)
+{
+	int index = 0;
+	int	var_length = ft_strlen(variable);
+
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], variable, var_length) == 0)
+			return (ft_substr(g_environment[index], var_length, ft_strlen(g_environment[index])));
+		index++;
+	}
+	write(1, "bash: cd: ", 10);
+	index = 0;
+	while (variable[index] && variable[index] != '=')
+		write(1, &variable[index++], 1);
+	write(1, " not set\n", 9);
+	return (NULL);
+}
+
+char	*get_previous_directory(void)
+{
+	int index = 0;
+
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
+			return (ft_substr(g_environment[index], 7, ft_strlen(g_environment[index])));
+		index++;
+	}
+	return (NULL);
+}
+
+void	update_pwd(char *oldpwd, char *pwd)
+{
+	int	index;
+	int	found_oldpwd;
+
+	found_oldpwd = 0;
+	index = 0;
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
+		{
+			free(g_environment[index]);
+			g_environment[index] = oldpwd;
+			found_oldpwd = 1;
+		}
+		else if (ft_strncmp(g_environment[index], "PWD=", 4) == 0)
+		{
+			free(g_environment[index]);
+			g_environment[index] = pwd;
+		}
+		index++;
+	}
+	if (found_oldpwd == 0)
+		add_missing_oldpwd(oldpwd);
+}
+
+void	add_missing_oldpwd(char *newold)
+{
+	int size;
+	int i;
+	char **tmp;
+
+	size = 0;
+	while (g_environment[size])
+		size++;
+	size += 1;
+	tmp = malloc((size + 1) * sizeof(char *));
+	
+	tmp[0] = newold;
+	
+	i = 1;
+	int j = 0;
+	while (g_environment[j])
+	{
+		tmp[i++] = ft_strdup(g_environment[j++]);
+	}
+	tmp[i] = NULL;
+	ft_free_matrix(g_environment);
+	g_environment = tmp;
 }

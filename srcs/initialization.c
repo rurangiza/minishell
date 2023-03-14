@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
+/*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 09:01:07 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/08 13:43:18 by arurangi         ###   ########.fr       */
+/*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
+/*   Updated: 2023/03/14 09:17:41 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/minishell.h"
 
-t_list	*ft_lstlast(t_list *lst)
+void	init_environment(char **envp)
 {
-	if (!lst)
-		return (NULL);
-	while (lst != NULL && lst->content)
+	int		index;
+
+	index = 0;
+	while (envp[index])
+		index++;
+	if (!getenv("OLDPWD"))
+		index--;
+	g_environment = malloc((index + 1) * sizeof(char *));
+	index = 0;
+	int outdex = 0;
+	while (envp[index])
 	{
-		if (!lst->next)
-		{
-			return (lst);
-		}
-		lst = lst->next;
+		if (ft_strncmp(envp[index], "OLDPWD=", 7) != 0)
+			g_environment[outdex++] = ft_strdup(envp[index]);
+		index++;
 	}
-	return (lst);
+	g_environment[outdex] = NULL;
 }

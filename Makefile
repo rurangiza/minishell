@@ -6,7 +6,11 @@
 #    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2023/03/10 10:29:01 by akorompa         ###   ########.fr        #
+=======
+#    Updated: 2023/03/13 15:30:45 by arurangi         ###   ########.fr        #
+>>>>>>> 8531c8f7d370da792b45aeb2f875252c5084b7a5
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +26,7 @@ SRCS			= 	srcs/main.c \
 					srcs/utils.c \
 					srcs/checker.c \
 					srcs/memory_mgmt.c \
+					srcs/initialization.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \

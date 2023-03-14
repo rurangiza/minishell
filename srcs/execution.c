@@ -6,46 +6,86 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/07 14:44:02 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/14 13:04:27 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	execute(t_token *token, int nbr_of_pipes)
+void	execute(t_token *token, t_prompt *prompt)
 {
-	int	index = 0, pipends[2], prevpipe = 69, cmd_type;
+	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
+	pid_t *pid_bucket;
 
-	while (index < nbr_of_pipes)
+	//printf("executing...\n");
+	if (prompt->pipe_nb > 0)
 	{
-        cmd_type = get_cmd_type(nbr_of_pipes, index);
+		pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
+		if (!pid_bucket)
+			return ;
+	}
+	while (index < prompt->pipe_nb)
+	{
+        cmd_type = get_cmd_type(prompt->pipe_nb, index);
         if (cmd_type == _middle)
 		{
+			close(pipends[READ]);
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
-		
-		if (token[index].cmd && is_builtin(token[index].cmd[0]))
-			execute_builtins(token);
-		else
+		pid_t pid = fork();
+		if (pid == -1)
+			exit_msg();
+		else if (pid == 0)
 		{
-			pid_t pid = fork();
-			if (pid == -1)
-				exit_msg();
-			else if (pid == 0)
+			if (cmd_type == _single)
 			{
-				if (cmd_type == _single)
-					single_child(&token[index]);
-				else if (cmd_type == _last)
-					last_child(&token[index], prevpipe);
+				if (token->cmd && is_builtin(token->cmd[0]))
+					execute_builtins(token);
 				else
-					middle_child(&token[index], index, prevpipe, pipends);
+					single_child(&token[index]);
 			}
-			parent_process(pid, cmd_type, pipends, &prevpipe);
+			else if (cmd_type == _last)
+				last_child(&token[index], prevpipe);
+			else
+				middle_child(&token[index], index, prevpipe, pipends);
 		}
+		pid_bucket[index] = pid;
+		//parent_process(pid, cmd_type, pipends, &prevpipe);
+		if (cmd_type == _middle)
+		{
+			close(pipends[WRITE]);
+			prevpipe = pipends[READ];
+		}
+		else if (cmd_type == _last)
+			close(prevpipe);
 		index++;
 	}
-	hanging_cats(token);
+	for (int i = 0; i < prompt->pipe_nb; i++)
+	{
+		waitpid(pid_bucket[i], &status, 0);
+		if (WIFEXITED(status))
+		{
+			g_tools.exit_code = WEXITSTATUS(status);
+			if (WEXITSTATUS(status) != 0 && cmd_type == _last)
+				return ;
+		}
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGTERM)
+			{
+				printf("-- got terminated\n");
+				return ;
+			}
+			else if (WTERMSIG(status) == SIGKILL)
+			{
+				printf("-- got killed\n");
+				return ;
+			}
+		}
+	}
+	if (prompt->pipe_nb > 0)
+		free(pid_bucket);
 }
 
 int get_cmd_type(int size, int index)
@@ -57,14 +97,45 @@ int get_cmd_type(int size, int index)
     return (_middle);
 }
 
+char	*find_pathway(void)
+{
+	int	index = 0;
+
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], "PATH=", 5) == 0)
+			return (&g_environment[index][5]);
+		index++;
+	}
+	return (NULL);
+}
+
 void	single_child(t_token *token)
 {
+	char *pathway = find_pathway();
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 127);
+	else if (!is_valid_cmd_bis(token->cmd[0], pathway))
+		exit_wrongcmd_msg(token->cmd[0], 127);
+	execve(token->cmd_path, token->cmd, g_environment);
+	exit_msg();
+}
 
-	// Execute commands
+void	last_child(t_token *token, int prevpipe)
+{
+	if (token->infile != -1)
+		redirect_in(token);
+	else
+		dup2(prevpipe, STDIN_FILENO);
+	close(prevpipe);
+	if (token->outfile != -1)
+		redirect_out(token);
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 127);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
 		execute_builtins(token);
@@ -77,79 +148,47 @@ void	single_child(t_token *token)
 	}
 }
 
-void	last_child(t_token *token, int prevpipe)
-{
-	printf("----- Last\n");
-	if (token->infile != -1)
-		redirect_in(token);
-	else
-		dup2(prevpipe, STDIN_FILENO);
-	close(prevpipe);
-	if (token->outfile != -1)
-		redirect_out(token);
-
-	// Execute commands
-	if (is_builtin(token->cmd[0]))
-		execute_builtins(token);
-	else
-		execve(token->cmd_path, token->cmd, g_environment);
-	exit_msg();
-}
-
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	close(pipends[READ]);
 	if (token->infile != -1)
 		redirect_in(token);
 	else if (index > 0)
+	{
 		dup2(prevpipe, STDIN_FILENO);
-	if (index != 0)
 		close(prevpipe);
-
-	if (ft_strncmp(token->cmd[0], "cat", 3) == 0 && token->cmd[1] == NULL && index == 0)
-		exit(0);
-
+	}
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
-	{
-		if (dup2(pipends[WRITE], STDOUT_FILENO) == -1)
-			printf("Error with DUP2()\n");
-	}	
+		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
 	
-	// Execute commands
-	if (is_builtin(token->cmd[0]))
+	if (token->cmd == NULL)
+		exit_wrongcmd_msg("", 127);
+	if (token->cmd && is_builtin(token->cmd[0]))
+	{
 		execute_builtins(token);
+		exit(0);
+	}
 	else
+	{
 		execve(token->cmd_path, token->cmd, g_environment);
-	exit_msg();
+		exit_msg();
+	}
 }
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
 {
-    int status;
-
+	(void)child_pid;
     if (cmd_type == _middle)
     {
         close(pipends[WRITE]);
         *prevpipe = pipends[READ];
+		//close(pipends[READ]);
     }
     else if (cmd_type == _last)
         close(*prevpipe);
-    waitpid(child_pid, &status, 0);
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) != 0 && cmd_type == _last)
-			return ;
-	}
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGTERM)
-			return ;
-		else if (WTERMSIG(status) == SIGKILL)
-			return ;
-	}
 }
 
 void	execute_builtins(t_token *token)
@@ -157,7 +196,7 @@ void	execute_builtins(t_token *token)
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
-		cd(token);
+		cd(token->cmd[1]);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
 		pwd(token);
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
@@ -168,8 +207,4 @@ void	execute_builtins(t_token *token)
 		env(token);
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 		my_exit(token);
-
-	// printf(CBLUE"---- EXECUTE_BUILTINS() -----\n"CRESET);
-	// for (int i = 0; g_environment[i]; i++)
-	// 	printf("%s\n", g_environment[i]);
 }
