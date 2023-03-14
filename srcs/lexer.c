@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/10 11:28:08 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/14 13:58:26 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-
 
 static int count_words(char *prompt)
 {
@@ -242,8 +240,11 @@ void	delete_quotes(char **tokens)
 		if (tokens[i] && tokens[i][0] == '<')
 		{
 			i++;
-			if (tokens[i] && tokens[i][0] == '<' && tokens[i + 1])
+			if (tokens[i] && tokens[i + 1] && tokens[i][0] == '<')
+			{
 				i += 2;
+				printf("tokens[i]%s\n", tokens[i]);
+			}
 		}
 		j = 0;
 		while (tokens[i] && tokens[i][j])
@@ -260,6 +261,8 @@ void	delete_quotes(char **tokens)
 			}
 			j++;
 		}
+		if (!tokens[i])
+			break ;
 		i++;
 	}
 }

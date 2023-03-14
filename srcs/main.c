@@ -6,19 +6,11 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 12:01:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:12:44 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	handler(int num)
-{
-	(void)num;
-	write(STDOUT_FILENO, "Won't die!\n", 11);
-	rl_redisplay();
-	return ;
-}
 
 void	check_user_input(char *input)
 {
@@ -28,11 +20,6 @@ void	check_user_input(char *input)
 
 	if (!input)
 		exit(0);
-	if (!ft_strncmp(input, "", 1))
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}
 }
 
 void	handle_signals(int signo)
@@ -56,18 +43,19 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
-	signal(SIGINT, handler);
 	system("clear"); // DELETE THIS
 	g_tools.exit_code = 0;
 	while (1)
 	{
-		printf("%d\n", EOF);
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
 		check_user_input(user_input);
 		add_history(user_input);
 		lexer = lexerinho(user_input, envp);
-		parser(&prompt, &lexer, envp);
-		execute(prompt.cmds, &prompt);
+		if(lexer.tokens)
+		{
+			parser(&prompt, &lexer, envp);
+			execute(prompt.cmds, &prompt);
+		}
 		free(user_input);
 	}
 	return (0);

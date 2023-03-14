@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 13:02:45 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:07:38 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,7 +400,6 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 	prompt->pipe_nb = get_pipe_nb(lexer);
 	if (prompt->pipe_nb == -1)
 	{
-		printf("UNEXPECTED TOKEN : '|'\n");
 		return ;
 	}
 	prompt->cmds = malloc(sizeof(t_token) * (prompt->pipe_nb + 1));
