@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/06 15:36:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/07 14:44:02 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,8 @@ void	execute_builtins(t_token *token)
 		unset(token);
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
 		env(token);
-	// else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
-	// 	exit(token);
+	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
+		my_exit(token);
 
 	// printf(CBLUE"---- EXECUTE_BUILTINS() -----\n"CRESET);
 	// for (int i = 0; g_environment[i]; i++)

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 17:07:03 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:03:26 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,26 +106,11 @@ int	check_export(char **cmd)
 	return (0);
 }
 
-int	export(t_token *tokens)
+void	export_2(char **cpy, int size, int len, t_token *tokens)
 {
-	char **cpy;
-	int size;
-	int len;
 	int i;
 	int j;
-	
-	if (!tokens->cmd[1])
-	{
-		print_export();
-		return (0);
-	}
-	if (check_export(tokens->cmd))
-		return (printf("export : 'var_name=value'\n"));
-	size = envp_len();
-	len = tokens_to_export(tokens->cmd);
-	cpy = malloc(sizeof(char *) * ((size + len) + 1));
-	if (!cpy)
-		return (0);
+
 	i = 0;
 	while (i < size)
 	{
@@ -139,7 +124,29 @@ int	export(t_token *tokens)
 		i++;
 	}
 	cpy[i] = 0;
-	ft_free_matrix(g_environment);
+}
+
+int	export(t_token *tokens)
+{
+	char **cpy;
+	int size;
+	int len;
+	// int i;
+	// int j;
+	
+	if (!tokens->cmd[1])
+	{
+		print_export();
+		return (0);
+	}
+	if (check_export(tokens->cmd))
+		return (printf("export : 'var_name=value'\n"));
+	size = envp_len();
+	len = tokens_to_export(tokens->cmd);
+	cpy = malloc(sizeof(char *) * ((size + len) + 1));
+	if (!cpy)
+		return (0);
+	export_2(cpy, size, len, tokens);
 	g_environment = cpy;
 	return (0);
 }

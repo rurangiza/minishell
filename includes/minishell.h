@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/07 12:56:24 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/07 17:42:55 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "../libft/libft.h"
 # include <errno.h>
 # include <dirent.h>
+# include <signal.h>
 
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"
@@ -116,6 +117,7 @@ void	env(t_token *tokens);
 int		export(t_token *tokens);
 void	unset(t_token *token);
 void	cd(t_token *token);
+void	my_exit(t_token *tokens);
 //void	unset_shift(t_token *token);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */

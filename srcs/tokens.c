@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 13:24:04 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/07 16:32:47 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,8 @@ char **token(t_lexer *lexer)
 	i = 0;
 	k = 0;
 	j = 0;
-	while(lexer->tmp[i])
+	printf("%d\n", count);
+	while(k < count)
 	{
 		tokens[k++] = get_tokens(lexer->tmp[i] + j, &j, &i);
 	}

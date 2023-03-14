@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/02 14:27:04 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:11:13 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,7 +316,7 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 				cmd.cmd = get_built_in(tokens, i);
 				break ;
 			}
-			else if (is_valid_cmd(tokens[i], prompt->path))
+			else //if (is_valid_cmd(tokens[i], prompt->path))
 			{
 				cmd.cmd_path = get_cmd_path(tokens[i], prompt->path);
 				cmd.cmd = get_cmd(tokens, i);
