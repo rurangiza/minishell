@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/14 10:14:20 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/14 11:28:53 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
 
+	//printf("executing...\n");
 	if (prompt->pipe_nb > 0)
 	{
 		pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
@@ -111,9 +112,13 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
+	printf("- in child_process\n");
 	char *pathway = find_pathway();
 	if (token->infile != -1)
+	{
+		printf("-- redirecting IN\n");
 		redirect_in(token);
+	}
 	if (token->outfile != -1)
 		redirect_out(token);
 	if (token->cmd == NULL)
