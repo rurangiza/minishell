@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 11:07:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:28:33 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ char *expand_variable(char *buffer)
 		return(buffer);
 	// Find end
 	end = start;
-	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"')
+	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"' && buffer[end] != '$')
 		end++;
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);

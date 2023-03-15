@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 11:06:44 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:41:46 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int    ft_strchr_mod(const char *s, char ch)
 				while(s[index] != '\'')
 					index++;
 			}
-            if (s[index] == ch)
+            if (s[index] == ch && s[index + 1] && s[index + 1] != '\"')
                 return (index);
             index++;
         }
@@ -84,7 +84,7 @@ void	expander(t_lexer *lexer, char **envp)
 	i = 0;
 	while(lexer->tmp[i])
 	{
-		if(ft_strchr_mod(lexer->tmp[i], '$') != -1)
+		while (ft_strchr_mod(lexer->tmp[i], '$') != -1)
 		{
 			lexer->tmp[i] = expand_variable(lexer->tmp[i]);
 		}
