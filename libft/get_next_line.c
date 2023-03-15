@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 18:11:55 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/15 13:37:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 14:08:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*get_next_line(int fd)
 	static char	*stash = NULL;
 	char		*line;
 
-	printf("----> Getting next line\n");
 	if (fd < 0 || fd > FOPEN_MAX || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
 		return (NULL);
 	stash = save_raw_line(fd, stash);
