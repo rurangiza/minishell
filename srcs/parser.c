@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 14:06:48 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:05:13 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,11 +343,16 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
-		if(tokens[i][0] == '<' || tokens[i][0] == '>')
+		if(tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
 		{
-			while(tokens[i][0] == '<' || tokens[i][0] == '>')
-				i++;
 			i++;
+			if (tokens[i][0] == tokens[i - 1][0])
+			{
+				i += 2;
+			}
+			else
+				i++;	
+			
 		}
 		if (tokens[i])
 		{
@@ -364,6 +369,8 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 				break ;
 			}
 		}
+		else
+			break ;
 		i++;
 	}
 	i = *j;
@@ -376,7 +383,6 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 				cmd.infile = -3;
 				check_heredoc_mod(tokens[i + 2], &cmd);
 				cmd.delimiter = get_delimiter(tokens[i + 2]);
-				printf("%s|\n", cmd.delimiter);
 				i++;
 			}
 			else
