@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 15:05:13 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:42:47 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,11 +346,11 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 		if(tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
 		{
 			i++;
-			if (tokens[i][0] == tokens[i - 1][0])
+			if (tokens[i] && (tokens[i][0] == tokens[i - 1][0]))
 			{
 				i += 2;
 			}
-			else
+			else if (tokens[i])
 				i++;	
 			
 		}
@@ -416,9 +416,7 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 	j = 0;
 	prompt->pipe_nb = get_pipe_nb(lexer);
 	if (prompt->pipe_nb == -1)
-	{
 		return ;
-	}
 	prompt->cmds = malloc(sizeof(t_token) * (prompt->pipe_nb + 1));
 	if (!prompt->cmds)
 		return ;
@@ -430,8 +428,6 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		j++;
 		i++;
 	}
-	//printf("--- End of Parser!! ---\n");
+	
 	prompt->pipe_nb += 1; // CHECK THIS
-	// printf("number of commands: %i\n", prompt->pipe_nb);
-	//printf("%s\n", prompt->cmds[0].cmd[0]);
 }
