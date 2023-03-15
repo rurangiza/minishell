@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 10:21:46 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:03:54 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ char *expand_variable(char *buffer)
 	
 	// Find start
 	start = ft_strchr_mod(buffer, '$') + 1;
+	if (!buffer[start] || (buffer[start] == '\"') || buffer[start] == '?')
+		return(buffer);
 	// Find end
 	end = start;
 	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"')
@@ -65,8 +67,8 @@ char *expand_variable(char *buffer)
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);
 	// Check if variable exists in envp
-	expanded = getenv(variable);
-	//expanded = get_envp_variable(variable);
+	//expanded = getenv(variable);
+	expanded = get_envp_variable(variable);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
 	else
