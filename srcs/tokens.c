@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 14:41:57 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 09:46:48 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ char **token(t_lexer *lexer)
 	j = 0;
 
 	//printf("%d\n", count);
-	while(lexer->tmp[i])
+	while(lexer->tmp[i] && lexer->tmp[i + k])
 	{
 		tokens[k++] = get_tokens(lexer->tmp[i] + j, &j, &i);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/14 14:24:47 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 09:12:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	execute(t_token *token, t_prompt *prompt)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
-
-	printf("Pipe nbr = %i\n", prompt->pipe_nb);
 	
 	if (prompt->pipe_nb > 0)
 	{
