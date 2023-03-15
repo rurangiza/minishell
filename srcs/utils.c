@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 10:43:14 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 10:53:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,10 @@ char *expand_variable(char *buffer)
 	char	*variable;
 	char	*expanded;
 	
+	
 	// Find start
 	start = ft_strchr_mod(buffer, '$') + 1;
+	//if (buffer[start] == )
 	// Find end
 	end = start;
 	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"')

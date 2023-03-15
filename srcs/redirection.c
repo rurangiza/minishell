@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/14 11:26:33 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 10:58:04 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	redirect_in(t_token *token)
 {
 	if (token->infile == HERE_DOC)
 	{
-		printf("-- in HERE_DOC condition\n");
 		token->infile = heredoc(token->delimiter, token->heredoc_mode);
 		dup2(token->infile, STDIN_FILENO);
 		close(token->infile);

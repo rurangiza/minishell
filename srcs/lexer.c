@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:25:45 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 10:59:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void	delete_quotes(char **tokens)
 			if (tokens[i] && tokens[i + 1] && tokens[i][0] == '<')
 			{
 				i += 2;
-				printf("tokens[i]%s\n", tokens[i]);
+				//printf("tokens[i]%s\n", tokens[i]);
 			}
 		}
 		j = 0;
@@ -275,7 +275,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	
 	if (check_quotes(prompt) == -1)
 	{
-		printf("syntax error\n");
+		//printf("syntax error\n");
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
 		return (lexer);

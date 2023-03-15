@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 14:41:13 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:00:03 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ char **get_cmd(char **tokens, int i)
 	while (j < len)
 	{
 		cmd[j] = ft_strdup(tokens[i]);
-		printf("%s\n", cmd[j]);
+		//printf("%s\n", cmd[j]);
 		i++;
 		j++;
 	}
