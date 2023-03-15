@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/13 14:58:36 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:35:21 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 /* check whether a string {cmd} matches with the list of built-ins */
 int	is_builtin(char *cmd)
 {
+	if (!cmd)
+		return (FALSE);
 	if ((ft_strncmp(cmd, "echo", 4) == 0 && !cmd[4])
 		|| (ft_strncmp(cmd, "cd", 2) == 0 && !cmd[2])
 		|| (ft_strncmp(cmd, "pwd", 3) == 0 && !cmd[3])

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 10:40:50 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 14:03:09 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
+	printf("Cmd = %s\nInfile = %i\nOutfile = %i\n", token->cmd[0], token->infile, token->outfile);
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
 	else if (!is_valid_cmd_bis(token->cmd[0], pathway))
