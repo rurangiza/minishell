@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 10:53:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:07:51 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ char *expand_variable(char *buffer)
 	
 	// Find start
 	start = ft_strchr_mod(buffer, '$') + 1;
-	//if (buffer[start] == )
+	if (!buffer[start] || (buffer[start] == '\"') || buffer[start] == '?')
+		return(buffer);
 	// Find end
 	end = start;
 	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"')
@@ -76,32 +77,3 @@ char *expand_variable(char *buffer)
 	free(buffer);
 	return (tmp);
 }
-
-// void	hanging_cats(t_token *token)
-// {
-// 	int index;
-// 	int cat_counter;
-	
-// 	/* Count nbr of cat command at beginning of line */
-// 	cat_counter = 0;
-// 	index = 0;
-// 	if (index == 0 && token[index].cmd && ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL
-// 		&& token[index].infile == -1)
-// 	{
-// 		while (ft_strncmp(token[index].cmd[0], "cat", 3) == 0 && token[index].cmd[1] == NULL)
-// 		{
-// 			cat_counter++;
-// 			index++;
-// 		}
-// 	}
-	
-// 	/* Prompt user for input as many times as there are cats */
-// 	char *tmp;
-// 	for (int i = 0; i < cat_counter; i++)
-// 	{
-// 		tmp = get_next_line(STDIN_FILENO);
-// 		if (tmp == NULL)
-// 			break ;
-// 		free(tmp);
-// 	}
-// }

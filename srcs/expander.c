@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:41:28 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 11:06:44 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	expander(t_lexer *lexer, char **envp)
 	i = 0;
 	while(lexer->tmp[i])
 	{
-		while(ft_strchr_mod(lexer->tmp[i], '$') != -1)
+		if(ft_strchr_mod(lexer->tmp[i], '$') != -1)
 		{
 			lexer->tmp[i] = expand_variable(lexer->tmp[i]);
 		}
