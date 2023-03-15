@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 14:05:47 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:29:04 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,11 +343,16 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
-		if(tokens[i][0] == '<' || tokens[i][0] == '>')
+		if(tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
 		{
-			while(tokens[i][0] == '<' || tokens[i][0] == '>')
-				i++;
 			i++;
+			if (tokens[i][0] == tokens[i - 1][0])
+			{
+				i += 2;
+			}
+			else
+				i++;	
+			
 		}
 		if (tokens[i])
 		{
@@ -361,11 +366,11 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 			{
 				cmd.cmd_path = get_cmd_path(tokens[i], prompt->path);
 				cmd.cmd = get_cmd(tokens, i);
-				//printf("%s\n", cmd.cmd[0]);
-				//printf("%s\n", cmd.cmd[1]);
 				break ;
 			}
 		}
+		else
+			break ;
 		i++;
 	}
 	i = *j;
@@ -378,7 +383,6 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 				cmd.infile = -3;
 				check_heredoc_mod(tokens[i + 2], &cmd);
 				cmd.delimiter = get_delimiter(tokens[i + 2]);
-				//printf("%s|\n", cmd.delimiter);
 				i++;
 			}
 			else
