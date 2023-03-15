@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 13:30:47 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:59:52 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,6 +338,12 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
+		if(tokens[i][0] == '<' || tokens[i][0] == '>')
+		{
+			while(tokens[i][0] == '<' || tokens[i][0] == '>')
+				i++;
+			i++;
+		}
 		if (tokens[i])
 		{
 			if (is_built_in(tokens[i]))
@@ -350,11 +356,11 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 			{
 				cmd.cmd_path = get_cmd_path(tokens[i], prompt->path);
 				cmd.cmd = get_cmd(tokens, i);
+				printf("%s\n", cmd.cmd[0]);
+				printf("%s\n", cmd.cmd[1]);
 				break ;
 			}
 		}
-		if (tokens[i][0] == '<' || tokens[i][0] == '>')
-			i++;
 		i++;
 	}
 	i = *j;
