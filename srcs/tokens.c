@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 09:46:48 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 10:38:34 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int get_nb_token(char *str)
 		return (1);
 	if (str[i] == '|' || str[i] == '>' || str[i] == '<')
 	{
-		if (str[i + 1])
+		if (str[i + 1] && !(str[i] == '|' || str[i] == '>' || str[i] == '<'))
 			count++;
 		i++;
 	}
@@ -210,9 +210,7 @@ char **token(t_lexer *lexer)
 	i = 0;
 	k = 0;
 	j = 0;
-
-	//printf("%d\n", count);
-	while(lexer->tmp[i] && lexer->tmp[i + k])
+	while(k < count)
 	{
 		tokens[k++] = get_tokens(lexer->tmp[i] + j, &j, &i);
 	}
