@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/14 10:51:26 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 10:40:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,6 @@ char *expand_variable(char *buffer)
 		end++;
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);
-	// Check if variable exists in envp
-	//expanded = getenv(variable);
 	expanded = get_envp_variable(variable);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
