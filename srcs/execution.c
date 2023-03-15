@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 15:15:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:40:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	execute(t_token *token, t_prompt *prompt)
 			g_tools.exit_code = WEXITSTATUS(status);
 			if (WEXITSTATUS(status) != 0 && cmd_type == _last)
 				return ;
-			else if (prompt->pipe_nb == 1 && ft_strncmp("exit", token->cmd[0], 4) == 0)
+			else if (prompt->pipe_nb == 1 && token->cmd && ft_strncmp("exit", token->cmd[0], 4) == 0)
 				exit(0);
 		}
 		if (WIFSIGNALED(status))
@@ -132,8 +132,12 @@ void	single_child(t_token *token)
 		redirect_out(token);
 	//printf("Cmd = %s\nInfile = %i\nOutfile = %i\n", token->cmd[0], token->infile, token->outfile);
 	if (token->cmd == NULL)
-		exit_wrongcmd_msg("", 127);
-	else if (!is_valid_cmd_bis(token->cmd[0], pathway))
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		exit(258);
+	}
+	// exit_wrongcmd_msg("", 127);
+	if (!is_valid_cmd_bis(token->cmd[0], pathway))
 		exit_wrongcmd_msg(token->cmd[0], 127);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
