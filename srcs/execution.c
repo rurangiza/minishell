@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 14:03:09 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:15:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	execute(t_token *token, t_prompt *prompt)
 {
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
+	int result_wpid;
 	
 	if (prompt->pipe_nb > 0)
 	{
@@ -58,6 +59,17 @@ void	execute(t_token *token, t_prompt *prompt)
 		}
 		else if (cmd_type == _last)
 			close(prevpipe);
+			
+		result_wpid = waitpid(pid, &status, WNOHANG);
+		if (result_wpid > 0)
+		{
+			// Child process has terminated, retrieve exit status
+            if (WIFEXITED(status)) {
+                printf("Child process exited with status %d\n", WEXITSTATUS(status));
+            } else {
+                printf("Child process terminated abnormally\n");
+            }
+		}
 		index++;
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
@@ -118,7 +130,7 @@ void	single_child(t_token *token)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	printf("Cmd = %s\nInfile = %i\nOutfile = %i\n", token->cmd[0], token->infile, token->outfile);
+	//printf("Cmd = %s\nInfile = %i\nOutfile = %i\n", token->cmd[0], token->infile, token->outfile);
 	if (token->cmd == NULL)
 		exit_wrongcmd_msg("", 127);
 	else if (!is_valid_cmd_bis(token->cmd[0], pathway))

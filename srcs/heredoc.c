@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/15 13:42:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:03:43 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	heredoc(char *limiter, int var_expand)
 	pipe(ends);
 	while (TRUE)
 	{
-		// write(1, "> ", 2);
+		//write(1, "> ", 2);
 		// write(1, "-- Just Before GNL\n", 19);
 		//buffer = get_next_line(STDIN_FILENO);
 		buffer = readline("> ");
@@ -35,7 +35,8 @@ int	heredoc(char *limiter, int var_expand)
 		// Interprete environment variables
 		while (ft_strchr_mod(buffer, '$') != -1 && var_expand == TRUE)
 			buffer = expand_variable(buffer);
-		stash = ft_strjoin_mod(stash, buffer);
+		stash = ft_strjoin_trio(stash, buffer, "\n");
+		//stash = ft_strjoin_mod(stash, buffer);
 	}
 	write(ends[1], stash, ft_strlen(stash));
 	free(stash);
