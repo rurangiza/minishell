@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 13:30:47 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:51:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,16 @@ int is_valid_cmd_bis(char *str, char *path)
 	char *tmp;
 	char *cmd;
 	char **splited;
+	int index = 0;
 
 	if (path == NULL)
 		return (0);
 	splited = ft_split(path, ':');
-	while (splited && *splited)
+	// if (!splited)
+		
+	while (splited[index])
 	{
-		tmp = ft_strjoin(*splited, "/");
+		tmp = ft_strjoin(splited[index], "/");
 		cmd = ft_strjoin(tmp, str);
 		free(tmp);
 		if (access(cmd, 0) == 0)
@@ -44,8 +47,10 @@ int is_valid_cmd_bis(char *str, char *path)
 			return (1);
 		}
 		free(cmd);
-		splited++;
+		index++;
 	}
+	for (int i = 0; splited[i]; i++)
+		free(splited[i]);
 	free(splited);
 	return (0);
 }
@@ -367,6 +372,7 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 				cmd.infile = -3;
 				check_heredoc_mod(tokens[i + 2], &cmd);
 				cmd.delimiter = get_delimiter(tokens[i + 2]);
+				printf("%s|\n", cmd.delimiter);
 				i++;
 			}
 			else
