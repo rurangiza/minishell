@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 11:00:03 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/15 13:30:47 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int	get_cmd_len(char **tokens, int i)
 	
 	//j = 1;
 	len = 0;
-	while(tokens[i] && ft_strncmp(tokens[i], "|", 1) && ft_strncmp(tokens[i], ">", 1))
+	while(tokens[i] && ft_strncmp(tokens[i], "|", 1) && ft_strncmp(tokens[i], ">", 1) && ft_strncmp(tokens[i], "<", 1))
 	{
 		len++;
 		i++;
