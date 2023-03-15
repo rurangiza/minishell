@@ -3,12 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/15 10:18:33 by akorompa         ###   ########.fr        #
+#    Updated: 2023/03/15 10:47:31 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+CURRENT_USER	:=	$(shell whoami)
 
 SRCS			= 	srcs/main.c \
 					srcs/parser.c \
@@ -42,8 +44,14 @@ LIBFT = libft
 CC			= gcc
 CCFLAGS 	= -Wall -Wextra -Werror -g -fsanitize=address
 
-READLINE_LIB = -lreadline -lhistory -L /Users/akorompa/.brew/opt/readline/lib
-READLINE_INC = -I /Users/akorompa/.brew/opt/readline/include
+# Only execute the line if the current user is "johndoe"
+ifeq ($(CURRENT_USER),akorompa)
+	READLINE_LIB = -lreadline -lhistory -L /Users/akorompa/.brew/opt/readline/lib
+	READLINE_INC = -I /Users/akorompa/.brew/opt/readline/include
+else
+	READLINE_LIB = -lreadline -lhistory -L /Users/arurangi/.brew/opt/readline/lib
+	READLINE_INC = -I /Users/arurangi/.brew/opt/readline/include
+endif
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
