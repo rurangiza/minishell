@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 15:40:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:44:44 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	pid_t *pid_bucket;
 	int result_wpid;
 	
+	//printf("\033[30m%s(), ln %i:\033[0m %s\n", __func__, __LINE__, token->cmd[0]);
 	if (prompt->pipe_nb > 0)
 	{
 		pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
@@ -123,9 +124,16 @@ char	*find_pathway(void)
 	return (NULL);
 }
 
+
+
+////////////////////////////////////////////
+
+
+
 void	single_child(t_token *token)
 {
 	char *pathway = find_pathway();
+	(void)pathway;
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
@@ -136,12 +144,42 @@ void	single_child(t_token *token)
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		exit(258);
 	}
-	// exit_wrongcmd_msg("", 127);
-	if (!is_valid_cmd_bis(token->cmd[0], pathway))
-		exit_wrongcmd_msg(token->cmd[0], 127);
+
+	if (ft_strlen(token->cmd[0]) == 1)
+	{
+		if (token->cmd[0][0] == '.')
+			exitmsg(": filename argument required\n.: usage: . filename [arguments]", token->cmd[0], 2);
+		else if (token->cmd[0][0] == '~' || token->cmd[0][0] == '/')
+			exitmsg(": is a directory", token->cmd[0], 126);
+		else if (token->cmd[0][0] == '*')
+			exitmsg(": command not found", "Makefile", 127);
+	}
+	if (token->cmd[0][0])
+	{
+		if (is_unexpected_token(token->cmd[0]))
+			exitmsg(": syntax error near unexpected token", token->cmd[0], 258);
+		if (token->cmd[0][0] == '%')
+			exitmsg(": no such job", token->cmd[0], 1);
+	}
+	if (token->cmd_path == NULL)
+	{
+		if (ft_strlen(token->cmd[0]) >= 2 && ft_strncmp("./", token->cmd[0], 2) == 0)
+		{
+			// if "./" -> bash: ./: is a directory
+			if (is_directory(token->cmd[0], token->stats))
+				exitmsg(": is a directory", token->cmd[0], 126);
+			if (!is_executable(token->cmd[0], token->stats))
+				exitmsg(": Permissing denied", token->cmd[0], 126);
+			execve(token->cmd[0], token->cmd, g_environment);
+			exitmsg(": No such file or directory", token->cmd[0], 127);
+		}
+		exitmsg(": command not found", token->cmd[0], 127);
+	}
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void	last_child(t_token *token, int prevpipe)
 {

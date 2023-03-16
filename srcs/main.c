@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:17:31 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/16 15:44:44 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ void	handle_signals(int signo)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		if (getpid() == 0)
+			g_tools.exit_code = 130;
+		else
+			g_tools.exit_code = 1;
 	}
 }
 
@@ -48,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		check_user_input(user_input);
+		//check_user_input(user_input);
 		add_history(user_input);
 		lexer = lexerinho(user_input, envp);
 		if(lexer.tokens)

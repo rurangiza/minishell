@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 14:16:57 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/16 09:39:43 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	my_exit(t_token *tokens)
 	printf("exit\n");
 	if (!tokens->cmd[1])
 	{
-		printf("es\n");
+		//printf("es\n");
 		exit (0);
 	}
 	if (tokens->cmd[1])

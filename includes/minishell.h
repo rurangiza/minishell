@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 13:25:39 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:28:50 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
+#include <sys/stat.h>
 
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"
@@ -59,15 +60,18 @@ typedef struct s_lexer
 	char **tmp;
 }	t_lexer;
 
+struct stat sb;
+
 typedef struct s_token
 {
-	char	**cmd;
-	char	*cmd_path;
-	int		outfile;
-	int		infile;
-	char	**envp;
-	char	*delimiter;
-	int		heredoc_mode;
+	char			**cmd;
+	char			*cmd_path;
+	int				outfile;
+	int				infile;
+	char			**envp;
+	char			*delimiter;
+	int				heredoc_mode;
+	struct stat 	stats;
 }	t_token;
 
 typedef struct s_prompt
@@ -141,6 +145,7 @@ void	dup_matrix(char **environment);
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
 void	exit_wrongcmd_msg(char *cmd, int error_code);
+void	exitmsg(char *msg, char *cmd, int code);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
@@ -154,6 +159,8 @@ int		is_variable_to_be_deleted(char *target, char *source);
 int		is_in_environment(char *variable);
 int		is_special_symbol(char *directory);
 int		is_valid_identifier(char *str);
+int		is_directory(char *path, struct stat stat_buffer);
+int		is_unexpected_token(char *token);
 
 void	hanging_cats(t_token *token);
 
@@ -161,5 +168,6 @@ void	update_directory_history(t_prompt *prompt, char *path);
 //char	*get_previous_directory();
 void	update_pwd(char *oldpwd, char *pwd);
 void	add_missing_oldpwd(char *newold);
+int		is_executable(char *path, struct stat stat_buffer);
 
 #endif
