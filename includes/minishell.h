@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/16 16:28:50 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/16 16:49:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void	dup_matrix(char **environment);
 void	exit_msg(void);
 void	exit_wrongcmd_msg(char *cmd, int error_code);
 void	exitmsg(char *msg, char *cmd, int code);
+void	handle_execution_errors(t_token *token);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
