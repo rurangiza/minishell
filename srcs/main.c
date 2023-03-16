@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/16 15:44:44 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/16 17:08:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	check_user_input(char *input)
 	str = "";
 
 	if (!input)
-		exit(0);
+		return ;
 }
 
 void	handle_signals(int signo)
@@ -52,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		//check_user_input(user_input);
+		check_user_input(user_input);
 		add_history(user_input);
 		lexer = lexerinho(user_input, envp);
 		if(lexer.tokens)
