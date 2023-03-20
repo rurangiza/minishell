@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/20 16:20:05 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:42:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,28 +51,20 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	g_tools.exit_code = 0;
-	//init_prompt_lexer(&prompt, &lexer);
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
 	system("clear"); // DELETE THIS
 	while (1)
 	{
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		//printf("readline %s\n", user_input);
-		//printf("\nuser input = %s\n", user_input);
 		check_user_input(user_input);
-
 		add_history(user_input);
-		//pauseBoy((char *)__func__, __LINE__, 2);
 		lexer = lexerinho(user_input, envp);
 		if (lexer.tokens)
 		{
 			parser(&prompt, &lexer, envp);
 			execute(prompt.cmds, &prompt);
 		}
-		// printf("%s\n", prompt.cmds[0].cmd[0]);
-		// return (0);
-		//printf("free %s\n", user_input);	
 		free(user_input);
 	}
 	return (0);

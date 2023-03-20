@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/20 16:40:10 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:04:59 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <signal.h>
 #include <sys/stat.h>
 
+#define CGRAY     "\x1b[30m"
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"
 #define CYELLOW  "\x1b[33m"
@@ -172,5 +173,11 @@ void	add_missing_oldpwd(char *newold);
 int		is_executable(char *path, struct stat stat_buffer);
 
 char	*update_shell_level(char *variable);
+
+
+/* ~~~~~~~~~~ DISPLAY ~~~~~~~~~~~~~~ */
+void	display_tree(int level, const char *function, t_token *token);
+void	display_start(void);
+void	display_end(void);
 
 #endif

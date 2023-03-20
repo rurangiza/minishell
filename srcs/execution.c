@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/20 11:03:46 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:14:31 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 
 void	execute(t_token *token, t_prompt *prompt)
 {
-	//printf("\033[32m○\033[0m Starting execution..\n\n");
+	//display_start();
+	
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
 	int result_wpid;
@@ -104,7 +105,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	}
 	if (prompt->pipe_nb > 0)
 		free(pid_bucket);
-	//write(1, "\n\033[31m✖\033[0m Finished\n\n"CRESET, 23);
+	//display_end();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -135,7 +136,8 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
-	//printf("|__ Single child   \033[33m%s\033[0m \033[30min %i, out %i\033[0m\n", token->cmd[0], token->infile, token->outfile);
+	//display_tree(1, __func__, token);
+	
 	char *pathway = find_pathway();
 	(void)pathway;
 	if (token->infile != -1)
@@ -157,9 +159,7 @@ void	single_child(t_token *token)
 ///////////////////////////////////////////////////////////////////////////////
 
 void	last_child(t_token *token, int prevpipe)
-{
-	//printf("|__ Last child   \033[33m%s\033[0m \033[30min %i, out %i\033[0m\n", token->cmd[0], token->infile, token->outfile);
-	
+{	
 	if (token->infile != -1)
 		redirect_in(token);
 	else
@@ -192,7 +192,6 @@ void	last_child(t_token *token, int prevpipe)
 
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
-	//printf("|__ Middle   \033[33m%s\033[0m \033[30min %i, out %i\033[0m\n", token->cmd[0], token->infile, token->outfile);
 	close(pipends[READ]);
 	if (token->infile != -1)
 		redirect_in(token);

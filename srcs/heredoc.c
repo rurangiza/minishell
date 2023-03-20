@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/15 15:03:43 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:56:42 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,11 @@ int	heredoc(char *limiter, int var_expand)
 	pipe(ends);
 	while (TRUE)
 	{
-		//write(1, "> ", 2);
-		// write(1, "-- Just Before GNL\n", 19);
-		//buffer = get_next_line(STDIN_FILENO);
 		buffer = readline("> ");
         if (!buffer)
             exit_msg(); // if I simply return NULL, execve will run
-		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0 && ft_strlen(buffer) - 1 == ft_strlen(limiter))
+		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0
+			&& ft_strlen(buffer) == ft_strlen(limiter))
 		{
 			free(buffer);
 			break ;

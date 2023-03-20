@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/16 16:49:26 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/20 17:04:15 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS			= 	srcs/main.c \
 					srcs/memory_mgmt.c \
 					srcs/initialization.c \
 					srcs/error_handling.c \
+					srcs/display.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \

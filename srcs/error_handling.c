@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/16 17:12:57 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:09:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	handle_execution_errors(t_token *token)
 			else if (token->cmd[0][0] == '*')
 				exitmsg(": command not found", "Makefile", 127);
 		}
-		if (token->cmd[0][0])
+		if (token->cmd[0] && token->cmd[0][0])
 		{
 			if (is_unexpected_token(token->cmd[0]))
 				exitmsg(": syntax error near unexpected token", token->cmd[0], 258);
@@ -42,7 +42,10 @@ void	handle_execution_errors(t_token *token)
 				execve(token->cmd[0], token->cmd, g_environment);
 				exitmsg(": No such file or directory", token->cmd[0], 127);
 			}
-			exitmsg(": command not found", token->cmd[0], 127);
+			if (token->cmd && token->cmd[0])
+				exitmsg(": command not found", token->cmd[0], 127);
+			else
+				exitmsg(": command not found", "unknown", 127);
 		}
 		//exit(0);
 }

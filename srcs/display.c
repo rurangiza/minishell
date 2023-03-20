@@ -1,0 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/20 16:59:48 by arurangi          #+#    #+#             */
+/*   Updated: 2023/03/20 17:06:41 by arurangi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+// starting
+void	display_start(void)
+{
+	printf("\033[32m○\033[0m Starting execution..\n\n");
+}
+
+// execution tree
+void	display_tree(int level, const char *function, t_token *token)
+{
+	for (int i = 0; i < level * 2; i++)
+		write(1, " ", 1);
+	// tree branch
+	printf(CGRAY"|__ "CRESET);
+	// function
+	printf("%s()   ", function);
+	// command
+	printf(CBOLD CYELLOW"%s "CRESET, token->cmd[0]);
+	// arguments
+	printf("(");
+	if (token->cmd && token->cmd[0])
+	{
+		for (int i = 1; token->cmd[i]; i++)
+			printf("%s ", token->cmd[i]);
+	}
+	printf(") ");
+	printf("%s ", token->cmd_path);
+	printf(CGRAY"] %i %i [\033[0m \033[3;34m\n",token->infile, token->outfile);
+}
+
+// exding
+void	display_end(void)
+{
+	write(1, "\n\033[31m✖\033[0m Finished\n\n"CRESET, 23);
+}
