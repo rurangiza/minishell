@@ -17,28 +17,52 @@ BSRCS =	ft_lstnew_bonus.c \
 		ft_lstclear_bonus.c \
 		ft_lstiter_bonus.c ft_lstmap_bonus.c \
 
-NAME = libft.a
+NAME 		= libft.a
 
 OBJS = ${SRCS:.c=.o}
 BOBJS = ${BSRCS:.c=.o}
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 CC = gcc ${FLAGS}
 RM = rm -f
+INC_DIR = 
+
+COLOR_GRAY = \033[30m
+COLOR_PURPLE = \033[1;35m
+COLOR_RED = \033[0;31m
+COLOR_GREEN	= \033[0;32m
+COLOR_RESET = \033[0m
+
+TITLE	= Libft
+END  	= ending
+
+%.o: %.c
+	@${CC} ${CFLAGS} -I libft.h -c $< -o $@
+	@echo "${COLOR_PURPLE}.${COLOR_RESET}\c"
 
 all: ${NAME}
 
-${NAME} :   ${OBJS}
-	  ar rcs ${NAME} ${OBJS}
+${NAME} :   $(TITLE) ${OBJS} $(END)
+		@ar rcs ${NAME} ${OBJS}
+#		@echo "\n${COLOR_PURPLE}${LIBFT} ${COLOR_GREEN}${OBJS_DIR} were created${COLOR_RESET}"
+#		@echo "${COLOR_PURPLE}${LIBFT} ${COLOR_GREEN}${NAME} was created${COLOR_RESET}"
+
+$(TITLE):
+			@echo "${COLOR_GRAY}\n   Creating LIBFT: ${COLOR_RESET}\c"
+
+$(END):
+			@echo "\n"
 	  
 bonus: ${OBJS} ${BOBJS}
-	ar rcs ${NAME} ${OBJS} ${BOBJS}
+		@ar rcs ${NAME} ${OBJS} ${BOBJS}
 
 clean:
-	${RM} ${OBJS} ${BOBJS}
+		@${RM} ${OBJS} ${BOBJS}
+#		@echo "${COLOR_PURPLE}${LIBFT} ${COLOR_RED}${OBJS_DIR} were deleted${COLOR_RESET}"
 
 fclean: clean
-		${RM} ${NAME}
+		@${RM} ${NAME}
+#		@echo "${COLOR_PURPLE}${LIBFT} ${COLOR_RED}${NAME} was deleted${COLOR_RESET}"
 
 re: fclean all
 
