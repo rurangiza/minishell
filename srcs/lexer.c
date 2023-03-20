@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:59:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 11:20:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,15 +267,13 @@ void	delete_quotes(char **tokens)
 	}
 }
 
-
 t_lexer	lexerinho(char *prompt, char **envp)
 {
 	(void)envp;
 	t_lexer lexer;
-	
-	if (check_quotes(prompt) == -1)
+
+	if (!prompt || check_quotes(prompt) == -1)
 	{
-		//printf("syntax error\n");
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
 		return (lexer);
@@ -283,6 +281,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	lexer.tmp = ft_cmd_lexer(prompt);
 	if (!lexer.tmp)
 	{
+		printf("syntax error\n");
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
 		return (lexer);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 15:43:36 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/17 14:43:04 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,6 +414,8 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 
 	i = 0;
 	j = 0;
+	if (!lexer || !lexer->tokens || !lexer->tokens[0])
+		return ;
 	prompt->pipe_nb = get_pipe_nb(lexer);
 	if (prompt->pipe_nb == -1)
 		return ;
