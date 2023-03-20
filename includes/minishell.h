@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/16 16:49:06 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/16 21:19:11 by Arsene           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
 
-#define CRED     "\x1b[31m"
-#define CGREEN   "\x1b[32m"
-#define CYELLOW  "\x1b[33m"
-#define CBLUE    "\x1b[34m"
-#define CMAGENTA "\x1b[35m"
-#define CCYAN    "\x1b[36m"
-#define CWHITE    "\x1b[36m"
-#define CBOLD   "\x1b[1m"
-#define CRESET   "\x1b[0m"
+# define CRED     "\x1b[31m"
+# define CGREEN   "\x1b[32m"
+# define CYELLOW  "\x1b[33m"
+# define CBLUE    "\x1b[34m"
+# define CMAGENTA "\x1b[35m"
+# define CCYAN    "\x1b[36m"
+# define CWHITE    "\x1b[36m"
+# define CBOLD   "\x1b[1m"
+# define CRESET   "\x1b[0m"
 
 # define READ 0
 # define WRITE 1
@@ -163,7 +163,7 @@ int		is_valid_identifier(char *str);
 int		is_directory(char *path, struct stat stat_buffer);
 int		is_unexpected_token(char *token);
 
-void	hanging_cats(t_token *token);
+//void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
 //char	*get_previous_directory();
