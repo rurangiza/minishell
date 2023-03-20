@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/16 16:49:06 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:40:10 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,5 +170,7 @@ void	update_directory_history(t_prompt *prompt, char *path);
 void	update_pwd(char *oldpwd, char *pwd);
 void	add_missing_oldpwd(char *newold);
 int		is_executable(char *path, struct stat stat_buffer);
+
+char	*update_shell_level(char *variable);
 
 #endif

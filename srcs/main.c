@@ -6,17 +6,11 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/20 10:21:07 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/20 16:20:05 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	pauseBoy(char *func_name, int line, int seconds)
-{
-	printf("%s(), ln:%i\n", func_name, line);
-	usleep(seconds * 1000000);
-}
 
 void	check_user_input(char *input)
 {
