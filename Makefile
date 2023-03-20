@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/20 14:22:30 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/16 16:49:26 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,13 +45,6 @@ LIBFT = libft
 CC			= gcc
 CCFLAGS 	= -Wall -Wextra -Werror -g -fsanitize=address
 
-
-COLOR_GRAY = \033[30m
-COLOR_CYAN = \033[1;36m
-COLOR_RED = \033[0;31m
-COLOR_GREEN	= \033[0;32m
-COLOR_RESET = \033[0m
-
 # Only execute the line if the current user is "johndoe"
 ifeq ($(CURRENT_USER),akorompa)
 	READLINE_LIB = -lreadline -lhistory -L /Users/akorompa/.brew/opt/readline/lib
@@ -61,32 +54,23 @@ else
 	READLINE_INC = -I /Users/arurangi/.brew/opt/readline/include
 endif
 
-TITLE	=	Minishell
-
 %.o: %.c
-	@$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
-	@echo "${COLOR_GREEN}.${COLOR_RESET}\c"
+	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
 
 all:		${NAME}
+			./minishell
 
-$(TITLE):
-			@echo "${COLOR_GRAY}\n   Compiling ${NAME}: ${COLOR_RESET}\c"
-
-${NAME}:	$(TITLE) ${OBJS} ${INCLUDES}
-			@make -C $(LIBFT)
-			@$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
-#			@echo "${COLOR_GREEN}\n${NAME} Successful compilation${COLOR_RESET}"
-#			@echo "${COLOR_CYAN}${NAME} ${COLOR_GREEN}${OBJS_DIR} were created${COLOR_RESET}"
+${NAME}:	${OBJS} ${INCLUDES}
+			make -C $(LIBFT)
+			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
 
 clean:
-				@rm -f ${OBJS}
-				@make clean -C $(LIBFT)
-#				@echo "${COLOR_CYAN}${NAME} ${COLOR_RED}${OBJS_DIR} were deleted${COLOR_RESET}"
+				rm -f ${OBJS}
+				make clean -C $(LIBFT)
 
 fclean: 	clean
-				@rm -f ${NAME}
-				@make fclean -C $(LIBFT)
-#				@echo "${COLOR_CYAN}${NAME} ${COLOR_RED}${NAME} was deleted${COLOR_RESET}"
+				rm -f ${NAME}
+				make fclean -C $(LIBFT)
 
 re:				fclean all
 
