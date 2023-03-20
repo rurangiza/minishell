@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/16 21:19:11 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/20 14:19:23 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include <signal.h>
 # include <sys/stat.h>
 
-# define CRED     "\x1b[31m"
+# define CRED     "\x1b[30m"
 # define CGREEN   "\x1b[32m"
 # define CYELLOW  "\x1b[33m"
 # define CBLUE    "\x1b[34m"
