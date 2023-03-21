@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/20 17:14:31 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/21 10:04:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	execute(t_token *token, t_prompt *prompt)
 	//display_start();
 	
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
+	// printf("%s\n", token->cmd[0]);
+	// return ;
 	pid_t *pid_bucket;
 	int result_wpid;
 	
@@ -136,7 +138,7 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
-	//display_tree(1, __func__, token);
+	//display_tree(0, __func__, token);
 	
 	char *pathway = find_pathway();
 	(void)pathway;

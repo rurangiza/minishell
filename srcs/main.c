@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/20 16:42:26 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/21 10:00:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ int	main(int ac, char **av, char **envp)
 		if (lexer.tokens)
 		{
 			parser(&prompt, &lexer, envp);
+			//display_tree(1, __func__, &prompt.cmds[0]);
+			//printf("Delimiter = %s\n", prompt.cmds[0].delimiter);
+			//return (0);
 			execute(prompt.cmds, &prompt);
 		}
 		free(user_input);
