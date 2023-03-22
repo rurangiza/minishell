@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/20 16:56:42 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:35:21 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,32 @@ int	heredoc(char *limiter, int var_expand)
 	char	*buffer = NULL;
 	int		ends[2];
 	
-	pipe(ends);
+	
+	if (pipe(ends) == -1)
+		return (-1);
+		
+	printf(CBLUE"Delimiter = %s\n"CRESET, limiter);
+	
 	while (TRUE)
 	{
 		buffer = readline("> ");
-        if (!buffer)
-            exit_msg(); // if I simply return NULL, execve will run
+        if (buffer == NULL)
+            exit_msg();
 		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0
 			&& ft_strlen(buffer) == ft_strlen(limiter))
 		{
 			free(buffer);
 			break ;
 		}
-		// Interprete environment variables
 		while (ft_strchr_mod(buffer, '$') != -1 && var_expand == TRUE)
 			buffer = expand_variable(buffer);
 		stash = ft_strjoin_trio(stash, buffer, "\n");
-		//stash = ft_strjoin_mod(stash, buffer);
+		buffer = NULL;
 	}
-	write(ends[1], stash, ft_strlen(stash));
+	write(ends[WRITE], stash, ft_strlen(stash));
 	free(stash);
-	close(ends[1]);
-	return (ends[0]);
+	close(ends[WRITE]);
+	return (ends[READ]);
 }
 
 // Similar to get_variable_environment()

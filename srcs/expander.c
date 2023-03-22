@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 11:49:26 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/22 10:35:33 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char    *ft_strjoin_mod(char *stash, char *buffer)
     return (tmp);
 }
 
-int    ft_strchr_mod(const char *s, char ch)
+int ft_strchr_mod(const char *s, char ch)
 {
     int        index;
 
@@ -65,7 +65,7 @@ int    ft_strchr_mod(const char *s, char ch)
 			if (s[index] == '\'')
 			{
 				index++;
-				while(s[index] != '\'')
+				while(s[index] && s[index] != '\'')
 					index++;
 			}
             if (s[index] == ch && s[index + 1] && s[index + 1] != '\"')
@@ -76,7 +76,7 @@ int    ft_strchr_mod(const char *s, char ch)
     return (-1);
 }
 
-void	expander(t_lexer *lexer, char **envp)
+void    expander(t_lexer *lexer, char **envp)
 {
 	int i;
 	(void)envp;

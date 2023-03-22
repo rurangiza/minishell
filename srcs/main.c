@@ -6,11 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/21 10:00:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:53:57 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	display_prompt(t_prompt *prompt);
 
 void	check_user_input(char *input)
 {
@@ -37,11 +39,6 @@ void	handle_signals(int signo)
 	}
 }
 
-// void	init_prompt_lexer(t_prompt *prompt, t_lexer *lexer)
-// {
-	
-// }
-
 int	main(int ac, char **av, char **envp)
 {
 	char		*user_input;
@@ -53,7 +50,7 @@ int	main(int ac, char **av, char **envp)
 	g_tools.exit_code = 0;
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
-	system("clear"); // DELETE THIS
+	system("clear");         //! Delete later
 	while (1)
 	{
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
@@ -63,10 +60,9 @@ int	main(int ac, char **av, char **envp)
 		if (lexer.tokens)
 		{
 			parser(&prompt, &lexer, envp);
-			//display_tree(1, __func__, &prompt.cmds[0]);
-			//printf("Delimiter = %s\n", prompt.cmds[0].delimiter);
-			//return (0);
-			execute(prompt.cmds, &prompt);
+			//display_prompt(&prompt);
+			if (prompt.cmds)
+				execute(prompt.cmds, &prompt);
 		}
 		free(user_input);
 	}

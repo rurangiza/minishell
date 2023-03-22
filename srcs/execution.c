@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/21 10:04:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:54:13 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	execute(t_token *token, t_prompt *prompt)
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	// printf("%s\n", token->cmd[0]);
 	// return ;
+	//int result_wpid;
 	pid_t *pid_bucket;
-	int result_wpid;
 	
 	if (prompt->pipe_nb > 0)
 	{
@@ -56,7 +56,11 @@ void	execute(t_token *token, t_prompt *prompt)
 			else
 				middle_child(&token[index], index, prevpipe, pipends);
 		}
+		
+
 		pid_bucket[index] = pid;
+		
+
 		if (cmd_type == _middle)
 		{
 			close(pipends[WRITE]);
@@ -64,17 +68,17 @@ void	execute(t_token *token, t_prompt *prompt)
 		}
 		else if (cmd_type == _last) //(PROBLEM WITH THIS)
 			close(prevpipe);
-			
-		result_wpid = waitpid(pid, &status, WNOHANG);
-		if (result_wpid > 0)
-		{
-			// Child process has terminated, retrieve exit status
-            if (WIFEXITED(status)) {
-                printf("Child process exited with status %d\n", WEXITSTATUS(status));
-            } else {
-                printf("Child process terminated abnormally\n");
-            }
-		}
+		
+		// result_wpid = waitpid(pid, &status, WHO);
+		// if (result_wpid > 0)
+		// {
+		// 	// Child process has terminated, retrieve exit status
+        //     if (WIFEXITED(status)) {
+        //         printf("Child process exited with status %d\n", WEXITSTATUS(status));
+        //     } else {
+        //         printf("Child process terminated abnormally\n");
+        //     }
+		// }
 		index++;
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
@@ -84,9 +88,6 @@ void	execute(t_token *token, t_prompt *prompt)
 		if (WIFEXITED(status))
 		{
 			g_tools.exit_code = WEXITSTATUS(status);
-			// if (WEXITSTATUS(status) != 0 && cmd_type == _last) // cmd_type always true because above
-			// 	return ;
-			// else 
 			if (prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
 				exit(0);
 		}
@@ -195,6 +196,7 @@ void	last_child(t_token *token, int prevpipe)
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	close(pipends[READ]);
+		
 	if (token->infile != -1)
 		redirect_in(token);
 	else if (index > 0)

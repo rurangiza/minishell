@@ -6,11 +6,19 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/20 17:06:41 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:45:21 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+// structure
+void	display_prompt(t_prompt *prompt)
+{
+	printf(CBOLD CCYAN"~~~~~~~~~~~~~~~ PROMPT ~~~~~~~~~~~~~~~\n");
+	printf("%i pipes / cmd : %s\n", prompt->pipe_nb, prompt->cmds[0].cmd[0]);
+	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"CRESET);
+}
 
 // starting
 void	display_start(void)

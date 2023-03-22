@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/21 10:03:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/21 10:44:30 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	redirect_in(t_token *token)
 {
+	
 	if (token->infile == HERE_DOC)
 	{
 		// printf("Delimiter = '%s'\n", token->delimiter);

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/20 11:20:24 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:48:59 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ static int ft_word_len(char *prompt)
 		if (prompt[i] == '\"')
 		{
 			i++;
-			while (prompt[i] != '\"' && prompt[i])
+			while (prompt[i] && prompt[i] != '\"')
 				i++;
 		}
 		else if (prompt[i] == '\'')
 		{
 			i++;
-			while (prompt[i] != '\'' && prompt[i])
+			while (prompt[i] && prompt[i] != '\'')
 				i++;
 		}
 		i++;
@@ -272,7 +272,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	(void)envp;
 	t_lexer lexer;
 
-	if (!prompt || check_quotes(prompt) == -1)
+	if (!prompt || !prompt[0] || check_quotes(prompt) == -1)
 	{
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
