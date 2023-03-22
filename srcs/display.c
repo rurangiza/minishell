@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/22 11:45:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:59:10 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,9 @@ void	display_tree(int level, const char *function, t_token *token)
 {
 	for (int i = 0; i < level * 2; i++)
 		write(1, " ", 1);
-	// tree branch
 	printf(CGRAY"|__ "CRESET);
-	// function
 	printf("%s()   ", function);
-	// command
 	printf(CBOLD CYELLOW"%s "CRESET, token->cmd[0]);
-	// arguments
 	printf("(");
 	if (token->cmd && token->cmd[0])
 	{

@@ -6,47 +6,24 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/22 11:53:57 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:07:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	display_prompt(t_prompt *prompt);
-
-void	check_user_input(char *input)
-{
-	char *str;
-	
-	str = "";
-
-	if (!input)
-		exit (0);
-}
-
-void	handle_signals(int signo)
-{
-	if (signo == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		if (getpid() == 0)
-			g_tools.exit_code = 130;
-		else
-			g_tools.exit_code = 1;
-	}
-}
-
-int	main(int ac, char **av, char **envp)
+int	main(int arg_count, char **arg_list, char **envp)
 {
 	char		*user_input;
 	t_prompt	prompt;
 	t_lexer		lexer;
 
-	(void)ac;
-	(void)av;
+	(void)arg_list;
+	if (arg_count != 1)
+	{
+		printf("Usage: ./minishell\n");
+		exit(EXIT_FAILURE);
+	}
 	g_tools.exit_code = 0;
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
@@ -60,7 +37,6 @@ int	main(int ac, char **av, char **envp)
 		if (lexer.tokens)
 		{
 			parser(&prompt, &lexer, envp);
-			//display_prompt(&prompt);
 			if (prompt.cmds)
 				execute(prompt.cmds, &prompt);
 		}

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/22 11:35:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:59:51 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@ int	heredoc(char *limiter, int var_expand)
 	char	*buffer = NULL;
 	int		ends[2];
 	
-	
 	if (pipe(ends) == -1)
 		return (-1);
-		
-	printf(CBLUE"Delimiter = %s\n"CRESET, limiter);
-	
+	//printf(CBLUE"Delimiter = %s\n"CRESET, limiter);
 	while (TRUE)
 	{
 		buffer = readline("> ");

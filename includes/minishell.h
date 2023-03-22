@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/21 10:39:33 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:04:21 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,8 +163,9 @@ int		is_special_symbol(char *directory);
 int		is_valid_identifier(char *str);
 int		is_directory(char *path, struct stat stat_buffer);
 int		is_unexpected_token(char *token);
+void	check_user_input(char *input);
 
-void	hanging_cats(t_token *token);
+//void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
 //char	*get_previous_directory();
@@ -174,10 +175,14 @@ int		is_executable(char *path, struct stat stat_buffer);
 
 char	*update_shell_level(char *variable);
 
+/* ~~~~~~~~~~~~~ SIGNALS ~~~~~~~~~~~~~~~ */
+void	handle_signals(int signo);
+
 
 /* ~~~~~~~~~~ DISPLAY ~~~~~~~~~~~~~~ */
 void	display_tree(int level, const char *function, t_token *token);
 void	display_start(void);
 void	display_end(void);
+void	display_prompt(t_prompt *prompt);
 
 #endif

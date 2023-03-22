@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/16 16:28:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:00:56 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,13 @@ int	is_unexpected_token(char *token)
 	return (FALSE);
 }
 
-// opens heredoc : (, \, {, `
+
+void	check_user_input(char *input)
+{
+	char *str;
+	
+	str = "";
+
+	if (!input)
+		exit (0);
+}

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/22 11:54:13 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:02:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 void	execute(t_token *token, t_prompt *prompt)
-{
-	//display_start();
-	
+{	
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
-	// printf("%s\n", token->cmd[0]);
-	// return ;
-	//int result_wpid;
 	pid_t *pid_bucket;
+	//int result_wpid;
 	
 	if (prompt->pipe_nb > 0)
 	{
@@ -35,7 +31,6 @@ void	execute(t_token *token, t_prompt *prompt)
         cmd_type = get_cmd_type(prompt->pipe_nb, index);
         if (cmd_type == _middle)
 		{
-			//close(pipends[READ]); (BEFORE)
 			if (pipe(pipends) == -1)
 				exit_msg();
 		}
@@ -56,17 +51,13 @@ void	execute(t_token *token, t_prompt *prompt)
 			else
 				middle_child(&token[index], index, prevpipe, pipends);
 		}
-		
-
 		pid_bucket[index] = pid;
-		
-
 		if (cmd_type == _middle)
 		{
 			close(pipends[WRITE]);
 			prevpipe = pipends[READ];
 		}
-		else if (cmd_type == _last) //(PROBLEM WITH THIS)
+		else if (cmd_type == _last)
 			close(prevpipe);
 		
 		// result_wpid = waitpid(pid, &status, WHO);
@@ -83,7 +74,6 @@ void	execute(t_token *token, t_prompt *prompt)
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
 	{
-		//printf("index %d, lim %d, pid_buck %d\n", i, prompt->pipe_nb, pid_bucket[i]);
 		waitpid(pid_bucket[i], &status, 0);
 		if (WIFEXITED(status))
 		{
@@ -104,11 +94,9 @@ void	execute(t_token *token, t_prompt *prompt)
 				return ;
 			}
 		}
-		//printf("index %d, lim %d, pid_buck %d\n", i, prompt->pipe_nb, pid_bucket[i]);
 	}
 	if (prompt->pipe_nb > 0)
 		free(pid_bucket);
-	//display_end();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,21 +127,12 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
-	//display_tree(0, __func__, token);
-	
 	char *pathway = find_pathway();
 	(void)pathway;
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	//printf("Cmd = %s\nInfile = %i\nOutfile = %i\n", token->cmd[0], token->infile, token->outfile);
-	
-	// if (token->cmd == NULL)
-	// {
-	// 	printf("minishell: syntax error near unexpected token `newline'\n");
-	// 	exit(258);
-	// }
 	handle_execution_errors(token);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
@@ -166,10 +145,7 @@ void	last_child(t_token *token, int prevpipe)
 	if (token->infile != -1)
 		redirect_in(token);
 	else
-	{
-		//printf("  |__. prevpipe (%i) -> STDIN\n", prevpipe);
-		dup2(prevpipe, STDIN_FILENO); // duppign a closed file with STDIN
-	}
+		dup2(prevpipe, STDIN_FILENO);
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
@@ -209,9 +185,6 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	else
 		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
-	
-	// if (token->cmd == NULL)
-	// 	exit_wrongcmd_msg("", 127);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
 		execute_builtins(token);
@@ -234,7 +207,6 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
     {
         close(pipends[WRITE]);
         *prevpipe = pipends[READ];
-		//close(pipends[READ]);
     }
     else if (cmd_type == _last)
         close(*prevpipe);
