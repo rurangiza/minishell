@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/23 11:02:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 17:06:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct s_prompt
 	char	**path;
 	char	**envp;
 	int		pipe_nb;
-	t_list	*directory_history;
 }	t_prompt;
 
 typedef enum e_state {
