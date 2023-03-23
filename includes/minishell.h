@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/22 12:04:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:02:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
+# include <sys/ioctl.h>
 
 #define CGRAY     "\x1b[30m"
 #define CRED     "\x1b[31m"
@@ -164,6 +165,7 @@ int		is_valid_identifier(char *str);
 int		is_directory(char *path, struct stat stat_buffer);
 int		is_unexpected_token(char *token);
 void	check_user_input(char *input);
+int		is_empty_pipe(int read_end);
 
 //void	hanging_cats(t_token *token);
 

@@ -6,13 +6,15 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/22 12:02:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:01:31 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 ///////////////////////////////////////////////////////////////////////////////
+
+
 
 void	execute(t_token *token, t_prompt *prompt)
 {	
@@ -56,10 +58,11 @@ void	execute(t_token *token, t_prompt *prompt)
 		{
 			close(pipends[WRITE]);
 			prevpipe = pipends[READ];
+			if (is_empty_pipe(pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
+				close(pipends[READ]);
 		}
 		else if (cmd_type == _last)
 			close(prevpipe);
-		
 		// result_wpid = waitpid(pid, &status, WHO);
 		// if (result_wpid > 0)
 		// {

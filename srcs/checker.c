@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/22 12:00:56 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:02:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,17 @@ int	is_unexpected_token(char *token)
 	if (token[0] == ')' || token[0] == '&' || token[0] == '}')
 		return (TRUE);
 	return (FALSE);
+}
+
+int	is_empty_pipe(int read_end)
+{
+	int	nbytes;
+
+	if (ioctl(read_end, FIONREAD, &nbytes) < 0)
+		return (-1);
+	else if (nbytes == 0)
+		return (1);
+	return (0);
 }
 
 
