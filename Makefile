@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/22 12:02:10 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/23 16:17:51 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRCS			= 	srcs/main.c \
 					srcs/initialization.c \
 					srcs/error_handling.c \
 					srcs/signals.c \
-					srcs/display.c \
+					srcs/debug.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \
