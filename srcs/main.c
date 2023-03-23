@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/23 16:24:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:42:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 		if (lexer.tokens)
 		{
 			parser(&prompt, &lexer, envp);
+			//display_prompt(&prompt);
 			if (prompt.cmds)
 				execute(prompt.cmds, &prompt);
 		}

@@ -6,15 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/23 11:01:31 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:42:33 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-
-
 
 void	execute(t_token *token, t_prompt *prompt)
 {	
@@ -130,6 +128,7 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
+	//display_tree(0, __func__, token);
 	char *pathway = find_pathway();
 	(void)pathway;
 	if (token->infile != -1)
