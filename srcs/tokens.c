@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:38:34 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:15:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int get_nb_token(char *str)
 		if (str[i] == '\'')
 		{
 			i++;
-			while(str[i] != '\'')
+			while(str[i] && str[i] != '\'') //! added 'str[i]' to prevent SEGFAULT
 			i++;
 		}
 		if (str[i] == '\"')
@@ -102,7 +102,7 @@ int len_tokens(char *str)
 		{
 			i++;
 			len++;
-			while(str[i] != '\'')
+			while(str[i] && str[i] != '\'') //! added 'str[i]' to prevent SEGFAULT
 			{
 				i++;
 				len++;
@@ -118,6 +118,8 @@ int len_tokens(char *str)
 				len++;
 			}
 		}
+		if (!str[i]) //! added to prevent SEGFAULT in loop condition
+			break ;
 		i++;
 		len++;
 	}
@@ -154,7 +156,7 @@ char *get_tokens(char *str, int *j, int *k)
 			line[i] = str[i];
 			(*j)++;
 			i++;
-			while (str[i] != '\'')
+			while (str[i] && str[i] != '\'') //! added 'str[i]' to prevent SEGFAULT
 			{
 				line[i] = str[i];
 				i++;
@@ -176,7 +178,13 @@ char *get_tokens(char *str, int *j, int *k)
 		line[i] = str[i];
 		(*j)++;
 		i++;
-		if (str[i] == '\0')
+		
+		/*
+		** Next condition causes errors when:
+		** (str[i] == '\0') => SEGFAULT for : echo "c'est"'
+		** (str[i] && str[i] == '\0') => echo "$HOME" (stops working)
+		*/
+		if (str[i] == '\0') //! CHECK THIS OUT
 		{
 			*j = 0;
 			(*k)++;

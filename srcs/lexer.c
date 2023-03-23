@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/22 11:48:59 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 16:08:56 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ static int ft_word_len(char *prompt)
 			while (prompt[i] && prompt[i] != '\'')
 				i++;
 		}
+		if (!prompt[i]) //! added to prevent SEGFAULT in next loop condition
+			break ;
 		i++;
 	}
 	return (i);
