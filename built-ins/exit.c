@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/16 09:39:43 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:12:54 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ void	my_exit(t_token *tokens)
 			exit (255);
 		}
 		else
-		{
 			exit (j);
-		}
 	}
 }

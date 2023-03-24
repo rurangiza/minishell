@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/23 17:06:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:18:39 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ typedef struct s_prompt
 typedef enum e_state {
     _single	= 0,
     _last	= 1,
-    _middle	= 2
+    _middle	= 2,
+	_FREEBUCKET = 11,
 } t_state;
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -145,7 +146,6 @@ void	dup_matrix(char **environment);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
-void	exit_wrongcmd_msg(char *cmd, int error_code);
 void	exitmsg(char *msg, char *cmd, int code);
 void	handle_execution_errors(t_token *token);
 
@@ -154,6 +154,7 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*expand_variable(char *buffer);
 //char	*get_userdir(void);
 char	*get_variable_in_environment(char *variable);
+char	*getenv_custm(char *variable); // Same without message
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);

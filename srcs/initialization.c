@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/20 16:39:59 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:15:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	init_environment(char **envp)
 	if (!getenv("OLDPWD"))
 		index--;
 	g_environment = malloc((index + 2) * sizeof(char *));
+	if (!g_environment)
+		return ;
 	index = 0;
 	int outdex = 0;
 	while (envp[index])

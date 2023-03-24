@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/23 16:58:51 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:33:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	handle_execution_errors(t_token *token)
 {
+	if (ft_strlen(token->cmd[0]) == 0)
+		exitmsg(": command not found", token->cmd[0], 127);
 	if (ft_strlen(token->cmd[0]) == 1)
 	{
 		if (token->cmd[0][0] == '.')
