@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/22 10:35:33 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:12:19 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ int ft_strchr_mod(const char *s, char ch)
 			}
             if (s[index] == ch && s[index + 1] && s[index + 1] != '\"')
                 return (index);
+            if (!s[index])
+                break ;
             index++;
         }
     }
