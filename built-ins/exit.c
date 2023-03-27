@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/24 10:12:54 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:30:36 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	check_exit_status(char *arg)
 	return (status);
 }
 
-void	my_exit(t_token *tokens)
+int	my_exit(t_token *tokens)
 {
 	int j;
 
@@ -80,7 +80,7 @@ void	my_exit(t_token *tokens)
 	if (!tokens->cmd[1])
 	{
 		//printf("es\n");
-		exit (0);
+		return (0);
 	}
 	if (tokens->cmd[1])
 	{
@@ -88,9 +88,33 @@ void	my_exit(t_token *tokens)
 		if (only_digit(tokens->cmd[1]))
 		{
 			printf("minishell: exit: %s: numeric argument needed\n", tokens->cmd[1]);
-			exit (255);
+			return (255);
 		}
 		else
-			exit (j);
+			return (j);
 	}
+	return (0);
 }
+
+// void	my_exit(t_token *tokens)
+// {
+// 	int j;
+
+// 	printf("exit\n");
+// 	if (!tokens->cmd[1])
+// 	{
+// 		//printf("es\n");
+// 		exit (0);
+// 	}
+// 	if (tokens->cmd[1])
+// 	{
+// 		j = check_exit_status(tokens->cmd[1]);
+// 		if (only_digit(tokens->cmd[1]))
+// 		{
+// 			printf("minishell: exit: %s: numeric argument needed\n", tokens->cmd[1]);
+// 			exit (255);
+// 		}
+// 		else
+// 			exit (j);
+// 	}
+// }

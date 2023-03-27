@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/27 10:40:50 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/27 16:01:16 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@ void	execute(t_token *token, t_prompt *prompt)
 		if (!pid_bucket)
 			return ;
 	}
+	if (prompt->pipe_nb == 1 && token[0].cmd && ft_strncmp("exit", token[0].cmd[0], 4) == 0)
+	{
+		int code = my_exit(token);
+		exit(code);
+	}
 	while (index < prompt->pipe_nb)
 	{
-        cmd_type = get_cmd_type(prompt->pipe_nb, index);
-        if (cmd_type == _middle)
+		cmd_type = get_cmd_type(prompt->pipe_nb, index);
+		if (cmd_type == _middle)
 		{
 			if (pipe(pipends) == -1)
 			{
@@ -61,8 +66,6 @@ void	execute(t_token *token, t_prompt *prompt)
 			if (is_empty_pipe(pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
 				close(pipends[READ]);
 		}
-		// else if (cmd_type == _last)
-		// 	close(prevpipe);
 		index++;
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
@@ -71,8 +74,16 @@ void	execute(t_token *token, t_prompt *prompt)
 		if (WIFEXITED(status))
 		{
 			g_tools.exit_code = WEXITSTATUS(status);
-			if (prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
-				exit(0);
+			printf("Parent: My child's exit code is %d\n", WEXITSTATUS(status));
+			if (WEXITSTATUS(status) == 0)
+				printf("Parent: That's the code I expected!\n");
+			else if (prompt->pipe_nb == 1 && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
+			{
+				printf("Code before out = %i\n", g_tools.exit_code);
+				//exit(g_tools.exit_code);
+			}
+			// if (prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
+			// 	exit(0);
 		}
 	}
 	if (prompt->pipe_nb > 0)
@@ -107,7 +118,7 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
-	//display_tree(0, __func__, token);
+	display_tree(0, __func__, token);
 	char *pathway = find_pathway();
 	(void)pathway;
 	if (token->infile != -1)
@@ -190,8 +201,11 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	execute_builtins(t_token *token)
+int	execute_builtins(t_token *token)
 {
+	int	exit_code;
+	
+	exit_code = 0;
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
@@ -205,5 +219,6 @@ void	execute_builtins(t_token *token)
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
 		env(token);
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
-		my_exit(token);
+		exit_code= my_exit(token);
+	exit(exit_code);
 }
