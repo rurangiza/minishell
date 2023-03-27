@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:59:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:47:09 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,33 @@ static int check_quotes(char *prompt)
 	i = 0;
 	count = 0;
 	count2 = 0;
-	if (prompt)
+	while (prompt[i])
 	{
-		while (prompt[i])
+		if (prompt[i] && prompt[i] == '\'')
 		{
-			if (prompt[i] == '\'')
-				count++;
-			else if(prompt[i] == '\"')
-				count2++;
+			count++;
 			i++;
+			while (prompt[i] && prompt[i] != '\'')
+				i++;
+			if (prompt[i] && prompt[i] == '\'')
+			{
+				count++;
+			}
 		}
+		if (prompt[i] && prompt[i] == '\"')
+		{
+			count2++;
+			i++;
+			while(prompt[i] && prompt[i] != '\"')
+				i++;
+			if (prompt[i] && prompt[i] == '\"')
+			{
+				count2++;
+			}
+		}
+		if (!prompt[i])
+			break ;
+		i++;
 	}
 	if (((count2 % 2) != 0) || ((count % 2) != 0))
 		return (-1);
@@ -98,15 +115,17 @@ static int ft_word_len(char *prompt)
 		if (prompt[i] == '\"')
 		{
 			i++;
-			while (prompt[i] != '\"' && prompt[i])
+			while (prompt[i] && prompt[i] != '\"')
 				i++;
 		}
 		else if (prompt[i] == '\'')
 		{
 			i++;
-			while (prompt[i] != '\'' && prompt[i])
+			while (prompt[i] && prompt[i] != '\'')
 				i++;
 		}
+		if (!prompt[i]) //! added to prevent SEGFAULT in next loop condition
+			break ;
 		i++;
 	}
 	return (i);
@@ -267,15 +286,14 @@ void	delete_quotes(char **tokens)
 	}
 }
 
-
 t_lexer	lexerinho(char *prompt, char **envp)
 {
 	(void)envp;
 	t_lexer lexer;
-	
-	if (check_quotes(prompt) == -1)
+
+	if (!prompt || !prompt[0] || check_quotes(prompt) == -1)
 	{
-		//printf("syntax error\n");
+		printf("syntax error\n");
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
 		return (lexer);
@@ -283,6 +301,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	lexer.tmp = ft_cmd_lexer(prompt);
 	if (!lexer.tmp)
 	{
+		printf("syntax error\n");
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
 		return (lexer);

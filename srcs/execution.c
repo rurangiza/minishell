@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 15:40:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 12:09:52 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+///////////////////////////////////////////////////////////////////////////////
+
 void	execute(t_token *token, t_prompt *prompt)
-{
+{	
 	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
 	pid_t *pid_bucket;
-	int result_wpid;
 	
 	if (prompt->pipe_nb > 0)
 	{
@@ -29,10 +30,14 @@ void	execute(t_token *token, t_prompt *prompt)
         cmd_type = get_cmd_type(prompt->pipe_nb, index);
         if (cmd_type == _middle)
 		{
-			close(pipends[READ]);
 			if (pipe(pipends) == -1)
+			{
+				free(pid_bucket);
 				exit_msg();
+			}
 		}
+		if (prompt->pipe_nb == 1 && ft_strncmp("exit", token[index].cmd[0], 4) == 0)
+			exit(my_exit(token));
 		pid_t pid = fork();
 		if (pid == -1)
 			exit_msg();
@@ -40,7 +45,7 @@ void	execute(t_token *token, t_prompt *prompt)
 		{
 			if (cmd_type == _single)
 			{
-				if (token->cmd && is_builtin(token->cmd[0]))
+				if (token[index].cmd && is_builtin(token[index].cmd[0]))
 					execute_builtins(token);
 				else
 					single_child(&token[index]);
@@ -51,25 +56,15 @@ void	execute(t_token *token, t_prompt *prompt)
 				middle_child(&token[index], index, prevpipe, pipends);
 		}
 		pid_bucket[index] = pid;
-		//parent_process(pid, cmd_type, pipends, &prevpipe);
 		if (cmd_type == _middle)
 		{
 			close(pipends[WRITE]);
 			prevpipe = pipends[READ];
+			if (is_empty_pipe(pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
+				close(pipends[READ]);
 		}
-		else if (cmd_type == _last)
-			close(prevpipe);
-			
-		result_wpid = waitpid(pid, &status, WNOHANG);
-		if (result_wpid > 0)
-		{
-			// Child process has terminated, retrieve exit status
-            if (WIFEXITED(status)) {
-                printf("Child process exited with status %d\n", WEXITSTATUS(status));
-            } else {
-                printf("Child process terminated abnormally\n");
-            }
-		}
+		// else if (cmd_type == _last)
+		// 	close(prevpipe);
 		index++;
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
@@ -78,28 +73,15 @@ void	execute(t_token *token, t_prompt *prompt)
 		if (WIFEXITED(status))
 		{
 			g_tools.exit_code = WEXITSTATUS(status);
-			if (WEXITSTATUS(status) != 0 && cmd_type == _last)
-				return ;
-			else if (prompt->pipe_nb == 1 && token->cmd && ft_strncmp("exit", token->cmd[0], 4) == 0)
+			if (prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
 				exit(0);
-		}
-		if (WIFSIGNALED(status))
-		{
-			if (WTERMSIG(status) == SIGTERM)
-			{
-				printf("-- got terminated\n");
-				return ;
-			}
-			else if (WTERMSIG(status) == SIGKILL)
-			{
-				printf("-- got killed\n");
-				return ;
-			}
 		}
 	}
 	if (prompt->pipe_nb > 0)
 		free(pid_bucket);
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 int get_cmd_type(int size, int index)
 {
@@ -109,6 +91,8 @@ int get_cmd_type(int size, int index)
         return (_last);
     return (_middle);
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 char	*find_pathway(void)
 {
@@ -125,26 +109,22 @@ char	*find_pathway(void)
 
 void	single_child(t_token *token)
 {
+	//display_tree(0, __func__, token);
 	char *pathway = find_pathway();
+	(void)pathway;
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
 		redirect_out(token);
-	//printf("Cmd = %s\nInfile = %i\nOutfile = %i\n", token->cmd[0], token->infile, token->outfile);
-	if (token->cmd == NULL)
-	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
-		exit(258);
-	}
-	// exit_wrongcmd_msg("", 127);
-	if (!is_valid_cmd_bis(token->cmd[0], pathway))
-		exit_wrongcmd_msg(token->cmd[0], 127);
+	handle_execution_errors(token);
 	execve(token->cmd_path, token->cmd, g_environment);
 	exit_msg();
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void	last_child(t_token *token, int prevpipe)
-{
+{	
 	if (token->infile != -1)
 		redirect_in(token);
 	else
@@ -152,8 +132,6 @@ void	last_child(t_token *token, int prevpipe)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-	if (token->cmd == NULL)
-		exit_wrongcmd_msg("", 127);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
 		execute_builtins(token);
@@ -161,14 +139,18 @@ void	last_child(t_token *token, int prevpipe)
 	}
 	else
 	{
+		handle_execution_errors(token);
 		execve(token->cmd_path, token->cmd, g_environment);
 		exit_msg();
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 {
 	close(pipends[READ]);
+		
 	if (token->infile != -1)
 		redirect_in(token);
 	else if (index > 0)
@@ -181,9 +163,6 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	else
 		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
-	
-	if (token->cmd == NULL)
-		exit_wrongcmd_msg("", 127);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
 		execute_builtins(token);
@@ -191,10 +170,13 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	}
 	else
 	{
+		handle_execution_errors(token);
 		execve(token->cmd_path, token->cmd, g_environment);
 		exit_msg();
 	}
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
 {
@@ -203,14 +185,18 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
     {
         close(pipends[WRITE]);
         *prevpipe = pipends[READ];
-		//close(pipends[READ]);
     }
     else if (cmd_type == _last)
         close(*prevpipe);
 }
 
-void	execute_builtins(t_token *token)
+///////////////////////////////////////////////////////////////////////////////
+
+int	execute_builtins(t_token *token)
 {
+	int exit_code;
+
+	exit_code = 0;
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
@@ -224,5 +210,6 @@ void	execute_builtins(t_token *token)
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
 		env(token);
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
-		my_exit(token);
+		exit(my_exit(token));
+	return (exit_code);
 }

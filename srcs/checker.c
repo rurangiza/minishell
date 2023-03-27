@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/15 13:35:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/23 11:02:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,62 @@ int	is_valid_identifier(char *str)
 		}
 	}
 	return (1);
+}
+
+int	is_directory(char *path, struct stat stat_buffer)
+{
+	int	file_status;
+	
+	file_status = stat(path + 2, &stat_buffer);
+	if (file_status == 0)
+	{
+        if (S_ISDIR(stat_buffer.st_mode))
+            return (TRUE);
+        return (FALSE);
+	}
+	return (FALSE);
+}
+
+
+int is_executable(char *path, struct stat stat_buffer) {
+	if (ft_strncmp("./", path, 2) == 0)
+	{
+		if (stat(path + 2, &stat_buffer) == -1) {
+			return (FALSE);
+		}
+		return (stat_buffer.st_mode & S_IXUSR) != 0;
+	}
+	return (FALSE);
+}
+
+int	is_unexpected_token(char *token)
+{
+	if (!token && !token[0])
+		return (-1);
+	// `&`, `(`, `)`, `}`,  
+	if (token[0] == ')' || token[0] == '&' || token[0] == '}')
+		return (TRUE);
+	return (FALSE);
+}
+
+int	is_empty_pipe(int read_end)
+{
+	int	nbytes;
+
+	if (ioctl(read_end, FIONREAD, &nbytes) < 0)
+		return (-1);
+	else if (nbytes == 0)
+		return (1);
+	return (0);
+}
+
+
+void	check_user_input(char *input)
+{
+	char *str;
+	
+	str = "";
+
+	if (!input)
+		exit (0);
 }

@@ -3,58 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 10:17:31 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:13:01 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	check_user_input(char *input)
-{
-	char *str;
-	
-	str = "";
-
-	if (!input)
-		exit(0);
-}
-
-void	handle_signals(int signo)
-{
-	if (signo == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
-int	main(int ac, char **av, char **envp)
+int	main(int arg_count, char **arg_list, char **envp)
 {
 	char		*user_input;
 	t_prompt	prompt;
 	t_lexer		lexer;
 
-	(void)ac;
-	(void)av;
+	(void)arg_list;
+	if (arg_count != 1)
+	{
+		printf("Usage: ./minishell\n");
+		exit(EXIT_FAILURE);
+	}
 	g_tools.exit_code = 0;
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
-	system("clear"); // DELETE THIS
+	system("clear");         //! Delete later
 	while (1)
 	{
+		char *level = getenv_custm("SHLVL");
+		if (level)
+			printf(CGRAY CBOLD"[lvl:%s] "CRESET, level + 1);
 		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
 		check_user_input(user_input);
 		add_history(user_input);
 		lexer = lexerinho(user_input, envp);
-		if(lexer.tokens)
+		if (lexer.tokens)
 		{
 			parser(&prompt, &lexer, envp);
-			execute(prompt.cmds, &prompt);
+			if (prompt.pipe_nb == -1)
+				printf("minishell: syntax error near unexpected token\n");
+			if (prompt.cmds)
+				execute(prompt.cmds, &prompt);
 		}
 		free(user_input);
 	}

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 15:47:50 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/24 11:53:27 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,7 +343,6 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	init_cmd(&cmd);
 	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
-		if (tokens[i] && )
 		if(tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
 		{
 			i++;
@@ -415,6 +414,8 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 
 	i = 0;
 	j = 0;
+	if (!lexer || !lexer->tokens || !lexer->tokens[0])
+		return ;
 	prompt->pipe_nb = get_pipe_nb(lexer);
 	if (prompt->pipe_nb == -1)
 		return ;

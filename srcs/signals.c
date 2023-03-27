@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection.c                                      :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/22 11:59:39 by arurangi         ###   ########.fr       */
+/*   Created: 2023/03/22 12:01:29 by arurangi          #+#    #+#             */
+/*   Updated: 2023/03/22 12:01:50 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	redirect_in(t_token *token)
+void	handle_signals(int signo)
 {
-	if (token->infile == HERE_DOC)
+	if (signo == SIGINT)
 	{
-		token->infile = heredoc(token->delimiter, token->heredoc_mode);
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		if (getpid() == 0)
+			g_tools.exit_code = 130;
+		else
+			g_tools.exit_code = 1;
 	}
-	else
-	{
-		if (token->delimiter != NULL)
-			heredoc(token->delimiter, token->heredoc_mode);
-		dup2(token->infile, STDIN_FILENO);
-		close(token->infile);
-	}
-}
-
-void	redirect_out(t_token *token)
-{
-	dup2(token->outfile, STDOUT_FILENO);
-	close(token->outfile);
 }

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/15 11:49:26 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:37:31 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char    *ft_strjoin_mod(char *stash, char *buffer)
     return (tmp);
 }
 
-int    ft_strchr_mod(const char *s, char ch)
+int ft_strchr_mod(const char *s, char ch)
 {
     int        index;
 
@@ -65,18 +65,20 @@ int    ft_strchr_mod(const char *s, char ch)
 			if (s[index] == '\'')
 			{
 				index++;
-				while(s[index] != '\'')
+				while(s[index] && s[index] != '\'')
 					index++;
 			}
             if (s[index] == ch && s[index + 1] && s[index + 1] != '\"')
                 return (index);
+            if (!s[index])
+                break ;
             index++;
         }
     }
     return (-1);
 }
 
-void	expander(t_lexer *lexer, char **envp)
+void    expander(t_lexer *lexer, char **envp)
 {
 	int i;
 	(void)envp;

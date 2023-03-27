@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 13:25:39 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 12:04:12 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@
 # include <errno.h>
 # include <dirent.h>
 # include <signal.h>
+# include <sys/stat.h>
+# include <sys/ioctl.h>
 
+#define CGRAY     "\x1b[30m"
 #define CRED     "\x1b[31m"
 #define CGREEN   "\x1b[32m"
 #define CYELLOW  "\x1b[33m"
@@ -59,15 +62,18 @@ typedef struct s_lexer
 	char **tmp;
 }	t_lexer;
 
+struct stat sb;
+
 typedef struct s_token
 {
-	char	**cmd;
-	char	*cmd_path;
-	int		outfile;
-	int		infile;
-	char	**envp;
-	char	*delimiter;
-	int		heredoc_mode;
+	char			**cmd;
+	char			*cmd_path;
+	int				outfile;
+	int				infile;
+	char			**envp;
+	char			*delimiter;
+	int				heredoc_mode;
+	struct stat 	stats;
 }	t_token;
 
 typedef struct s_prompt
@@ -76,13 +82,13 @@ typedef struct s_prompt
 	char	**path;
 	char	**envp;
 	int		pipe_nb;
-	t_list	*directory_history;
 }	t_prompt;
 
 typedef enum e_state {
     _single	= 0,
     _last	= 1,
-    _middle	= 2
+    _middle	= 2,
+	_FREEBUCKET = 11,
 } t_state;
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -119,7 +125,7 @@ int		get_cmd_type(int size, int index);
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
-void	execute_builtins(t_token *token);
+int		execute_builtins(t_token *token);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -127,7 +133,7 @@ void	pwd(t_token *token);
 void	env(t_token *tokens);
 int		export(t_token *tokens);
 void	unset(t_token *token);
-void	my_exit(t_token *tokens);
+int		my_exit(t_token *tokens);
 void	cd(char *directory);
 //void	unset_shift(t_token *token);
 
@@ -140,13 +146,15 @@ void	dup_matrix(char **environment);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
-void	exit_wrongcmd_msg(char *cmd, int error_code);
+void	exitmsg(char *msg, char *cmd, int code);
+void	handle_execution_errors(t_token *token);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*expand_variable(char *buffer);
 //char	*get_userdir(void);
 char	*get_variable_in_environment(char *variable);
+char	*getenv_custm(char *variable); // Same without message
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
@@ -154,12 +162,29 @@ int		is_variable_to_be_deleted(char *target, char *source);
 int		is_in_environment(char *variable);
 int		is_special_symbol(char *directory);
 int		is_valid_identifier(char *str);
+int		is_directory(char *path, struct stat stat_buffer);
+int		is_unexpected_token(char *token);
+void	check_user_input(char *input);
+int		is_empty_pipe(int read_end);
 
-void	hanging_cats(t_token *token);
+//void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
 //char	*get_previous_directory();
 void	update_pwd(char *oldpwd, char *pwd);
 void	add_missing_oldpwd(char *newold);
+int		is_executable(char *path, struct stat stat_buffer);
+
+char	*update_shell_level(char *variable);
+
+/* ~~~~~~~~~~~~~ SIGNALS ~~~~~~~~~~~~~~~ */
+void	handle_signals(int signo);
+
+
+/* ~~~~~~~~~~ DISPLAY ~~~~~~~~~~~~~~ */
+void	display_tree(int level, const char *function, t_token *token);
+void	display_start(void);
+void	display_end(void);
+void	display_prompt(t_prompt *prompt);
 
 #endif

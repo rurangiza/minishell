@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/14 14:16:57 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/24 12:05:01 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,15 @@ int	check_exit_status(char *arg)
 	return (status);
 }
 
-void	my_exit(t_token *tokens)
+int	my_exit(t_token *tokens)
 {
 	int j;
 
 	printf("exit\n");
 	if (!tokens->cmd[1])
 	{
-		printf("es\n");
-		exit (0);
+		//printf("es\n");
+		return (0);
 	}
 	if (tokens->cmd[1])
 	{
@@ -92,7 +92,9 @@ void	my_exit(t_token *tokens)
 		}
 		else
 		{
-			exit (j);
+			printf("exit code = %i\n", j);
+			return (j);
 		}
 	}
+	return (0);
 }

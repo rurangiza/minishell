@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/14 10:50:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/24 10:14:04 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,23 @@ char	*get_variable_in_environment(char *variable)
 	return (NULL);
 }
 
+char	*getenv_custm(char *variable)
+{
+	int index = 0;
+	int	var_length = ft_strlen(variable);
+
+	while (g_environment[index])
+	{
+		if (ft_strncmp(g_environment[index], variable, var_length) == 0)
+			return (ft_substr(g_environment[index], var_length, ft_strlen(g_environment[index])));
+		index++;
+	}
+	index = 0;
+	// while (variable[index] && variable[index] != '=')
+	// 	write(1, &variable[index++], 1);
+	return (NULL);
+}
+
 char	*get_previous_directory(void)
 {
 	int index = 0;
@@ -139,6 +156,8 @@ void	add_missing_oldpwd(char *newold)
 		size++;
 	size += 1;
 	tmp = malloc((size + 1) * sizeof(char *));
+	if (!tmp)
+		return ;
 	
 	tmp[0] = newold;
 	
