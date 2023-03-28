@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/28 12:56:56 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:04:57 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,43 +37,52 @@ void	execute(t_token *token, t_prompt *prompt)
 		status = my_exit(token);
 		exit(status);
 	}
-
 	// Loop through all commands
 	while (index < prompt->pipe_nb)
 	{
-		cmd_type = get_cmd_type(prompt->pipe_nb, index);
-		if (cmd_type == _middle)
+		if (is_builtin(token[index].cmd[0]))
 		{
-			if (pipe(prompt->pipends) == -1)
+			if (index > 0)
+				close(prompt->prevpipe);
+			execute_builtins(token, prompt->pipe_nb);
+			// redirect output
+		}
+		else
+		{
+			cmd_type = get_cmd_type(prompt->pipe_nb, index);
+			if (cmd_type == _middle)
 			{
-				free(prompt->saved_pid);
+				if (pipe(prompt->pipends) == -1)
+				{
+					free(prompt->saved_pid);
+					exit_msg();
+				}
+			}
+			pid = fork();
+			if (pid == -1)
 				exit_msg();
-			}
-		}
-		pid = fork();
-		if (pid == -1)
-			exit_msg();
-		else if (pid == 0)
-		{
-			if (cmd_type == _single)
+			else if (pid == 0)
 			{
-				if (token[index].cmd && is_builtin(token[index].cmd[0]))
-					execute_builtins(token, prompt->pipe_nb);
+				if (cmd_type == _single)
+				{
+					if (token[index].cmd && is_builtin(token[index].cmd[0]))
+						execute_builtins(token, prompt->pipe_nb);
+					else
+						single_child(&token[index], prompt);
+				}
+				else if (cmd_type == _last)
+					last_child(&token[index], prompt->prevpipe, prompt);
 				else
-					single_child(&token[index], prompt);
+					middle_child(&token[index], index, prompt->prevpipe, prompt->pipends, prompt);
 			}
-			else if (cmd_type == _last)
-				last_child(&token[index], prompt->prevpipe, prompt);
-			else
-				middle_child(&token[index], index, prompt->prevpipe, prompt->pipends, prompt);
-		}
-		prompt->saved_pid[index] = pid;
-		if (cmd_type == _middle)
-		{
-			close(prompt->pipends[WRITE]);
-			prompt->prevpipe = prompt->pipends[READ];
-			if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
-				close(prompt->pipends[READ]);
+			prompt->saved_pid[index] = pid;
+			if (cmd_type == _middle)
+			{
+				close(prompt->pipends[WRITE]);
+				prompt->prevpipe = prompt->pipends[READ];
+				if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
+					close(prompt->pipends[READ]);
+			}
 		}
 		index++;
 	}
@@ -229,5 +238,4 @@ void	execute_builtins(t_token *token, int nbr_of_cmds)
 		if (nbr_of_cmds == 1 )
 			exit(exit_code);
 	}
-	exit(exit_code);
 }
