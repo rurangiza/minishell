@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/28 13:14:36 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:40:30 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 	g_tools.exit_code = 0;
 	signal(SIGINT, handle_signals);
 	init_environment(envp);
-	while (1)
+	while (TRUE)
 	{
 		char *level = getenv_custm("SHLVL");
 		if (level)
@@ -46,5 +46,5 @@ int	main(int arg_count, char **arg_list, char **envp)
 		}
 		free(user_input);
 	}
-	return (0);
+	return (g_tools.exit_code);
 }
