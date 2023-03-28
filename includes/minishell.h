@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/28 12:42:14 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:50:08 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct s_prompt
 	int		prevpipe;
 	int		pipends[2];
 	pid_t	*saved_pid;
+	int		stdio[2];
 }	t_prompt;
 
 typedef enum e_state {
@@ -128,7 +129,7 @@ int		get_cmd_type(int size, int index);
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
-void	execute_builtins(t_token *token, int nbr_of_cmds);
+void	execute_builtins(t_token *token, t_prompt *prompt);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);

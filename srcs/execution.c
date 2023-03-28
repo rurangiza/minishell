@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/28 13:04:57 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:51:36 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ void	execute(t_token *token, t_prompt *prompt)
 	int		cmd_type;
 	int		status;
 	pid_t	pid;
-	
-	// Initialization
+
+	//! Initialize Execution
+	prompt->stdio[0] = dup(STDIN_FILENO);
+	prompt->stdio[1] = dup(STDOUT_FILENO);
 	index = 0;
 	if (prompt->pipe_nb > 0)
 	{
@@ -31,22 +33,11 @@ void	execute(t_token *token, t_prompt *prompt)
 	}
 	prompt->prevpipe = -1;
 
-	// handle exit() before pipes and forks
-	if (prompt->pipe_nb == 1 && token[0].cmd && ft_strncmp("exit", token[0].cmd[0], 4) == 0)
-	{
-		status = my_exit(token);
-		exit(status);
-	}
 	// Loop through all commands
 	while (index < prompt->pipe_nb)
 	{
 		if (is_builtin(token[index].cmd[0]))
-		{
-			if (index > 0)
-				close(prompt->prevpipe);
-			execute_builtins(token, prompt->pipe_nb);
-			// redirect output
-		}
+			execute_builtins(token, prompt);
 		else
 		{
 			cmd_type = get_cmd_type(prompt->pipe_nb, index);
@@ -66,7 +57,7 @@ void	execute(t_token *token, t_prompt *prompt)
 				if (cmd_type == _single)
 				{
 					if (token[index].cmd && is_builtin(token[index].cmd[0]))
-						execute_builtins(token, prompt->pipe_nb);
+						execute_builtins(token, prompt);
 					else
 						single_child(&token[index], prompt);
 				}
@@ -99,7 +90,11 @@ void	execute(t_token *token, t_prompt *prompt)
 			}
 		}
 	}
-	// free allocated memory
+	//! Terminate execution
+	dup2(prompt->stdio[0], STDIN_FILENO);
+	close(prompt->stdio[0]);
+	dup2(prompt->stdio[1], STDOUT_FILENO);
+	close(prompt->stdio[1]);
 	if (prompt->pipe_nb > 0)
 		free(prompt->saved_pid);
 }
@@ -156,7 +151,7 @@ void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 		redirect_out(token);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
-		execute_builtins(token, prompt->pipe_nb);
+		execute_builtins(token, prompt);
 		exit(0);
 	}
 	else
@@ -187,7 +182,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_promp
 	close(pipends[WRITE]);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
-		execute_builtins(token, prompt->pipe_nb);
+		execute_builtins(token, prompt);
 		exit(0);
 	}
 	else
@@ -215,9 +210,22 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	execute_builtins(t_token *token, int nbr_of_cmds)
+void	execute_builtins(t_token *token, t_prompt *prompt)
 {
 	int	exit_code;
+	
+	if (token->infile != -1)
+	{
+		printf("Chanding IN\n");
+		redirect_in(token);
+	}
+	if (token->outfile != -1)
+	{
+		printf("Chanding OUT\n");
+		redirect_out(token);
+	}
+	if (index > 0)
+		close(prompt->prevpipe);
 	
 	exit_code = 0;
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
@@ -235,7 +243,8 @@ void	execute_builtins(t_token *token, int nbr_of_cmds)
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	{
 		exit_code = my_exit(token);
-		if (nbr_of_cmds == 1 )
+		if (prompt->pipe_nb == 1 )
 			exit(exit_code);
 	}
+	//dup2(fdout, STDOUT_FILENO);
 }

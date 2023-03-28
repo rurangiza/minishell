@@ -1,3 +1,6 @@
+## Tips & Tricks
+- Use the `lsof -c <name_of_your_program>` or `ps aux | grep program_name` commands to see the current processes of a specific program
+
 ## Useful Links
 ### Tutorials
 - Tutorial - [Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/) by Stephen Brennan
