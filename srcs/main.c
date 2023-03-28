@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/28 14:40:30 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:55:03 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 				printf("minishell: syntax error near unexpected token\n");
 			if (prompt.cmds)
 				execute(prompt.cmds, &prompt);
+			//return (300);
 		}
 		free(user_input);
 	}

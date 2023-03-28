@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/28 12:43:34 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/28 14:54:42 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,6 @@ endif
 	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
 
 all:		${NAME}
-			./minishell
 
 ${NAME}:	${OBJS} ${INCLUDES}
 			make -C $(LIBFT)
