@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/27 16:01:16 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 12:56:56 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,41 @@
 
 void	execute(t_token *token, t_prompt *prompt)
 {	
-	int	index = 0, pipends[2], prevpipe = 69, cmd_type, status;
-	pid_t *pid_bucket;
+	int		index;
+	int		cmd_type;
+	int		status;
+	pid_t	pid;
 	
+	// Initialization
+	index = 0;
 	if (prompt->pipe_nb > 0)
 	{
-		pid_bucket = malloc(prompt->pipe_nb * sizeof(pid_t));
-		if (!pid_bucket)
+		prompt->saved_pid = malloc(prompt->pipe_nb * sizeof(pid_t));
+		if (!prompt->saved_pid)
 			return ;
 	}
+	prompt->prevpipe = -1;
+
+	// handle exit() before pipes and forks
 	if (prompt->pipe_nb == 1 && token[0].cmd && ft_strncmp("exit", token[0].cmd[0], 4) == 0)
 	{
-		int code = my_exit(token);
-		exit(code);
+		status = my_exit(token);
+		exit(status);
 	}
+
+	// Loop through all commands
 	while (index < prompt->pipe_nb)
 	{
 		cmd_type = get_cmd_type(prompt->pipe_nb, index);
 		if (cmd_type == _middle)
 		{
-			if (pipe(pipends) == -1)
+			if (pipe(prompt->pipends) == -1)
 			{
-				free(pid_bucket);
+				free(prompt->saved_pid);
 				exit_msg();
 			}
 		}
-		pid_t pid = fork();
+		pid = fork();
 		if (pid == -1)
 			exit_msg();
 		else if (pid == 0)
@@ -49,45 +58,41 @@ void	execute(t_token *token, t_prompt *prompt)
 			if (cmd_type == _single)
 			{
 				if (token[index].cmd && is_builtin(token[index].cmd[0]))
-					execute_builtins(token);
+					execute_builtins(token, prompt->pipe_nb);
 				else
-					single_child(&token[index]);
+					single_child(&token[index], prompt);
 			}
 			else if (cmd_type == _last)
-				last_child(&token[index], prevpipe);
+				last_child(&token[index], prompt->prevpipe, prompt);
 			else
-				middle_child(&token[index], index, prevpipe, pipends);
+				middle_child(&token[index], index, prompt->prevpipe, prompt->pipends, prompt);
 		}
-		pid_bucket[index] = pid;
+		prompt->saved_pid[index] = pid;
 		if (cmd_type == _middle)
 		{
-			close(pipends[WRITE]);
-			prevpipe = pipends[READ];
-			if (is_empty_pipe(pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
-				close(pipends[READ]);
+			close(prompt->pipends[WRITE]);
+			prompt->prevpipe = prompt->pipends[READ];
+			if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
+				close(prompt->pipends[READ]);
 		}
 		index++;
 	}
 	for (int i = 0; i < prompt->pipe_nb; i++)
 	{
-		waitpid(pid_bucket[i], &status, 0);
+		waitpid(prompt->saved_pid[i], &status, 0);
 		if (WIFEXITED(status))
 		{
 			g_tools.exit_code = WEXITSTATUS(status);
-			printf("Parent: My child's exit code is %d\n", WEXITSTATUS(status));
-			if (WEXITSTATUS(status) == 0)
-				printf("Parent: That's the code I expected!\n");
-			else if (prompt->pipe_nb == 1 && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
+			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1 && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
 			{
 				printf("Code before out = %i\n", g_tools.exit_code);
-				//exit(g_tools.exit_code);
+				exit(g_tools.exit_code);
 			}
-			// if (prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
-			// 	exit(0);
 		}
 	}
+	// free allocated memory
 	if (prompt->pipe_nb > 0)
-		free(pid_bucket);
+		free(prompt->saved_pid);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -116,11 +121,10 @@ char	*find_pathway(void)
 	return (NULL);
 }
 
-void	single_child(t_token *token)
+void	single_child(t_token *token, t_prompt *prompt)
 {
-	display_tree(0, __func__, token);
-	char *pathway = find_pathway();
-	(void)pathway;
+	//display_tree(1, __func__, token);
+	(void)prompt;
 	if (token->infile != -1)
 		redirect_in(token);
 	if (token->outfile != -1)
@@ -132,7 +136,7 @@ void	single_child(t_token *token)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	last_child(t_token *token, int prevpipe)
+void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 {	
 	if (token->infile != -1)
 		redirect_in(token);
@@ -143,7 +147,7 @@ void	last_child(t_token *token, int prevpipe)
 		redirect_out(token);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
-		execute_builtins(token);
+		execute_builtins(token, prompt->pipe_nb);
 		exit(0);
 	}
 	else
@@ -156,7 +160,7 @@ void	last_child(t_token *token, int prevpipe)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
+void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt)
 {
 	close(pipends[READ]);
 		
@@ -174,7 +178,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 	close(pipends[WRITE]);
 	if (token->cmd && is_builtin(token->cmd[0]))
 	{
-		execute_builtins(token);
+		execute_builtins(token, prompt->pipe_nb);
 		exit(0);
 	}
 	else
@@ -187,9 +191,10 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe)
+void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe, t_prompt *prompt)
 {
 	(void)child_pid;
+	(void)prompt;
     if (cmd_type == _middle)
     {
         close(pipends[WRITE]);
@@ -201,7 +206,7 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int	execute_builtins(t_token *token)
+void	execute_builtins(t_token *token, int nbr_of_cmds)
 {
 	int	exit_code;
 	
@@ -219,6 +224,10 @@ int	execute_builtins(t_token *token)
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
 		env(token);
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
-		exit_code= my_exit(token);
+	{
+		exit_code = my_exit(token);
+		if (nbr_of_cmds == 1 )
+			exit(exit_code);
+	}
 	exit(exit_code);
 }

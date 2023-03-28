@@ -6,27 +6,11 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/15 11:16:59 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 10:29:22 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_echo_option(char *str)
-{
-	int index = 0;
-
-	if (str[index] != '-')
-		return (0);
-	index += 1;
-	while (str[index])
-	{
-		if (str[index] != 'n')
-			return (0);
-		index++;
-	}
-	return (1);
-}
 
 void	echo(t_token *token)
 {
@@ -49,8 +33,21 @@ void	echo(t_token *token)
 		index++;
 	}
 	if (newline_mode == 1)
-	{
-		//printf("NEWLINE MODE\n");
 		write(STDOUT_FILENO, "\n", 1);
+}
+
+int	is_echo_option(char *str)
+{
+	int index = 0;
+
+	if (str[index] != '-')
+		return (0);
+	index += 1;
+	while (str[index])
+	{
+		if (str[index] != 'n')
+			return (0);
+		index++;
 	}
+	return (1);
 }

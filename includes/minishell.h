@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/27 15:55:53 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 12:42:14 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ typedef struct s_prompt
 	char	**path;
 	char	**envp;
 	int		pipe_nb;
+	int		prevpipe;
+	int		pipends[2];
+	pid_t	*saved_pid;
 }	t_prompt;
 
 typedef enum e_state {
@@ -111,11 +114,11 @@ char	*find_path(char **envp);
 
 void	execute(t_token *token, t_prompt *prompt);
 
-void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
+void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe, t_prompt *prompt);
 
-void	single_child(t_token *token);
-void	last_child(t_token *token, int prevpipe);
-void	middle_child(t_token *token, int index, int prevpipe, int *pipends);
+void	single_child(t_token *token, t_prompt *prompt);
+void	last_child(t_token *token, int prevpipe, t_prompt *prompt);
+void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt);
 
 void	redirect_in(t_token *token);
 void	redirect_out(t_token *token);
@@ -125,7 +128,7 @@ int		get_cmd_type(int size, int index);
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
-int	execute_builtins(t_token *token);
+void	execute_builtins(t_token *token, int nbr_of_cmds);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -135,7 +138,8 @@ int		export(t_token *tokens);
 void	unset(t_token *token);
 int		my_exit(t_token *tokens);
 void	cd(char *directory);
-//void	unset_shift(t_token *token);
+
+int		is_echo_option(char *str);
 
 /* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
 void	init_environment(char **envp);

@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/27 15:31:39 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/28 12:43:34 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,22 +57,22 @@ else
 endif
 
 %.o: %.c
-	@$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
 
 all:		${NAME}
 			./minishell
 
 ${NAME}:	${OBJS} ${INCLUDES}
-			@make -C $(LIBFT)
-			@$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
+			make -C $(LIBFT)
+			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
 
 clean:
 				rm -f ${OBJS}
 				make clean -C $(LIBFT)
 
 fclean: 	clean
-				@rm -f ${NAME}
-				@make fclean -C $(LIBFT)
+				rm -f ${NAME}
+				make fclean -C $(LIBFT)
 
 re:				fclean all
 
