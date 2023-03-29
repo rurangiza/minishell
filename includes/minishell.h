@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 09:24:44 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/29 11:25:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ typedef enum e_state {
 /* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
 t_lexer	lexerinho(char *prompt, char **envp);
 char	**token(t_lexer *lexer);
-char *delete_quotes_1(char *str, char c);
-int	get_size(char *str, char c);
+char	*delete_quotes_1(char *str, char c);
+int		get_size(char *str, char c);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
 void	expander(t_lexer *lexer, char **envp);
@@ -144,10 +144,11 @@ int		is_echo_option(char *str);
 
 /* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
 void	init_environment(char **envp);
+void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp);
+void	init_prompt(t_prompt *prompt);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
-void	dup_matrix(char **environment);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
@@ -175,7 +176,6 @@ int		is_empty_pipe(int read_end);
 //void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
-//char	*get_previous_directory();
 void	update_pwd(char *oldpwd, char *pwd);
 void	add_missing_oldpwd(char *newold);
 int		is_executable(char *path, struct stat stat_buffer);
@@ -185,6 +185,8 @@ char	*update_shell_level(char *variable);
 /* ~~~~~~~~~~~~~ SIGNALS ~~~~~~~~~~~~~~~ */
 void	handle_signals(int signo);
 
+/* ~~~~~~~~~~~~~ INTERFACE ~~~~~~~~~~~~~~~ */
+char	*ft_readline(void);
 
 /* ~~~~~~~~~~ DISPLAY ~~~~~~~~~~~~~~ */
 void	display_tree(int level, const char *function, t_token *token);

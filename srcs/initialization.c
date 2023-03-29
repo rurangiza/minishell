@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/24 10:15:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/29 11:30:30 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,23 @@ char	*update_shell_level(char *variable)
 		level++;
 	new = ft_strjoin(ft_strdup("SHLVL="), ft_itoa(level));
 	return (new);
+}
+
+void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp)
+{
+	(void)arg_list;
+	(void)prompt;
+	if (arg_count != 1)
+	{
+		printf("Usage: ./minishell\n");
+		exit(EXIT_FAILURE);
+	}
+	init_environment(envp);
+}
+
+void	init_prompt(t_prompt *prompt)
+{
+	prompt->cmds = NULL;
+	prompt->path = NULL;
+	prompt->saved_pid = NULL;
 }
