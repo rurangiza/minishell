@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/28 13:50:08 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/29 09:24:44 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ typedef struct s_token
 
 typedef struct s_prompt
 {
-	t_token	*cmds;
-	char	**path;
-	char	**envp;
+	t_token	*cmds; // free
+	char	**path; // free
+	char	**envp; // free
 	int		pipe_nb;
 	int		prevpipe;
 	int		pipends[2];

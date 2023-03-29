@@ -6,11 +6,19 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/28 13:51:36 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/29 10:27:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	destroy(t_token *token)
+{	
+	ft_free_matrix(token->cmd);
+	//ft_free_matrix(token->envp);
+	free(token->cmd_path);
+	free(token->delimiter);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -21,7 +29,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	int		status;
 	pid_t	pid;
 
-	//! Initialize Execution
+	// Initialize Execution
 	prompt->stdio[0] = dup(STDIN_FILENO);
 	prompt->stdio[1] = dup(STDOUT_FILENO);
 	index = 0;
@@ -29,7 +37,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	{
 		prompt->saved_pid = malloc(prompt->pipe_nb * sizeof(pid_t));
 		if (!prompt->saved_pid)
-			return ;
+			return;
 	}
 	prompt->prevpipe = -1;
 
@@ -90,13 +98,14 @@ void	execute(t_token *token, t_prompt *prompt)
 			}
 		}
 	}
-	//! Terminate execution
+	// Terminate execution
 	dup2(prompt->stdio[0], STDIN_FILENO);
 	close(prompt->stdio[0]);
 	dup2(prompt->stdio[1], STDOUT_FILENO);
 	close(prompt->stdio[1]);
 	if (prompt->pipe_nb > 0)
 		free(prompt->saved_pid);
+	destroy(token);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
