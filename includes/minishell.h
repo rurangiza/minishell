@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 13:50:12 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:35:38 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,25 @@
 # include <sys/stat.h>
 # include <sys/ioctl.h>
 
-#define CGRAY     "\x1b[30m"
-#define CRED     "\x1b[31m"
-#define CGREEN   "\x1b[32m"
-#define CYELLOW  "\x1b[33m"
-#define CBLUE    "\x1b[34m"
-#define CMAGENTA "\x1b[35m"
-#define CCYAN    "\x1b[36m"
-#define CWHITE    "\x1b[36m"
-#define CBOLD   "\x1b[1m"
-#define CRESET   "\x1b[0m"
+# define CGRAY     "\x1b[30m"
+# define CRED     "\x1b[31m"
+# define CGREEN   "\x1b[32m"
+# define CYELLOW  "\x1b[33m"
+# define CBLUE    "\x1b[34m"
+# define CMAGENTA "\x1b[35m"
+# define CCYAN    "\x1b[36m"
+# define CWHITE    "\x1b[36m"
+# define CBOLD   "\x1b[1m"
+# define CRESET   "\x1b[0m"
+
+# define BG_BLACK   "\x1b[40m"
+# define BG_RED   "\x1b[41m"
+# define BG_GREEN   "\x1b[42m"
+# define BG_YELLOW   "\x1b[43m"
+# define BG_BLUE   "\x1b[44m"
+# define BG_MAGENTA   "\x1b[45m"
+# define BG_CYAN   "\x1b[46m"
+# define BG_WHITE   "\x1b[47m"
 
 # define READ 0
 # define WRITE 1
@@ -52,6 +61,7 @@ char 	**g_environment;
 typedef struct s_tools {
 	int		exit_code;
 	char	**environment;
+	int		killed;
 } t_tools;
 
 t_tools g_tools;
@@ -183,6 +193,7 @@ char	*update_shell_level(char *variable);
 
 /* ~~~~~~~~~~~~~ SIGNALS ~~~~~~~~~~~~~~~ */
 void	handle_signals(int signo);
+void	handle_signal_process(int signo);
 
 /* ~~~~~~~~~~~~~ INTERFACE ~~~~~~~~~~~~~~~ */
 char	*ft_readline(void);

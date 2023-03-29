@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/29 13:52:04 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:35:00 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ void	execute(t_token *token, t_prompt *prompt)
 					exit_msg();
 				}
 			}
+			signal(SIGINT, handle_signal_process);
 			pid = fork();
 			if (pid == -1)
 				exit_msg();
 			else if (pid == 0)
 			{
+				//signal(SIGINT, handle_signals);
 				if (cmd_type == _single)
 				{
 					if (token[index].cmd && is_builtin(token[index].cmd[0]))
@@ -95,6 +97,11 @@ void	execute(t_token *token, t_prompt *prompt)
 			{
 				printf("Code before out = %i\n", g_tools.exit_code);
 				exit(g_tools.exit_code);
+			}
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+			{
+				printf("Received SIGINT\n");
+				g_tools.killed = 1;
 			}
 		}
 	}

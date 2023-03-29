@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 14:01:38 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 16:24:23 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ int	main(int arg_count, char **arg_list, char **envp)
 
 	
 	g_tools.exit_code = 0;
-	signal(SIGINT, handle_signals);
+	//system("stty -echoctl");
 	init_shell(&prompt, arg_count, arg_list, envp);
 	while (TRUE)
 	{
+		signal(SIGINT, handle_signals);
 		user_input = ft_readline();
 		check_user_input(user_input);
 		add_history(user_input);
