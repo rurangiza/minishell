@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/27 16:24:58 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:57:18 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ static int get_pipe_nb(t_lexer *lexer)
 
 	i = 0;
 	count = 0;
-	printf("%s>\n", lexer->tokens[0]);
 	if (!ft_strncmp(lexer->tokens[i], "|", 1))
 		return (-1);
 	while (lexer->tokens[i])
@@ -423,7 +422,6 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 	prompt->pipe_nb = get_pipe_nb(lexer);
 	if (prompt->pipe_nb == -1)
 		return ;
-	printf("%s\n", lexer->tokens[0]);
 	prompt->cmds = malloc(sizeof(t_token) * (prompt->pipe_nb + 1));
 	if (!prompt->cmds)
 		return ;
