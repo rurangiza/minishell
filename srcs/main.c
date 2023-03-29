@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 13:52:45 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 14:01:38 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 	while (TRUE)
 	{
 		user_input = ft_readline();
+		check_user_input(user_input);
 		add_history(user_input);
 		lexer = lexerinho(user_input, envp);
 		if (lexer.tokens)
