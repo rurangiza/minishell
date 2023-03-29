@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/24 12:05:01 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:53:31 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,33 @@ int	my_exit(t_token *tokens)
 		if (only_digit(tokens->cmd[1]))
 		{
 			printf("minishell: exit: %s: numeric argument needed\n", tokens->cmd[1]);
-			exit (255);
+			return (255);
 		}
 		else
-		{
-			printf("exit code = %i\n", j);
 			return (j);
-		}
 	}
 	return (0);
 }
+
+// void	my_exit(t_token *tokens)
+// {
+// 	int j;
+
+// 	printf("exit\n");
+// 	if (!tokens->cmd[1])
+// 	{
+// 		//printf("es\n");
+// 		exit (0);
+// 	}
+// 	if (tokens->cmd[1])
+// 	{
+// 		j = check_exit_status(tokens->cmd[1]);
+// 		if (only_digit(tokens->cmd[1]))
+// 		{
+// 			printf("minishell: exit: %s: numeric argument needed\n", tokens->cmd[1]);
+// 			exit (255);
+// 		}
+// 		else
+// 			exit (j);
+// 	}
+// }

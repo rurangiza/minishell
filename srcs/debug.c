@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/23 17:04:33 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/28 14:39:58 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,25 @@
 // structure
 void	display_prompt(t_prompt *prompt)
 {
-	printf(CBOLD CCYAN"~~~~~~~~~~~~~~~ PROMPT ~~~~~~~~~~~~~~~\n");
-	printf("%i pipes / cmd : %s\n", prompt->pipe_nb, prompt->cmds[0].cmd[0]);
-	printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"CRESET);
+	printf(CBOLD CCYAN"~~~~~~~~~~~~~~~ PROMPT ~~~~~~~~~~~~~~~\n"CRESET);
+	if (prompt->pipe_nb < 2)
+		printf("No pipes\n");
+	else
+		printf("%d pipes\n", prompt->pipe_nb);
+	int i = 0;
+	while (i < prompt->pipe_nb)
+	{
+		printf("[%i] %s ",i, prompt->cmds[i].cmd[0]);
+		int j = 1;
+		if (prompt->cmds[i].cmd[j])
+		{
+			while (prompt->cmds[i].cmd[j])
+				printf("{%s}", prompt->cmds[i].cmd[j++]);
+		}
+		printf("\n");
+		i++;
+	}
+	printf(CBOLD CCYAN"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"CRESET);
 }
 
 // starting

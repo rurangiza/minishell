@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 13:02:14 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:52:45 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,18 @@ int	main(int arg_count, char **arg_list, char **envp)
 	t_prompt	prompt;
 	t_lexer		lexer;
 
-	(void)arg_list;
-	if (arg_count != 1)
-	{
-		printf("Usage: ./minishell\n");
-		exit(EXIT_FAILURE);
-	}
+	
 	g_tools.exit_code = 0;
 	signal(SIGINT, handle_signals);
-	init_environment(envp);
-	system("clear");         //! Delete later
-	while (1)
+	init_shell(&prompt, arg_count, arg_list, envp);
+	while (TRUE)
 	{
-		char *level = getenv_custm("SHLVL");
-		if (level)
-			printf(CGRAY CBOLD"[lvl:%s] "CRESET, level + 1);
-		user_input = readline(CGREEN CBOLD"minishell $> "CRESET);
-		check_user_input(user_input);
+		user_input = ft_readline();
 		add_history(user_input);
 		lexer = lexerinho(user_input, envp);
 		if (lexer.tokens)
 		{
+			init_prompt(&prompt);
 			parser(&prompt, &lexer, envp);
 			if (prompt.pipe_nb == -1)
 				printf("minishell: syntax error near unexpected token\n");
@@ -46,5 +37,5 @@ int	main(int arg_count, char **arg_list, char **envp)
 				execute(prompt.cmds, &prompt);
 		}
 	}
-	return (0);
-}  
+	return (g_tools.exit_code);
+}

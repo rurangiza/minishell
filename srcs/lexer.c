@@ -6,6 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
+
 /*   Updated: 2023/03/27 14:47:09 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -291,7 +292,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	(void)envp;
 	t_lexer lexer;
 
-	if (!prompt || !prompt[0] || check_quotes(prompt) == -1)
+	if (!prompt || check_quotes(prompt) == -1)
 	{
 		printf("syntax error\n");
 		lexer.tmp = NULL;

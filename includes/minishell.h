@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/27 16:33:37 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:50:12 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,14 @@ typedef struct s_token
 
 typedef struct s_prompt
 {
-	t_token	*cmds;
-	char	**path;
-	char	**envp;
+	t_token	*cmds; // free
+	char	**path; // free
+	char	**envp; // free
 	int		pipe_nb;
+	int		prevpipe;
+	int		pipends[2];
+	pid_t	*saved_pid;
+	int		stdio[2];
 }	t_prompt;
 
 typedef enum e_state {
@@ -93,8 +97,8 @@ typedef enum e_state {
 /* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
 t_lexer	lexerinho(char *prompt, char **envp);
 char	**token(t_lexer *lexer);
-char *delete_quotes_1(char *str, char c);
-int	get_size(char *str, char c);
+char	*delete_quotes_1(char *str, char c);
+int		get_size(char *str, char c);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
 void	expander(t_lexer *lexer, char **envp);
@@ -110,11 +114,11 @@ char	*find_path(char **envp);
 
 void	execute(t_token *token, t_prompt *prompt);
 
-void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe);
+void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe, t_prompt *prompt);
 
-void	single_child(t_token *token);
-void	last_child(t_token *token, int prevpipe);
-void	middle_child(t_token *token, int index, int prevpipe, int *pipends);
+void	single_child(t_token *token, t_prompt *prompt);
+void	last_child(t_token *token, int prevpipe, t_prompt *prompt);
+void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt);
 
 void	redirect_in(t_token *token);
 void	redirect_out(t_token *token);
@@ -124,7 +128,7 @@ int		get_cmd_type(int size, int index);
 int		heredoc(char *limiter, int var_expdr);
 char	*expand_variable(char *buffer);
 
-int		execute_builtins(t_token *token);
+void	execute_builtins(t_token *token, t_prompt *prompt);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -134,14 +138,16 @@ int		export(t_token *tokens);
 void	unset(t_token *token);
 int		my_exit(t_token *tokens);
 void	cd(char *directory);
-//void	unset_shift(t_token *token);
+
+int		is_echo_option(char *str);
 
 /* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
 void	init_environment(char **envp);
+void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp);
+void	init_prompt(t_prompt *prompt);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
-void	dup_matrix(char **environment);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
@@ -169,7 +175,6 @@ int		is_empty_pipe(int read_end);
 //void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
-//char	*get_previous_directory();
 void	update_pwd(char *oldpwd, char *pwd);
 void	add_missing_oldpwd(char *newold);
 int		is_executable(char *path, struct stat stat_buffer);
@@ -179,6 +184,8 @@ char	*update_shell_level(char *variable);
 /* ~~~~~~~~~~~~~ SIGNALS ~~~~~~~~~~~~~~~ */
 void	handle_signals(int signo);
 
+/* ~~~~~~~~~~~~~ INTERFACE ~~~~~~~~~~~~~~~ */
+char	*ft_readline(void);
 
 /* ~~~~~~~~~~ DISPLAY ~~~~~~~~~~~~~~ */
 void	display_tree(int level, const char *function, t_token *token);
