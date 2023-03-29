@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/24 12:04:12 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/27 16:33:37 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_token
 	char			*cmd_path;
 	int				outfile;
 	int				infile;
-	char			**envp;
 	char			*delimiter;
 	int				heredoc_mode;
 	struct stat 	stats;

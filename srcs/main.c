@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/27 10:40:44 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/29 13:02:14 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	main(int arg_count, char **arg_list, char **envp)
 			if (prompt.cmds)
 				execute(prompt.cmds, &prompt);
 		}
-		free(user_input);
 	}
 	return (0);
-}
+}  
