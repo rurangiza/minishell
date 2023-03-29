@@ -1,3 +1,10 @@
+# About
+This project is about creating a lightweight version of bash (Born Again Shell).
+# Features
+- executes commands with options (Ex: <code>ls -l<code>)
+- handles pipelines (Ex: <code>ls | head -2 | wc<code>)
+- built-ins commands (cd, pwd, echo, unset, export, env)
+- I/O redirections (<, >, <<, >>)
 ## Tips & Tricks
 - Use the `lsof -c <name_of_your_program>` or `ps aux | grep program_name` commands to see the current processes of a specific program
 
