@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/29 11:19:18 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/30 13:28:57 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror -g -fsanitize=address
+CCFLAGS 	= -Wall -Wextra -Werror #-g -fsanitize=address
 
 # Only execute the line if the current user is "johndoe"
 ifeq ($(CURRENT_USER),akorompa)
@@ -58,7 +58,7 @@ else
 endif
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -fsanitize=address -g -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
 
 all:		${NAME}
 

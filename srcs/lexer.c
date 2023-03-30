@@ -309,6 +309,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 	}
 	expander(&lexer, envp);
 	lexer.tokens = token(&lexer);
+	ft_free_matrix(lexer.tmp);
 	delete_quotes(lexer.tokens);
 	return (lexer);
 }

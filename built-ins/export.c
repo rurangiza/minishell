@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 11:34:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:10:44 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,37 @@ void	export_2(char **cpy, int size, int len, t_prompt *prompt)
 	cpy[i] = 0;
 }
 
+int arr_len(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
+char **ft_dup_matrix(char **arr)
+{
+	char **cpy;
+	int len;
+	int i;
+	
+	len = arr_len(arr);
+	i = 0;
+	cpy = malloc(sizeof(char *) * (len + 1));
+	if (!cpy)
+		return (NULL);
+	while (i < len)
+	{
+		cpy[i] = ft_strdup(arr[i]);
+		i++;
+	}
+	cpy[i] = 0;
+	ft_free_matrix(arr);
+	return (cpy);
+}
+
 int	export(t_token *tokens, t_prompt *prompt)
 {
 	char **cpy;
@@ -147,6 +178,7 @@ int	export(t_token *tokens, t_prompt *prompt)
 	if (!cpy)
 		return (0);
 	export_2(cpy, size, len, prompt);
-	prompt->envp = cpy;
+	ft_free_matrix(prompt->envp);
+	prompt->envp = ft_dup_matrix(cpy);
 	return (0);
 }

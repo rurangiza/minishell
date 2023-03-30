@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 10:50:55 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:42:05 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ char	*update_shell_level(char *variable)
 {
 	int		level;
 	char	*new;
+	char	*tmp;
 
 	level = ft_atoi(variable);
+	tmp = ft_strdup("SHLVL=");
 	if (level < 1)
 		level = 1;
 	else
 		level++;
-	new = ft_strjoin(ft_strdup("SHLVL="), ft_itoa(level));
+	new = ft_strjoin(tmp, ft_itoa(level));
+	free(tmp);
 	return (new);
 }
 

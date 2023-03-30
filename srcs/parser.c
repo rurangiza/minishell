@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 13:57:18 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:47:15 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,5 +433,7 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		j++;
 		i++;
 	}
+	ft_free_matrix(prompt->path);
+	ft_free_matrix(lexer->tokens);
 	prompt->pipe_nb += 1; // CHECK THIS
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 12:46:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:51:49 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	main(int arg_count, char **arg_list, char **envp)
 			if (prompt.cmds)
 				execute(prompt.cmds, &prompt);
 		}
+		free(user_input);
+		system("leaks minishell");
 	}
 	return (g_exitcode);
 }

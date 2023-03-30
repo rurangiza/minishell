@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 11:34:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:56:28 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ void	cd(char *directory, t_prompt *prompt)
 	}
 	else
 	{
-		pwd = ft_strjoin(ft_strdup("PWD="), path);
+		char *tmp = ft_strdup("PWD=");
+		pwd = ft_strjoin(tmp, path);
+		free(tmp);
 		update_pwd(oldpwd, pwd, prompt);
 	}
 	free(path);

@@ -3,21 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 11:32:10 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:26:24 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	destroy(t_token *token)
-{	
-	ft_free_matrix(token->cmd);
-	//ft_free_matrix(token->envp);
-	free(token->cmd_path);
-	free(token->delimiter);
+void	destroy(t_prompt *prompt)
+{
+	int i;
+	
+	i = 0;	
+	while (i < prompt->pipe_nb)	
+	{
+		ft_free_matrix(prompt->cmds[i].cmd);
+		if (prompt->cmds[i].cmd_path)
+			free(prompt->cmds[i].cmd_path);
+		if (prompt->cmds[i].delimiter)
+			free(prompt->cmds[i].delimiter);
+		i++;	
+	}
+	free(prompt->cmds);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,7 +121,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	close(prompt->stdio[1]);
 	if (prompt->pipe_nb > 0)
 		free(prompt->saved_pid);
-	destroy(token);
+	destroy(prompt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
