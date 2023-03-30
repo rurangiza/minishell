@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 14:28:53 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:46:18 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,26 @@ void	execute(t_token *token, t_prompt *prompt)
 			cmd_type = get_cmd_type(prompt->pipe_nb, index);
 			if (cmd_type == _middle)
 			{
+				// if (pipe(prompt->pipends) == -1)
+				// {
+				// 	free(prompt->saved_pid);
+				// 	exit_msg();
+				// }
 				if (pipe(prompt->pipends) == -1)
-				{
-					free(prompt->saved_pid);
 					exit_msg();
-				}
 			}
+
 			signal(SIGINT, handle_inprocess_signals);
 			signal(SIGQUIT, SIG_IGN);
+
 			pid = fork();
 			if (pid == -1)
 				exit_msg();
 			else if (pid == 0)
 			{
-				//signal(SIGINT, handle_signals);
 				if (cmd_type == _single)
 				{
-					if (token[index].cmd && is_builtin(token[index].cmd[0]))
+					if (token[index].cmd && is_builtin(token[index].cmd[0])) //! Delete this (redundant)
 						execute_builtins(token, prompt);
 					else
 						single_child(&token[index], prompt);
@@ -91,7 +94,7 @@ void	execute(t_token *token, t_prompt *prompt)
 			{
 				close(prompt->pipends[WRITE]);
 				prompt->prevpipe = prompt->pipends[READ];
-				if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0)
+				if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0 && !token->cmd[1])
 					close(prompt->pipends[READ]);
 			}
 		}
@@ -115,6 +118,7 @@ void	execute(t_token *token, t_prompt *prompt)
 			}
 		}
 	}
+	
 	// terminate_execution()
 	dup2(prompt->stdio[0], STDIN_FILENO);
 	close(prompt->stdio[0]);
@@ -140,7 +144,6 @@ int get_cmd_type(int size, int index)
 
 void	single_child(t_token *token, t_prompt *prompt)
 {
-	//display_tree(1, __func__, token);
 	(void)prompt;
 	if (token->infile != -1)
 		redirect_in(token, prompt);
@@ -154,7 +157,7 @@ void	single_child(t_token *token, t_prompt *prompt)
 ///////////////////////////////////////////////////////////////////////////////
 
 void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
-{	
+{
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	else
@@ -162,7 +165,7 @@ void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 	close(prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
-	if (token->cmd && is_builtin(token->cmd[0]))
+	if (token->cmd && is_builtin(token->cmd[0])) //!Delete this (redundant)
 	{
 		execute_builtins(token, prompt);
 		exit(0);
@@ -179,21 +182,23 @@ void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt)
 {
+	(void)prevpipe;
 	close(pipends[READ]);
-		
+			
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	else if (index > 0)
 	{
-		dup2(prevpipe, STDIN_FILENO);
-		close(prevpipe);
+		dup2(prompt->prevpipe, STDIN_FILENO);
+		close(prompt->prevpipe);
 	}
+
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
 		dup2(pipends[WRITE], STDOUT_FILENO);
 	close(pipends[WRITE]);
-	if (token->cmd && is_builtin(token->cmd[0]))
+	if (token->cmd && is_builtin(token->cmd[0])) //! Delete this (redundant)
 	{
 		execute_builtins(token, prompt);
 		exit(0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 13:42:05 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:08:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,5 @@ void	init_prompt(t_prompt *prompt)
 	prompt->cmds = NULL;
 	prompt->path = NULL;
 	prompt->saved_pid = NULL;
+	prompt->prevpipe = -1;
 }
