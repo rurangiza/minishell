@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/29 14:07:19 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:13:12 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ int	is_variable_to_be_deleted(char *target, char *source)
 }
 
 /* Check whether a variable {token} is in the global environment */
-int is_in_environment(char *variable)
+int is_in_environment(char *variable, t_prompt *prompt)
 {
     int index;
     int variable_length;
 
     variable_length = ft_strlen(variable);
     index = 0;
-    while (g_environment[index])
+    while (prompt->envp[index])
     {
-        if (ft_strncmp(g_environment[index], variable, variable_length) == 0
-            && g_environment[index][variable_length] == '=')
+        if (ft_strncmp(prompt->envp[index], variable, variable_length) == 0
+            && prompt->envp[index][variable_length] == '=')
             return (1);
         index++;
     }

@@ -6,11 +6,28 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/28 14:39:58 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:54:54 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	display_env(t_prompt *prompt, char *str)
+{
+	int	index;
+
+	if (!prompt->envp)
+		return ;
+	index= 0;
+	while (prompt->envp[index])
+	{
+		if (str && ft_strncmp(str, prompt->envp[index], ft_strlen(str)) == 0)
+			printf(CCYAN"%s\n"CRESET, prompt->envp[index]);
+		else
+			printf("%s\n", prompt->envp[index]);
+		index++;
+	}
+}
 
 // structure
 void	display_prompt(t_prompt *prompt)

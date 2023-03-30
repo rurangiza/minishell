@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 10:42:49 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:32:10 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,29 +128,16 @@ int get_cmd_type(int size, int index)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-char	*find_pathway(void)
-{
-	int	index = 0;
-
-	while (g_environment[index])
-	{
-		if (ft_strncmp(g_environment[index], "PATH=", 5) == 0)
-			return (&g_environment[index][5]);
-		index++;
-	}
-	return (NULL);
-}
-
 void	single_child(t_token *token, t_prompt *prompt)
 {
 	//display_tree(1, __func__, token);
 	(void)prompt;
 	if (token->infile != -1)
-		redirect_in(token);
+		redirect_in(token, prompt);
 	if (token->outfile != -1)
 		redirect_out(token);
-	handle_execution_errors(token);
-	execve(token->cmd_path, token->cmd, g_environment);
+	handle_execution_errors(token, prompt);
+	execve(token->cmd_path, token->cmd, prompt->envp);
 	exit_msg();
 }
 
@@ -159,7 +146,7 @@ void	single_child(t_token *token, t_prompt *prompt)
 void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 {	
 	if (token->infile != -1)
-		redirect_in(token);
+		redirect_in(token, prompt);
 	else
 		dup2(prevpipe, STDIN_FILENO);
 	close(prevpipe);
@@ -172,8 +159,8 @@ void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 	}
 	else
 	{
-		handle_execution_errors(token);
-		execve(token->cmd_path, token->cmd, g_environment);
+		handle_execution_errors(token, prompt);
+		execve(token->cmd_path, token->cmd, prompt->envp);
 		exit_msg();
 	}
 }
@@ -185,7 +172,7 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_promp
 	close(pipends[READ]);
 		
 	if (token->infile != -1)
-		redirect_in(token);
+		redirect_in(token, prompt);
 	else if (index > 0)
 	{
 		dup2(prevpipe, STDIN_FILENO);
@@ -203,8 +190,8 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_promp
 	}
 	else
 	{
-		handle_execution_errors(token);
-		execve(token->cmd_path, token->cmd, g_environment);
+		handle_execution_errors(token, prompt);
+		execve(token->cmd_path, token->cmd, prompt->envp);
 		exit_msg();
 	}
 }
@@ -233,7 +220,7 @@ void	execute_builtins(t_token *token, t_prompt *prompt)
 	if (token->infile != -1)
 	{
 		printf("Chanding IN\n");
-		redirect_in(token);
+		redirect_in(token, prompt);
 	}
 	if (token->outfile != -1)
 	{
@@ -247,15 +234,15 @@ void	execute_builtins(t_token *token, t_prompt *prompt)
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
-		cd(token->cmd[1]);
+		cd(token->cmd[1], prompt);
 	if (ft_strncmp(token->cmd[0], "pwd", 3) == 0)
 		pwd(token);
 	else if (ft_strncmp(token->cmd[0], "export", 6) == 0)
-		export(token);
+		export(token, prompt);
 	else if (ft_strncmp(token->cmd[0], "unset", 5) == 0)
-		unset(token);
+		unset(token, prompt);
 	else if (ft_strncmp(token->cmd[0], "env", 3) == 0)
-		env(token);
+		env(token, prompt);
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	{
 		status = my_exit(token);

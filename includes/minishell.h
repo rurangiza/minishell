@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 10:41:37 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:53:57 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@
 # define HERE_DOC -3
 # define NO_REDIR -1
 
-extern char **g_environment;
-char 	**g_environment;
+// extern char **g_environment;
+// char 	**g_environment;
 
 extern int	g_exitcode;
 int g_exitcode;
@@ -117,7 +117,7 @@ int		get_size(char *str, char c);
 /* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
 void	expander(t_lexer *lexer, char **envp);
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
-char	*get_envp_variable(char *variable);
+char	*get_envp_variable(char *variable, char **envp);
 
 void	parser(t_prompt *prompt, t_lexer *lexer, char **envp);
 int		is_valid_cmd(char *str, char **path);
@@ -134,29 +134,28 @@ void	single_child(t_token *token, t_prompt *prompt);
 void	last_child(t_token *token, int prevpipe, t_prompt *prompt);
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt);
 
-void	redirect_in(t_token *token);
+void	redirect_in(t_token *token, t_prompt *prompt);
 void	redirect_out(t_token *token);
 
 int		get_cmd_type(int size, int index);
 
-int		heredoc(char *limiter, int var_expdr);
-char	*expand_variable(char *buffer);
+int		heredoc(char *limiter, int var_expdr, t_prompt *prompt);
 
 void	execute_builtins(t_token *token, t_prompt *prompt);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
 void	pwd(t_token *token);
-void	env(t_token *tokens);
-int		export(t_token *tokens);
-void	unset(t_token *token);
+void	env(t_token *tokens, t_prompt *prompt);
+int		export(t_token *tokens, t_prompt *prompt);
+void	unset(t_token *token, t_prompt *prompt);
 int		my_exit(t_token *tokens);
-void	cd(char *directory);
+void	cd(char *directory, t_prompt *prompt);
 
 int		is_echo_option(char *str);
 
 /* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
-void	init_environment(char **envp);
+char	**init_environment(char **envp);
 void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp);
 void	init_prompt(t_prompt *prompt);
 
@@ -166,19 +165,19 @@ void	ft_free_matrix(char **matrix);
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
 void	exitmsg(char *msg, char *cmd, int code);
-void	handle_execution_errors(t_token *token);
+void	handle_execution_errors(t_token *token, t_prompt *prompt);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
-char	*expand_variable(char *buffer);
+char	*expand_variable(char *buffer, char **envp);
 //char	*get_userdir(void);
-char	*get_variable_in_environment(char *variable);
-char	*getenv_custm(char *variable); // Same without message
+char	*get_variable_in_environment(char *variable, t_prompt *prompt); // cd()
+char	*getenv_custm(char *variable, t_prompt *prompt); // Same without message
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
 int		is_variable_to_be_deleted(char *target, char *source);
-int		is_in_environment(char *variable);
+int		is_in_environment(char *variable, t_prompt *prompt);
 int		is_special_symbol(char *directory);
 int		is_valid_identifier(char *str);
 int		is_directory(char *path, struct stat stat_buffer);
@@ -189,8 +188,8 @@ int		is_empty_pipe(int read_end);
 //void	hanging_cats(t_token *token);
 
 void	update_directory_history(t_prompt *prompt, char *path);
-void	update_pwd(char *oldpwd, char *pwd);
-void	add_missing_oldpwd(char *newold);
+void	update_pwd(char *oldpwd, char *pwd, t_prompt *prompt);
+void	add_missing_oldpwd(char *newold, t_prompt *prompt);
 int		is_executable(char *path, struct stat stat_buffer);
 
 char	*update_shell_level(char *variable);
@@ -208,5 +207,6 @@ void	display_tree(int level, const char *function, t_token *token);
 void	display_start(void);
 void	display_end(void);
 void	display_prompt(t_prompt *prompt);
+void	display_env(t_prompt *prompt, char *str);
 
 #endif

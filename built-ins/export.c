@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/07 13:03:26 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:34:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int envp_len(void)
+int envp_len(t_prompt *prompt)
 {
 	int i;
 
 	i = 0;
-	while (g_environment[i])
+	while (prompt->envp[i])
 	{
 		i++;
 	}
 	return (i);
 }
 
-void	sort_array(void)
+void	sort_array(t_prompt *prompt)
 {
 	int i;
 	int j;
@@ -32,17 +32,17 @@ void	sort_array(void)
 	char *tmp;
 
 	i = 0;
-	len = envp_len();
+	len = envp_len(prompt);
 	while (i < len)
 	{
 		j = i + 1;
 		while (j < len)
 		{
-			if (ft_strncmp(g_environment[i], g_environment[j], ft_strlen(g_environment[i])) > 0)
+			if (ft_strncmp(prompt->envp[i], prompt->envp[j], ft_strlen(prompt->envp[i])) > 0)
 			{
-				tmp = g_environment[i];
-				g_environment[i] = g_environment[j];
-				g_environment[j] = tmp;
+				tmp = prompt->envp[i];
+				prompt->envp[i] = prompt->envp[j];
+				prompt->envp[j] = tmp;
 			}
 			j++;
 		}
@@ -50,15 +50,15 @@ void	sort_array(void)
 	}
 }
 
-void	print_export(void)
+void	print_export(t_prompt *prompt)
 {
 	int i;
 
 	i = 0;
-	sort_array();
-	while (g_environment[i])
+	sort_array(prompt);
+	while (prompt->envp[i])
 	{
-		printf("declare -x %s\n", g_environment[i]);
+		printf("declare -x %s\n", prompt->envp[i]);
 		i++;
 	}
 }
@@ -106,7 +106,7 @@ int	check_export(char **cmd)
 	return (0);
 }
 
-void	export_2(char **cpy, int size, int len, t_token *tokens)
+void	export_2(char **cpy, int size, int len, t_prompt *prompt)
 {
 	int i;
 	int j;
@@ -114,19 +114,19 @@ void	export_2(char **cpy, int size, int len, t_token *tokens)
 	i = 0;
 	while (i < size)
 	{
-		cpy[i] = ft_strdup(g_environment[i]);
+		cpy[i] = ft_strdup(prompt->envp[i]);
 		i++;
 	}
 	j = 0;
 	while (++j < len + 1 )
 	{
-		cpy[i] = ft_strdup(tokens->cmd[j]);
+		cpy[i] = ft_strdup(prompt->cmds->cmd[j]);
 		i++;
 	}
 	cpy[i] = 0;
 }
 
-int	export(t_token *tokens)
+int	export(t_token *tokens, t_prompt *prompt)
 {
 	char **cpy;
 	int size;
@@ -136,17 +136,17 @@ int	export(t_token *tokens)
 	
 	if (!tokens->cmd[1])
 	{
-		print_export();
+		print_export(prompt);
 		return (0);
 	}
 	if (check_export(tokens->cmd))
 		return (printf("export : 'var_name=value'\n"));
-	size = envp_len();
+	size = envp_len(prompt);
 	len = tokens_to_export(tokens->cmd);
 	cpy = malloc(sizeof(char *) * ((size + len) + 1));
 	if (!cpy)
 		return (0);
-	export_2(cpy, size, len, tokens);
-	g_environment = cpy;
+	export_2(cpy, size, len, prompt);
+	prompt->envp = cpy;
 	return (0);
 }

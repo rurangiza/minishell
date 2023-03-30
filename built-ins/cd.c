@@ -6,13 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/24 10:14:04 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:34:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	cd(char *directory)
+void	cd(char *directory, t_prompt *prompt)
 {
 	char	*path = NULL;
 	char	*oldpwd = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
@@ -20,12 +20,12 @@ void	cd(char *directory)
 	
 	//path = get_userdir();
 	if (!directory)
-		path = get_variable_in_environment("HOME=");
+		path = get_variable_in_environment("HOME=", prompt);
 	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
 	{
 		if (directory[0] == '-')
 		{
-			path = get_variable_in_environment("OLDPWD=");
+			path = get_variable_in_environment("OLDPWD=", prompt);
 			if (path == NULL)
 			{
 				free(oldpwd);
@@ -65,20 +65,20 @@ void	cd(char *directory)
 	else
 	{
 		pwd = ft_strjoin(ft_strdup("PWD="), path);
-		update_pwd(oldpwd, pwd);
+		update_pwd(oldpwd, pwd, prompt);
 	}
 	free(path);
 }
 
-char	*get_variable_in_environment(char *variable)
+char	*get_variable_in_environment(char *variable, t_prompt *prompt)
 {
 	int index = 0;
 	int	var_length = ft_strlen(variable);
 
-	while (g_environment[index])
+	while (prompt->envp[index])
 	{
-		if (ft_strncmp(g_environment[index], variable, var_length) == 0)
-			return (ft_substr(g_environment[index], var_length, ft_strlen(g_environment[index])));
+		if (ft_strncmp(prompt->envp[index], variable, var_length) == 0)
+			return (ft_substr(prompt->envp[index], var_length, ft_strlen(prompt->envp[index])));
 		index++;
 	}
 	write(1, "bash: cd: ", 10);
@@ -89,70 +89,55 @@ char	*get_variable_in_environment(char *variable)
 	return (NULL);
 }
 
-char	*getenv_custm(char *variable)
+char	*getenv_custm(char *variable, t_prompt *prompt)
 {
 	int index = 0;
 	int	var_length = ft_strlen(variable);
 
-	while (g_environment[index])
+	while (prompt->envp[index])
 	{
-		if (ft_strncmp(g_environment[index], variable, var_length) == 0)
-			return (ft_substr(g_environment[index], var_length, ft_strlen(g_environment[index])));
+		if (ft_strncmp(prompt->envp[index], variable, var_length) == 0)
+			return (ft_substr(prompt->envp[index], var_length, ft_strlen(prompt->envp[index])));
 		index++;
 	}
 	index = 0;
-	// while (variable[index] && variable[index] != '=')
-	// 	write(1, &variable[index++], 1);
 	return (NULL);
 }
 
-char	*get_previous_directory(void)
-{
-	int index = 0;
-
-	while (g_environment[index])
-	{
-		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
-			return (ft_substr(g_environment[index], 7, ft_strlen(g_environment[index])));
-		index++;
-	}
-	return (NULL);
-}
-
-void	update_pwd(char *oldpwd, char *pwd)
+void	update_pwd(char *oldpwd, char *pwd, t_prompt *prompt)
 {
 	int	index;
 	int	found_oldpwd;
 
 	found_oldpwd = 0;
 	index = 0;
-	while (g_environment[index])
+	while (prompt->envp[index])
 	{
-		if (ft_strncmp(g_environment[index], "OLDPWD=", 7) == 0)
+		if (ft_strncmp(prompt->envp[index], "OLDPWD=", 7) == 0)
 		{
-			free(g_environment[index]);
-			g_environment[index] = oldpwd;
+			free(prompt->envp[index]);
+			prompt->envp[index] = oldpwd;
 			found_oldpwd = 1;
 		}
-		else if (ft_strncmp(g_environment[index], "PWD=", 4) == 0)
+		else if (ft_strncmp(prompt->envp[index], "PWD=", 4) == 0)
 		{
-			free(g_environment[index]);
-			g_environment[index] = pwd;
+			free(prompt->envp[index]);
+			prompt->envp[index] = pwd;
 		}
 		index++;
 	}
 	if (found_oldpwd == 0)
-		add_missing_oldpwd(oldpwd);
+		add_missing_oldpwd(oldpwd, prompt);
 }
 
-void	add_missing_oldpwd(char *newold)
+void	add_missing_oldpwd(char *newold, t_prompt *prompt)
 {
 	int size;
 	int i;
 	char **tmp;
 
 	size = 0;
-	while (g_environment[size])
+	while (prompt->envp[size])
 		size++;
 	size += 1;
 	tmp = malloc((size + 1) * sizeof(char *));
@@ -163,11 +148,11 @@ void	add_missing_oldpwd(char *newold)
 	
 	i = 1;
 	int j = 0;
-	while (g_environment[j])
+	while (prompt->envp[j])
 	{
-		tmp[i++] = ft_strdup(g_environment[j++]);
+		tmp[i++] = ft_strdup(prompt->envp[j++]);
 	}
 	tmp[i] = NULL;
-	ft_free_matrix(g_environment);
-	g_environment = tmp;
+	ft_free_matrix(prompt->envp);
+	prompt->envp = tmp;
 }

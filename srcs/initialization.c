@@ -6,39 +6,42 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 10:42:05 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:50:55 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	init_environment(char **envp)
+char	**init_environment(char **envp)
 {
 	int		index;
+	char	**tmp;
+	int		outdex;
 
 	index = 0;
 	while (envp[index])
 		index++;
 	if (!getenv("OLDPWD"))
 		index--;
-	g_environment = malloc((index + 2) * sizeof(char *));
-	if (!g_environment)
-		return ;
+	tmp = malloc((index + 2) * sizeof(char *));
+	if (!tmp)
+		return (NULL);
 	index = 0;
-	int outdex = 0;
+	outdex = 0;
 	while (envp[index])
 	{
 		if (ft_strncmp(envp[index], "OLDPWD=", 7) != 0)
 		{
 			if (ft_strncmp(envp[index], "SHLVL=", 6) == 0)
-				g_environment[outdex] = update_shell_level(envp[index] + 6);
+				tmp[outdex] = update_shell_level(envp[index] + 6);
 			else
-				g_environment[outdex] = ft_strdup(envp[index]);
+				tmp[outdex] = ft_strdup(envp[index]);
 			outdex++;
 		}
 		index++;
 	}
-	g_environment[outdex] = NULL;
+	tmp[outdex] = NULL;
+	return (tmp);
 }
 
 char	*update_shell_level(char *variable)
@@ -73,7 +76,7 @@ void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	// Clone environment variables
-	init_environment(envp);
+	prompt->envp = init_environment(envp);
 }
 
 void	init_prompt(t_prompt *prompt)

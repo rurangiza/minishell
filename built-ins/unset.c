@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/13 13:12:23 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:34:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 */
 
 
-void	unset(t_token *token)
+void	unset(t_token *token, t_prompt *prompt)
 {
 	int index = 1;
 
-	while (token->cmd[index] && is_in_environment(token->cmd[index]))
+	while (token->cmd[index] && is_in_environment(token->cmd[index], prompt))
 	{
 		if (!is_valid_identifier(token->cmd[index]))
 		{
@@ -41,25 +41,25 @@ void	unset(t_token *token)
 		char **copy;
 
 		int size = 0;
-		while (g_environment[size])
+		while (prompt->envp[size])
 			size++;
 		copy = malloc(sizeof(char *) * (size + 1));
 
 		int src_index = 0;
 		int copy_index = 0;
-		while (src_index < size && g_environment[src_index])
+		while (src_index < size && prompt->envp[src_index])
 		{
-			if (!is_variable_to_be_deleted(g_environment[src_index], token->cmd[index]))
+			if (!is_variable_to_be_deleted(prompt->envp[src_index], token->cmd[index]))
 			{
-				copy[copy_index] = ft_strdup(g_environment[src_index]);
+				copy[copy_index] = ft_strdup(prompt->envp[src_index]);
 				copy_index++;
 			}
 			src_index++;
 		}
 		copy[copy_index] = NULL;
-		ft_free_matrix(g_environment);
+		ft_free_matrix(prompt->envp);
 
-		g_environment = copy;
+		prompt->envp = copy;
 		
 		index++;
 	}

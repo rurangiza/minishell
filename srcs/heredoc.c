@@ -6,18 +6,18 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/28 12:51:54 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:28:30 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	heredoc(char *limiter, int var_expand)
+int	heredoc(char *limiter, int var_expand, t_prompt *prompt)
 {
 	char	*stash = NULL;
 	char	*buffer = NULL;
 	int		ends[2];
-	
+
 	if (pipe(ends) == -1)
 		return (-1);
 	printf(CBOLD"Enter input below. Write \033[31m%s\033[0m to exit\n"CRESET,
@@ -34,7 +34,7 @@ int	heredoc(char *limiter, int var_expand)
 			break ;
 		}
 		while (ft_strchr_mod(buffer, '$') != -1 && var_expand == TRUE)
-			buffer = expand_variable(buffer);
+			buffer = expand_variable(buffer, prompt->envp);
 		stash = ft_strjoin_trio(stash, buffer, "\n");
 		buffer = NULL;
 	}
@@ -45,16 +45,16 @@ int	heredoc(char *limiter, int var_expand)
 }
 
 // Similar to get_variable_environment()
-char	*get_envp_variable(char *variable)
+char	*get_envp_variable(char *variable, char **envp)
 {
 	int index = 0;
 
 	variable = ft_strjoin(variable, "=");
 	int len = ft_strlen(variable);
-	while (g_environment[index])
+	while (envp[index])
 	{
-		if (ft_strncmp(g_environment[index], variable, len) == 0)
-			return (ft_substr(g_environment[index], len, ft_strlen(g_environment[index])));
+		if (ft_strncmp(envp[index], variable, len) == 0)
+			return (ft_substr(envp[index], len, ft_strlen(envp[index])));
 		index++;
 	}
 	return (NULL);

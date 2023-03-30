@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 10:43:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:24:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 	return (tmp);
 }
 
-char *expand_variable(char *buffer)
+char *expand_variable(char *buffer, char **envp)
 {
 	int		start;
 	int		end;
@@ -75,7 +75,7 @@ char *expand_variable(char *buffer)
 	variable = ft_substr(buffer, start, end - start);
 	//printf("%s\n", variable);
 	// Check if variable exists in envp
-	expanded = get_envp_variable(variable);
+	expanded = get_envp_variable(variable, envp);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
 	else

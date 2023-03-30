@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 10:43:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:54:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ int	main(int arg_count, char **arg_list, char **envp)
 		user_input = ft_readline();
 		check_user_input(user_input);
 		add_history(user_input);
-		lexer = lexerinho(user_input, envp);
+		lexer = lexerinho(user_input, prompt.envp);
 		if (lexer.tokens)
 		{
 			init_prompt(&prompt);
 			parser(&prompt, &lexer, envp);
 			if (prompt.pipe_nb == -1)
 				printf("minishell: syntax error near unexpected token\n");
+			display_env(&prompt, "PATH");
 			if (prompt.cmds)
 				execute(prompt.cmds, &prompt);
 		}

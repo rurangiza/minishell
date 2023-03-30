@@ -6,13 +6,13 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:56:40 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/06 10:20:06 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 11:01:10 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	env(t_token *tokens)
+void	env(t_token *tokens, t_prompt *prompt)
 {
 	int i;
 
@@ -22,9 +22,9 @@ void	env(t_token *tokens)
 		exit (1);
 	}
 	i = 0;
-	while (g_environment[i])
+	while (prompt->envp[i])
 	{
-		printf("%s\n", g_environment[i]);
+		printf("%s\n", prompt->envp[i]);
 		i++;
 	}
 }
