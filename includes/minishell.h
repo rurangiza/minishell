@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 11:59:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 13:59:53 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,9 @@ char	*update_shell_level(char *variable);
 void	handle_signals(int signo);
 void	handle_inprocess_signals(int signo);
 void	handle_inheredoc_signals(int signo);
+
+void	sigquit_handler(int sig);
+void	sigquit_handler_inprocess(int sig);
 
 /* ~~~~~~~~~~~~~ INTERFACE ~~~~~~~~~~~~~~~ */
 char	*ft_readline(void);
