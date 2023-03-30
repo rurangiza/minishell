@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 09:45:07 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:42:49 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	execute(t_token *token, t_prompt *prompt)
 		waitpid(prompt->saved_pid[i], &status, 0);
 		if (WIFEXITED(status))
 		{
-			g_tools.exit_code = WEXITSTATUS(status);
+			g_exitcode = WEXITSTATUS(status);
 			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1 && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
 			{
-				printf("Code before out = %i\n", g_tools.exit_code);
-				exit(g_tools.exit_code);
+				printf("Code before out = %i\n", g_exitcode);
+				exit(g_exitcode);
 			}
 			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 			{
@@ -228,7 +228,7 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 
 void	execute_builtins(t_token *token, t_prompt *prompt)
 {
-	int	exit_code;
+	int	status;
 	
 	if (token->infile != -1)
 	{
@@ -243,7 +243,7 @@ void	execute_builtins(t_token *token, t_prompt *prompt)
 	if (index > 0)
 		close(prompt->prevpipe);
 	
-	exit_code = 0;
+	status = 0;
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
 	else if (ft_strncmp(token->cmd[0], "cd", 2) == 0)
@@ -258,9 +258,9 @@ void	execute_builtins(t_token *token, t_prompt *prompt)
 		env(token);
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	{
-		exit_code = my_exit(token);
+		status = my_exit(token);
 		if (prompt->pipe_nb == 1 )
-			exit(exit_code);
+			exit(status);
 	}
 	//dup2(fdout, STDOUT_FILENO);
 }

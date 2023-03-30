@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 09:13:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:42:05 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,10 @@ void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp)
 {
 	(void)arg_list;
 	(void)prompt;
+
+	g_exitcode = 0;
 	// Remove ^C when pressing Ctrl^C
-	struct termios term;
+	struct termios term; //! Declare structure in head
     tcgetattr(STDIN_FILENO, &term);
     term.c_lflag &= ~ECHOCTL;
     tcsetattr(STDIN_FILENO, TCSANOW, &term);

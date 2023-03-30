@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 12:01:29 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 10:32:49 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:43:08 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	handle_signals(int signo)
 		rl_on_new_line();
 		rl_replace_line("", 0);		
 		if (getpid() == 0)
-			g_tools.exit_code = 130;
+			g_exitcode = 130;
 		else
 		{
 			rl_redisplay();
-			g_tools.exit_code = 1;
+			g_exitcode = 1;
 		}
 	}
 }
@@ -35,7 +35,7 @@ void	handle_inprocess_signals(int signo)
 	{
 		printf("\n");
 		rl_replace_line("", 0);
-		g_tools.exit_code = 130;
+		g_exitcode = 130;
 	}
 }
 

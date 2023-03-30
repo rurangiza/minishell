@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/28 10:29:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:41:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	echo(t_token *token)
 	while (token->cmd[index])
 	{
 		if (ft_strncmp("$?", token->cmd[index], 2) == 0)
-			write(STDOUT_FILENO, ft_itoa(g_tools.exit_code), ft_strlen(ft_itoa(g_tools.exit_code)));
+			write(STDOUT_FILENO, ft_itoa(g_exitcode), ft_strlen(ft_itoa(g_exitcode)));
 		else
 			write(STDOUT_FILENO, token->cmd[index], ft_strlen(token->cmd[index]));
 		if (index > 0 && index < ft_strlen(token->cmd[index]))

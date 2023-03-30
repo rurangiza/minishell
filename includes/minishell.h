@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 10:12:41 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:41:37 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@
 # define NO_REDIR -1
 
 extern char **g_environment;
-
 char 	**g_environment;
+
+extern int	g_exitcode;
+int g_exitcode;
 
 typedef struct s_tools {
 	int		exit_code;

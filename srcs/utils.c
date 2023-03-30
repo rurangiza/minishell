@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/15 11:49:17 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:43:34 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char *expand_variable(char *buffer)
 	start = ft_strchr_mod(buffer, '$') + 1;
 	if (!buffer[start] || (buffer[start] == '\"') || buffer[start] == '?')
 	{
-		expanded = ft_itoa(g_tools.exit_code);
+		expanded = ft_itoa(g_exitcode);
 		end = start + 1;
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, ft_strdup(buffer + end));
 		free(buffer);
