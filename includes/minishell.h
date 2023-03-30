@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 13:59:53 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:21:57 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ int		is_directory(char *path, struct stat stat_buffer);
 int		is_unexpected_token(char *token);
 void	check_user_input(char *input);
 int		is_empty_pipe(int read_end);
+char	*ft_strjoin_freeboth(char *s1, char *s2);
 
 //void	hanging_cats(t_token *token);
 

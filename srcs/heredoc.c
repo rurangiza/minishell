@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 11:28:30 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:03:58 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ int	heredoc(char *limiter, int var_expand, t_prompt *prompt)
 
 	if (pipe(ends) == -1)
 		return (-1);
-	printf(CBOLD"Enter input below. Write \033[31m%s\033[0m to exit\n"CRESET,
-		limiter);
+	//printf(CBOLD"Enter input below. Write \033[31m%s\033[0m to exit\n"CRESET, limiter);
 	while (TRUE)
 	{
 		buffer = readline("> ");
@@ -30,6 +29,7 @@ int	heredoc(char *limiter, int var_expand, t_prompt *prompt)
 		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0
 			&& ft_strlen(buffer) == ft_strlen(limiter))
 		{
+			printf("--- breaking!!\n");
 			free(buffer);
 			break ;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 13:56:28 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 17:07:34 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 void	cd(char *directory, t_prompt *prompt)
 {
 	char	*path = NULL;
-	char	*oldpwd = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
+	char	*oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
 	char	*pwd;
-	
-	//path = get_userdir();
+
 	if (!directory)
 		path = get_variable_in_environment("HOME=", prompt);
 	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
@@ -40,23 +39,18 @@ void	cd(char *directory, t_prompt *prompt)
 			path = ft_strdup("/");
 	}
 	else if (directory[0] == '/')
-	{
-		// Do this
 		path = ft_strdup(directory);
-	}
 	else
 	{
 		path = ft_strdup(getcwd(NULL, 0));
 		if (ft_strlen(path) == 1 && ft_strncmp(path, "/", 1) == 0)
-			path = ft_strjoin(path, directory);
+			path = ft_strjoin_freeboth(path, directory);
 		else
 			path = ft_strjoin_trio(path, "/", directory);
 	}
+
 	if (!path)
-	{
-		free(oldpwd);
 		return ;
-	}
     if (chdir(path) == -1)
 	{
 		printf("bash: cd: %s: No such file or directory\n", directory);
@@ -65,12 +59,70 @@ void	cd(char *directory, t_prompt *prompt)
 	else
 	{
 		char *tmp = ft_strdup("PWD=");
-		pwd = ft_strjoin(tmp, path);
-		free(tmp);
+		pwd = ft_strjoin_freeboth(tmp, path);
 		update_pwd(oldpwd, pwd, prompt);
 	}
-	free(path);
 }
+
+// void	cd(char *directory, t_prompt *prompt)
+// {
+// 	char	*path = NULL;
+// 	char	*oldpwd = ft_strjoin_mod(ft_strdup("OLDPWD="), ft_strdup(getcwd(NULL, 0)));
+// 	char	*pwd;
+	
+// 	//path = get_userdir();
+// 	if (!directory)
+// 		path = get_variable_in_environment("HOME=", prompt);
+// 	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
+// 	{
+// 		if (directory[0] == '-')
+// 		{
+// 			path = get_variable_in_environment("OLDPWD=", prompt);
+// 			if (path == NULL)
+// 			{
+// 				free(oldpwd);
+// 				return ;
+// 			}
+// 			else
+// 				printf("%s\n", path);
+// 		}
+// 		else if (directory[0] == '~')
+// 			path = ft_strdup(getenv("HOME"));
+// 		else if (directory[0] == '/')
+// 			path = ft_strdup("/");
+// 	}
+// 	else if (directory[0] == '/')
+// 	{
+// 		// Do this
+// 		path = ft_strdup(directory);
+// 	}
+// 	else
+// 	{
+// 		path = ft_strdup(getcwd(NULL, 0));
+// 		if (ft_strlen(path) == 1 && ft_strncmp(path, "/", 1) == 0)
+// 			path = ft_strjoin(path, directory);
+// 		else
+// 			path = ft_strjoin_trio(path, "/", directory);
+// 	}
+// 	if (!path)
+// 	{
+// 		free(oldpwd);
+// 		return ;
+// 	}
+//     if (chdir(path) == -1)
+// 	{
+// 		printf("bash: cd: %s: No such file or directory\n", directory);
+// 		free(oldpwd);
+// 	}
+// 	else
+// 	{
+// 		char *tmp = ft_strdup("PWD=");
+// 		pwd = ft_strjoin(tmp, path);
+// 		free(tmp);
+// 		update_pwd(oldpwd, pwd, prompt);
+// 	}
+// 	free(path);
+// }
 
 char	*get_variable_in_environment(char *variable, t_prompt *prompt)
 {
@@ -144,7 +196,10 @@ void	add_missing_oldpwd(char *newold, t_prompt *prompt)
 	size += 1;
 	tmp = malloc((size + 1) * sizeof(char *));
 	if (!tmp)
+	{
+		free(newold);
 		return ;
+	}
 	
 	tmp[0] = newold;
 	

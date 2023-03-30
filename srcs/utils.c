@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 11:24:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 16:21:43 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,37 @@ char *expand_variable(char *buffer, char **envp)
 	free(variable);
 	free(buffer);
 	return (tmp);
+}
+
+char	*ft_strjoin_freeboth(char *s1, char *s2)
+{
+	char	*tab;
+	int		i;
+	int		j;
+
+	if (!s1)
+	{
+		s1 = ft_strdup("");
+		if (!s1)
+			return (NULL);
+	}
+	if (!s2)
+	{
+		s2 = ft_strdup("");
+		if (!s2)
+			return (NULL);
+	}
+	tab = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!tab)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (s1[++i] != '\0')
+		tab[i] = s1[i];
+	while (s2[j] != '\0')
+		tab[i++] = s2[j++];
+	tab[i] = '\0';
+	free(s1);
+	free(s2);
+	return (tab);
 }
