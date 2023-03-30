@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 14:26:24 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:28:53 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	execute(t_token *token, t_prompt *prompt)
 				}
 			}
 			signal(SIGINT, handle_inprocess_signals);
+			signal(SIGQUIT, SIG_IGN);
 			pid = fork();
 			if (pid == -1)
 				exit_msg();

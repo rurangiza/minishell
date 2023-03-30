@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 13:51:49 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:28:59 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 	while (TRUE)
 	{
 		signal(SIGINT, handle_signals);
+		signal(SIGQUIT, SIG_IGN);
 		user_input = ft_readline();
 		check_user_input(user_input);
 		add_history(user_input);
