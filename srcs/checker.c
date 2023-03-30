@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 11:13:12 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:16:46 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,5 +139,5 @@ int	is_empty_pipe(int read_end)
 void	check_user_input(char *input)
 {
 	if (!input)
-		exit (0);
+		exit (130);
 }
