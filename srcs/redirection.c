@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/22 11:59:39 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 09:25:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	redirect_in(t_token *token)
 {
 	if (token->infile == HERE_DOC)
 	{
+		signal(SIGINT, handle_inheredoc_signals);
 		token->infile = heredoc(token->delimiter, token->heredoc_mode);
 		dup2(token->infile, STDIN_FILENO);
 		close(token->infile);

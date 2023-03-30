@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 12:01:29 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 09:14:49 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 10:32:49 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,9 @@ void	handle_signals(int signo)
 	{
 		printf("\n");
 		rl_on_new_line();
-		rl_replace_line("", 0);
-		// rl_redisplay();
-		
+		rl_replace_line("", 0);		
 		if (getpid() == 0)
-		{
 			g_tools.exit_code = 130;
-		}
 		else
 		{
 			rl_redisplay();
@@ -33,12 +29,21 @@ void	handle_signals(int signo)
 	}
 }
 
-void	handle_signal_process(int signo)
+void	handle_inprocess_signals(int signo)
 {
 	if (signo == SIGINT)
 	{
-		printf("C^\n");
+		printf("\n");
 		rl_replace_line("", 0);
 		g_tools.exit_code = 130;
+	}
+}
+
+void	handle_inheredoc_signals(int signo)
+{
+	if (signo == SIGINT)
+	{
+		rl_replace_line("", 0);
+		exit(1);
 	}
 }
