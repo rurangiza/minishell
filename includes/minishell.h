@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 16:35:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 08:59:34 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <signal.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
+// tcgetattr(), 
+# include <termios.h>
 
 # define CGRAY     "\x1b[30m"
 # define CRED     "\x1b[31m"

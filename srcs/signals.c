@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 12:01:29 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/29 16:34:47 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/30 09:14:49 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	handle_signal_process(int signo)
 {
 	if (signo == SIGINT)
 	{
-		printf("\n");
+		printf("C^\n");
 		rl_replace_line("", 0);
 		g_tools.exit_code = 130;
 	}
