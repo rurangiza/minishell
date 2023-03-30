@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 13:42:05 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:16:44 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*update_shell_level(char *variable)
 	int		level;
 	char	*new;
 	char	*tmp;
+	char	*tmp2;
 
 	level = ft_atoi(variable);
 	tmp = ft_strdup("SHLVL=");
@@ -56,8 +57,10 @@ char	*update_shell_level(char *variable)
 		level = 1;
 	else
 		level++;
-	new = ft_strjoin(tmp, ft_itoa(level));
+	tmp2 = ft_itoa(level);
+	new = ft_strjoin(tmp, tmp2);
 	free(tmp);
+	free(tmp2);
 	return (new);
 }
 
