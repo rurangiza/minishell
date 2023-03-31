@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/29 13:53:31 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:06:49 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,12 @@ int	my_exit(t_token *tokens)
 	{
 		//printf("es\n");
 		return (0);
+	}
+	if (tokens->cmd[2])
+	{
+		printf("minishell: exit: too many arguments\n");
+		g_exitcode = 1;
+		return (-1);
 	}
 	if (tokens->cmd[1])
 	{

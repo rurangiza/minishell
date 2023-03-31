@@ -1,0 +1,4 @@
+echo $ $USER
+export VAR=value (should update variable)
+echo "'$HOME'"
+< Makefile < exemple cat

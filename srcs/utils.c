@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/31 13:39:51 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 15:20:50 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ char *expand_variable(char *buffer, char **envp)
 	}
 	// Find end
 	end = start;
-	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\"' && buffer[end] != '$')
+	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\'' && buffer[end] != '\"' && buffer[end] != '$')
 		end++;
+	printf("s=%c e=%c\n", buffer[start], buffer[end]);
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);
 	// Check if variable exists in envp
@@ -96,8 +97,8 @@ char *expand_variable(char *buffer, char **envp)
 	else
 	{
 		//printf("---- in here\n");
-		//tmp = ft_strjoin_mod(ft_substr(buffer, 0, start - 1), buffer + end);
-		tmp = NULL;
+		tmp = ft_strjoin_mod(ft_substr(buffer, 0, start - 1), buffer + end);
+		//tmp = NULL;
 	}
 	free(expanded);
 	free(variable);

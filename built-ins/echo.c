@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/31 13:14:18 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 15:18:03 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	echo(t_token *token)
 {
 	size_t index = 1;
 	int newline_mode = 1;
-
+	
 	while (token->cmd[index] && is_echo_option(token->cmd[index]))
 	{
 		newline_mode = 0;

@@ -6,7 +6,7 @@
 #    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/31 13:11:11 by akorompa         ###   ########.fr        #
+#    Updated: 2023/03/31 14:41:16 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror -ggdb3 
+CCFLAGS 	= -Wall -Wextra -Werror -ggdb3
 
 ifeq ($(CURRENT_USER),akorompa)
 	READLINE_LIB = -lreadline -lhistory -L /Users/akorompa/.brew/opt/readline/lib

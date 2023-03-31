@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 14:10:44 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:18:01 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,21 @@ int	check_export(char **cmd)
 		while (cmd[i][j])
 		{
 			if (cmd[i][j] == '=')
+			{
 				n = 1;
+				break ;
+			}
 			j++;
 		}
-		if (n != 1)
-			return (1);
+		if (j == (int)ft_strlen(cmd[i]))
+		{
+			n = 0;
+			break ;
+		}
 		i++;
 	}
+	if (n != 1)
+		return (1);
 	return (0);
 }
 

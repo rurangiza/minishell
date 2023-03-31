@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/31 13:06:28 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 15:36:35 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int get_cmd_type(int size, int index)
 
 void	single_child(t_token *token, t_prompt *prompt)
 {
-	(void)prompt;
+	display_tree(0, __func__, token);
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	if (token->outfile != -1)
@@ -210,15 +210,9 @@ void	execute_builtins(t_token *token, t_prompt *prompt, int index)
 	int	status;
 	
 	if (token->infile != -1)
-	{
-		printf("Chanding IN\n");
 		redirect_in(token, prompt);
-	}
 	if (token->outfile != -1)
-	{
-		printf("Chanding OUT\n");
 		redirect_out(token);
-	}
 	if (index > 0)
 		close(prompt->prevpipe);
 	
@@ -238,8 +232,8 @@ void	execute_builtins(t_token *token, t_prompt *prompt, int index)
 	else if (ft_strncmp(token->cmd[0], "exit", 4) == 0)
 	{
 		status = my_exit(token);
-		if (prompt->pipe_nb == 1 )
+		if (prompt->pipe_nb == 1 && status != -1)
 			exit(status);
+		
 	}
-	//dup2(fdout, STDOUT_FILENO);
 }

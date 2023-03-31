@@ -1,0 +1,24 @@
+NAME 	= minishell
+all:		${NAME}
+${NAME}:	${OBJS} ${INCLUDES}
+			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
+				rm -f ${NAME}
+NAME 	= minishell
+all:		${NAME}
+${NAME}:	${OBJS} ${INCLUDES}
+			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
+				rm -f ${NAME}
+total 224
+-rw-r--r--   1 akorompa  2022_brussels   2786 Mar 31 14:41 Makefile
+-rw-r--r--   1 akorompa  2022_brussels   1644 Mar 30 13:26 README.md
+drwxr-xr-x  16 akorompa  2022_brussels    544 Mar 31 15:18 built-ins
+-rw-r--r--   1 akorompa  2022_brussels    248 Mar 30 13:26 exemple
+drwxr-xr-x   3 akorompa  2022_brussels    102 Mar 31 11:57 includes
+drwxr-xr-x  97 akorompa  2022_brussels   3298 Mar 31 14:41 libft
+-rwxr-xr-x   1 akorompa  2022_brussels  89760 Mar 31 15:36 minishell
+drwxr-xr-x   3 akorompa  2022_brussels    102 Mar 31 11:57 minishell.dSYM
+-rw-r--r--   1 akorompa  2022_brussels     94 Mar 31 15:37 notes.txt
+-rw-r--r--   1 akorompa  2022_brussels    302 Mar 31 15:39 output
+drwxr-xr-x  36 akorompa  2022_brussels   1224 Mar 31 15:36 srcs
+-rw-r--r--   1 akorompa  2022_brussels   1699 Mar 30 13:26 tests.txt
+-rw-r--r--   1 akorompa  2022_brussels      0 Mar 31 11:57 valgrind.log

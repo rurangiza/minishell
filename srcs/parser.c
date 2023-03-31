@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 13:09:31 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 14:39:49 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,18 @@
 
 char	*find_path(char **envp)
 {
-	while (ft_strncmp("PATH", *envp, 4))
+	int i;
+
+	i = 0;
+	while (envp[i])
 	{
-		envp++;
+		if (ft_strncmp("PATH", envp[i], 4) == 0)
+			break ;
+		i++;
 	}
-	return (*envp + 5);
+	if (!envp[i])
+		return (NULL);
+	return (*(envp + i) + 5);
 }
 /*
  * Utile dans l'execution pour
@@ -150,6 +157,8 @@ char *get_cmd_path(char *str, char **path)
 	char *tmp;
 	char *cmd;
 
+	if (!path)
+		return(NULL);
 	while (*path)
 	{
 		tmp = ft_strjoin(*path, "/");
@@ -425,7 +434,7 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 	prompt->cmds = malloc(sizeof(t_token) * (prompt->pipe_nb + 1));
 	if (!prompt->cmds)
 		return ;
-	path = find_path(envp);
+	path = find_path(prompt->envp);
 	prompt->path = ft_split(path, ':');
 	while (i < prompt->pipe_nb + 1)
 	{
