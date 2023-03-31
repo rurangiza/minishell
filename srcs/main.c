@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 11:40:18 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:03:25 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int	main(int arg_count, char **arg_list, char **envp)
 				execute(prompt.cmds, &prompt);
 		}
 		free(user_input);
-		//system("leaks --fullStacks minishell");
+		ft_free_matrix(lexer.tokens);
+		//system("leaks minishell");
 	}
 	return (g_exitcode);
 }

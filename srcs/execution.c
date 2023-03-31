@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/31 10:14:54 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:06:28 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	destroy(t_prompt *prompt)
 		ft_free_matrix(prompt->cmds[i].cmd);
 		if (prompt->cmds[i].cmd_path)
 			free(prompt->cmds[i].cmd_path);
-		if (prompt->cmds[i].delimiter)
-			free(prompt->cmds[i].delimiter);
+		
 		i++;	
 	}
 	free(prompt->cmds);
@@ -53,7 +52,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	// Loop through all commands
 	while (index < prompt->pipe_nb)
 	{
-		if (is_builtin(token[index].cmd[0]))
+		if (token[index].cmd && is_builtin(token[index].cmd[0]))
 			execute_builtins(token, prompt, index);
 		else
 		{
@@ -101,7 +100,7 @@ void	execute(t_token *token, t_prompt *prompt)
 		if (WIFEXITED(status))
 		{
 			g_exitcode = WEXITSTATUS(status);
-			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1 && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
+			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
 			{
 				printf("Code before out = %i\n", g_exitcode);
 				exit(g_exitcode);

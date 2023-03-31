@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 11:14:07 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:07:24 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	handle_execution_errors(t_token *token, t_prompt *prompt)
 {
+	if (!token->cmd)
+		exit(0) ;
 	if (ft_strlen(token->cmd[0]) == 0)
 		exitmsg(": command not found", token->cmd[0], 127);
 	if (ft_strlen(token->cmd[0]) == 1)
