@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/31 13:14:18 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:53:00 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	echo(t_token *token)
 	}
 	while (token->cmd[index])
 	{
-		if (ft_strncmp("$?", token->cmd[index], 2) == 0)
+		if (ft_strlen(token->cmd[index]) == 1 && token->cmd[index][0] == '~')
+			write(1, getenv("HOME"), ft_strlen(getenv("HOME")));
+		else if (ft_strncmp("$?", token->cmd[index], 2) == 0)
 		{
 			char	*str = ft_itoa(g_exitcode);
 			write(STDOUT_FILENO, str, ft_strlen(str));
