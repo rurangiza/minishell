@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 14:41:45 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 15:40:58 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 		}
 		free(user_input);
 		ft_free_matrix(lexer.tokens);
-		//system("leaks minishell");
+		system("leaks minishell");
 	}
 	return (g_exitcode);
 }
