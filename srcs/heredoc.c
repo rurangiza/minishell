@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/31 13:09:49 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:24:51 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,20 @@ int	heredoc(char *limiter, int var_expand, t_prompt *prompt)
 char	*get_envp_variable(char *variable, char **envp)
 {
 	int index = 0;
+	char	*tmp;
 
-	variable = ft_strjoin(variable, "=");
-	int len = ft_strlen(variable);
+	tmp = ft_strjoin(variable, "=");
+	
+	int len = ft_strlen(tmp);
 	while (envp[index])
 	{
-		if (ft_strncmp(envp[index], variable, len) == 0)
+		if (ft_strncmp(envp[index], tmp, len) == 0)
+		{
+			free(tmp);
 			return (ft_substr(envp[index], len, ft_strlen(envp[index])));
+		}
 		index++;
 	}
+	free(tmp);
 	return (NULL);
 }

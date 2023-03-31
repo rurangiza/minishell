@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 13:49:57 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 10:41:11 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:14:18 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ void	echo(t_token *token)
 	while (token->cmd[index])
 	{
 		if (ft_strncmp("$?", token->cmd[index], 2) == 0)
-			write(STDOUT_FILENO, ft_itoa(g_exitcode), ft_strlen(ft_itoa(g_exitcode)));
+		{
+			char	*str = ft_itoa(g_exitcode);
+			write(STDOUT_FILENO, str, ft_strlen(str));
+			free(str);
+		}
 		else
 			write(STDOUT_FILENO, token->cmd[index], ft_strlen(token->cmd[index]));
 		if (index > 0 && index < ft_strlen(token->cmd[index]))

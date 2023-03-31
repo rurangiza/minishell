@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 16:21:43 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 13:39:51 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 	return (tmp);
 }
 
+// void	handle_spacial()
+// {
+	
+// 	expanded = ft_itoa(g_exitcode);
+// 	end = start + 1;
+// 	tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, ft_strdup(buffer + end));
+// 	free(expanded);
+// 	free(buffer);
+// 	return(tmp);
+// }
+
 char *expand_variable(char *buffer, char **envp)
 {
 	int		start;
@@ -56,14 +67,19 @@ char *expand_variable(char *buffer, char **envp)
 	char	*variable;
 	char	*expanded;
 	
-	
 	// Find start
 	start = ft_strchr_mod(buffer, '$') + 1;
 	if (!buffer[start] || (buffer[start] == '\"') || buffer[start] == '?')
 	{
 		expanded = ft_itoa(g_exitcode);
 		end = start + 1;
-		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, ft_strdup(buffer + end));
+		
+		char *sub = ft_substr(buffer, 0, start - 1);
+		char	*sub2 = ft_strdup(buffer + end);
+		tmp = ft_strjoin_trio(sub, expanded, sub2);
+		//free(sub);
+		free(sub2);
+		free(expanded);
 		free(buffer);
 		return(tmp);
 	}
@@ -73,13 +89,17 @@ char *expand_variable(char *buffer, char **envp)
 		end++;
 	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);
-	//printf("%s\n", variable);
 	// Check if variable exists in envp
 	expanded = get_envp_variable(variable, envp);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
 	else
-		tmp = ft_strjoin_mod(ft_substr(buffer, 0, start - 1), buffer + end);
+	{
+		//printf("---- in here\n");
+		//tmp = ft_strjoin_mod(ft_substr(buffer, 0, start - 1), buffer + end);
+		tmp = NULL;
+	}
+	free(expanded);
 	free(variable);
 	free(buffer);
 	return (tmp);
