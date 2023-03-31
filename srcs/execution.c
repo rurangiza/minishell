@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/31 15:36:35 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:45:26 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	execute(t_token *token, t_prompt *prompt)
 			{
 				close(prompt->pipends[WRITE]);
 				prompt->prevpipe = prompt->pipends[READ];
-				if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0 && !token->cmd[1])
+				if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0 && !token->cmd[1] && token->infile < 0)
 					close(prompt->pipends[READ]);
 			}
 		}
@@ -138,7 +138,6 @@ int get_cmd_type(int size, int index)
 
 void	single_child(t_token *token, t_prompt *prompt)
 {
-	display_tree(0, __func__, token);
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	if (token->outfile != -1)
@@ -152,6 +151,7 @@ void	single_child(t_token *token, t_prompt *prompt)
 
 void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 {
+	
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	else

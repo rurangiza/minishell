@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/31 13:07:24 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/03/31 16:38:32 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,10 @@ void	handle_execution_errors(t_token *token, t_prompt *prompt)
 		if (token->cmd && token->cmd[0])
 			exitmsg(": command not found", token->cmd[0], 127);
 		else
+		{
+			printf("---- %s\n", __func__);
 			exitmsg(": command not found", "unknown", 127);
+		}
 	}
 	//exit(0);
 }
