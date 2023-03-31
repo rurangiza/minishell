@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 16:21:57 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 11:07:14 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int		get_cmd_type(int size, int index);
 
 int		heredoc(char *limiter, int var_expdr, t_prompt *prompt);
 
-void	execute_builtins(t_token *token, t_prompt *prompt);
+void	execute_builtins(t_token *token, t_prompt *prompt, int index);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -147,7 +147,9 @@ void	env(t_token *tokens, t_prompt *prompt);
 int		export(t_token *tokens, t_prompt *prompt);
 void	unset(t_token *token, t_prompt *prompt);
 int		my_exit(t_token *tokens);
+
 void	cd(char *directory, t_prompt *prompt);
+char	*save_cwd(void);
 
 int		is_echo_option(char *str);
 

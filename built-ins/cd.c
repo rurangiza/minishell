@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 17:07:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 11:45:57 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	cd(char *directory, t_prompt *prompt)
 {
-	char	*path = NULL;
-	char	*oldpwd = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
+	char	*path;
+	char	*oldpwd;
 	char	*pwd;
 
+	path = NULL;
 	if (!directory)
 		path = get_variable_in_environment("HOME=", prompt);
 	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
@@ -26,10 +27,7 @@ void	cd(char *directory, t_prompt *prompt)
 		{
 			path = get_variable_in_environment("OLDPWD=", prompt);
 			if (path == NULL)
-			{
-				free(oldpwd);
 				return ;
-			}
 			else
 				printf("%s\n", path);
 		}
@@ -42,19 +40,21 @@ void	cd(char *directory, t_prompt *prompt)
 		path = ft_strdup(directory);
 	else
 	{
-		path = ft_strdup(getcwd(NULL, 0));
+		path = getcwd(NULL, 0);
 		if (ft_strlen(path) == 1 && ft_strncmp(path, "/", 1) == 0)
 			path = ft_strjoin_freeboth(path, directory);
 		else
 			path = ft_strjoin_trio(path, "/", directory);
 	}
 
+	oldpwd = save_cwd();
 	if (!path)
 		return ;
     if (chdir(path) == -1)
 	{
-		printf("bash: cd: %s: No such file or directory\n", directory);
+		free(path);
 		free(oldpwd);
+		printf("bash: cd: %s: No such file or directory\n", directory);
 	}
 	else
 	{
@@ -62,6 +62,19 @@ void	cd(char *directory, t_prompt *prompt)
 		pwd = ft_strjoin_freeboth(tmp, path);
 		update_pwd(oldpwd, pwd, prompt);
 	}
+}
+
+char	*save_cwd(void)
+{
+	char	*cwd;
+	char	*oldpwd;
+	
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (NULL);
+	oldpwd = ft_strjoin("OLDPWD=", cwd);
+	free(cwd);
+	return (oldpwd);
 }
 
 // void	cd(char *directory, t_prompt *prompt)

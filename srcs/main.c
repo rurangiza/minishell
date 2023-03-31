@@ -6,11 +6,12 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/30 17:06:33 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/03/31 11:40:18 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 
 int	main(int arg_count, char **arg_list, char **envp)
 {
@@ -21,6 +22,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 	init_shell(&prompt, arg_count, arg_list, envp);
 	while (TRUE)
 	{
+		user_input = NULL;
 		signal(SIGINT, handle_signals);
 		signal(SIGQUIT, SIG_IGN);
 		user_input = ft_readline();

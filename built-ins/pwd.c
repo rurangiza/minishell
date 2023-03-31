@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Arsene <Arsene@student.42.fr>              +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:19:36 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/09 20:40:09 by Arsene           ###   ########.fr       */
+/*   Updated: 2023/03/31 11:49:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	pwd(t_token *token)
 	if (token->cmd[i])
 	{
 		printf("pwd: too many arguments\n");
-		exit (1);
+		g_exitcode = 0;
+		return ;
 	}
 	str = getcwd(NULL, 0);
 	printf("%s\n", str);

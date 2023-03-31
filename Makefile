@@ -6,11 +6,13 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/30 16:28:25 by arurangi         ###   ########.fr        #
+#    Updated: 2023/03/31 11:53:05 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CURRENT_USER	:=	$(shell whoami)
+CURRENT_FOLDER	:=	$(shell pwd)
+EXEC_FILE		=	$(CURRENT_FOLDER)/minishell
 
 SRCS			= 	srcs/main.c \
 					srcs/parser.c \
@@ -46,9 +48,8 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror #-g -fsanitize=address
+CCFLAGS 	= -Wall -Wextra -Werror -ggdb3 #-g -fsanitize=address
 
-# Only execute the line if the current user is "johndoe"
 ifeq ($(CURRENT_USER),akorompa)
 	READLINE_LIB = -lreadline -lhistory -L /Users/akorompa/.brew/opt/readline/lib
 	READLINE_INC = -I /Users/akorompa/.brew/opt/readline/include
@@ -59,6 +60,7 @@ endif
 
 %.o: %.c
 	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+
 
 all:		${NAME}
 
@@ -76,4 +78,14 @@ fclean: 	clean
 
 re:				fclean all
 
-.PHONY:			all clean fclean re
+vld:
+		@valgrind --leak-check=full --track-origins=yes $(EXEC_FILE)
+		
+debug:	
+		@valgrind --leak-check=full --track-origins=yes --vgdb-error=0 $(EXEC_FILE)
+#valgrind --tool=cachegrind --cachegrind-out-file=valgrind.log $(EXEC_FILE)
+#cg_annotate valgrind.log
+#valgrind --leak-check=full --log-file=valgrind.log $(EXEC_FILE)
+#valgrind --leak-check=full $(EXEC_FILE)
+
+.PHONY:			all clean fclean re vld debug
