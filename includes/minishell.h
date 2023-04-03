@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 14:10:16 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:55:59 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define CBLUE    "\x1b[34m"
 # define CMAGENTA "\x1b[35m"
 # define CCYAN    "\x1b[36m"
-# define CWHITE    "\x1b[36m"
+# define CWHITE    "\x1b[37m"
 # define CBOLD   "\x1b[1m"
 # define CRESET   "\x1b[0m"
 
@@ -125,14 +125,18 @@ char	*find_path(char **envp);
 
 void	execute(t_token *token, t_prompt *prompt);
 
-void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe, t_prompt *prompt);
-
+void	parent_process(t_token *token, t_prompt *prompt, int cmd_type);
+void	child_process(t_token *token, t_prompt *prompt, int cmd_type, int index);
 void	single_child(t_token *token, t_prompt *prompt);
 void	last_child(t_token *token, int prevpipe, t_prompt *prompt);
 void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt);
 
+void	check_cmds_status(t_token *token, t_prompt *prompt);
+
+/* ~~~~~~~~~~~ REDIRECTIONS ~~~~~~~~~~~~~ */
 void	redirect_in(t_token *token, t_prompt *prompt);
 void	redirect_out(t_token *token);
+void	simple_redirect(t_token *token, t_prompt *prompt, int index);
 
 int		get_cmd_type(int size, int index);
 
@@ -155,11 +159,15 @@ int		is_echo_option(char *str);
 
 /* ~~~~~~~~~~~~ INITIALIZATION ~~~~~~~~~~~~~~~ */
 char	**init_environment(char **envp);
-void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp);
+void	init_shell(t_prompt *prompt, int argc, char **argv, char **envp);
 void	init_prompt(t_prompt *prompt);
+void	init_signals(void);
+void	init_signals_inprocess(void);
+void	init_exec(t_prompt *prompt);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
+void	terminate_exec(t_prompt *prompt);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
@@ -175,12 +183,7 @@ char	*getenv_custm(char *variable, t_prompt *prompt); // Same without message
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
-int		is_variable_to_be_deleted(char *target, char *source);
-int		is_in_environment(char *variable, t_prompt *prompt);
 int		is_special_symbol(char *directory);
-int		is_valid_identifier(char *str);
-int		is_directory(char *path, struct stat stat_buffer);
-int		is_unexpected_token(char *token);
 void	check_user_input(char *input);
 int		is_empty_pipe(int read_end);
 char	*ft_strjoin_freeboth(char *s1, char *s2);
@@ -190,7 +193,6 @@ char	*ft_strjoin_freeboth(char *s1, char *s2);
 void	update_directory_history(t_prompt *prompt, char *path);
 void	update_pwd(char *oldpwd, char *pwd, t_prompt *prompt);
 void	add_missing_oldpwd(char *newold, t_prompt *prompt);
-int		is_executable(char *path, struct stat stat_buffer);
 
 char	*update_shell_level(char *variable);
 
@@ -199,8 +201,8 @@ void	handle_signals(int signo);
 void	handle_inprocess_signals(int signo);
 void	handle_inheredoc_signals(int signo);
 
-void	sigquit_handler(int sig);
-void	sigquit_handler_inprocess(int sig);
+// void	sigquit_handler(int sig);
+// void	sigquit_handler_inprocess(int sig);
 
 /* ~~~~~~~~~~~~~ INTERFACE ~~~~~~~~~~~~~~~ */
 char	*ft_readline(void);
@@ -211,5 +213,11 @@ void	display_start(void);
 void	display_end(void);
 void	display_prompt(t_prompt *prompt);
 void	display_env(t_prompt *prompt, char *str);
+
+/* ~~~~~~~~~~ CALCULATOR ~~~~~~~~~~~~~~ */
+int		ft_tablen(char **tab);
+
+/* ~~~~~~~~~~ CALCULATOR ~~~~~~~~~~~~~~ */
+void	createpipe(t_prompt *prompt, int cmd_type);
 
 #endif

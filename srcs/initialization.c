@@ -6,82 +6,87 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/30 15:49:18 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:30:45 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**init_environment(char **envp)
+static char	**ft_initab(char **envp)
 {
-	int		index;
+	int		len;
 	char	**tmp;
-	int		outdex;
 
-	index = 0;
-	while (envp[index])
-		index++;
-	if (!getenv("OLDPWD"))
-		index--;
-	tmp = malloc((index + 2) * sizeof(char *));
+	len = ft_tablen(envp);
+	if (getenv("OLDPWD"))
+		len--;
+	tmp = malloc((len + 1) * sizeof(char *));
 	if (!tmp)
 		return (NULL);
+	return (tmp);
+}
+
+char	**init_environment(char **envp)
+{
+	int		len;
+	char	**copy;
+	int		index;
+
+	copy = ft_initab(envp);
+	if (!copy)
+		return (NULL);
 	index = 0;
-	outdex = 0;
+	len = 0;
 	while (envp[index])
 	{
 		if (ft_strncmp(envp[index], "OLDPWD=", 7) != 0)
 		{
 			if (ft_strncmp(envp[index], "SHLVL=", 6) == 0)
-				tmp[outdex] = update_shell_level(envp[index] + 6);
+				copy[len] = update_shell_level(envp[index] + 6);
 			else
-				tmp[outdex] = ft_strdup(envp[index]);
-			outdex++;
+				copy[len] = ft_strdup(envp[index]);
+			len++;
 		}
 		index++;
 	}
-	tmp[outdex] = NULL;
-	return (tmp);
+	copy[len] = NULL;
+	return (copy);
 }
 
 char	*update_shell_level(char *variable)
 {
-	int		level;
-	char	*new;
-	char	*tmp;
-	char	*tmp2;
+	int		int_level;
+	char	*str_level;
+	char	*prefix;
+	char	*new_variable;
 
-	level = ft_atoi(variable);
-	tmp = ft_strdup("SHLVL=");
-	if (level < 1)
-		level = 1;
+	int_level = ft_atoi(variable);
+	if (int_level < 0)
+		int_level = 1;
 	else
-		level++;
-	tmp2 = ft_itoa(level);
-	new = ft_strjoin(tmp, tmp2);
-	free(tmp);
-	free(tmp2);
-	return (new);
+		int_level++;
+	str_level = ft_itoa(int_level);
+	prefix = ft_strdup("SHLVL=");
+	new_variable = ft_strjoin(prefix, str_level);
+	free(prefix);
+	free(str_level);
+	return (new_variable);
 }
 
-void	init_shell(t_prompt *prompt, int arg_count, char **arg_list, char **envp)
+void	init_shell(t_prompt *prompt, int argc, char **argv, char **envp)
 {
-	(void)arg_list;
-	(void)prompt;
+	struct termios	term;
 
+	(void)argv;
 	g_exitcode = 0;
-	// Remove ^C when pressing Ctrl^C
-	struct termios term; //! Declare structure in head
-    tcgetattr(STDIN_FILENO, &term);
-    term.c_lflag &= ~ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	// Valid arguments
-	if (arg_count != 1)
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	if (argc != 1)
 	{
 		printf("Usage: ./minishell\n");
 		exit(EXIT_FAILURE);
 	}
-	// Clone environment variables
 	prompt->envp = init_environment(envp);
 }
 
@@ -90,5 +95,18 @@ void	init_prompt(t_prompt *prompt)
 	prompt->cmds = NULL;
 	prompt->path = NULL;
 	prompt->saved_pid = NULL;
+	prompt->prevpipe = -1;
+}
+
+void	init_exec(t_prompt *prompt)
+{
+	prompt->stdio[0] = dup(STDIN_FILENO);
+	prompt->stdio[1] = dup(STDOUT_FILENO);
+	if (prompt->pipe_nb > 0)
+	{
+		prompt->saved_pid = malloc(prompt->pipe_nb * sizeof(pid_t));
+		if (!prompt->saved_pid)
+			return ;
+	}
 	prompt->prevpipe = -1;
 }

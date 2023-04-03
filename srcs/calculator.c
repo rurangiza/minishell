@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   interface.c                                        :+:      :+:    :+:   */
+/*   calculator.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 11:11:11 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/03 16:07:40 by arurangi         ###   ########.fr       */
+/*   Created: 2023/04/03 14:24:20 by arurangi          #+#    #+#             */
+/*   Updated: 2023/04/03 14:36:33 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_readline(void)
+int	ft_tablen(char	**tab)
 {
-	char	*user_input;
+	int	len;
 
-	user_input = NULL;
-	if (g_exitcode == 0)
-		user_input = readline(
-				"\x1b[32m•\033[0m \x1b[1m\x1b[37mminishell $ "CRESET);
-	else
-		user_input = readline(
-				"\x1b[31m•\033[0m \x1b[1m\x1b[37mminishell $ "CRESET);
-	return (user_input);
+	len = 0;
+	if (tab)
+	{
+		while (tab[len])
+			len++;
+	}
+	return (len);
 }

@@ -3,28 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 16:44:32 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:55:47 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
 
 int	main(int arg_count, char **arg_list, char **envp)
 {
 	char		*user_input;
 	t_prompt	prompt;
 	t_lexer		lexer;
-	
+
 	init_shell(&prompt, arg_count, arg_list, envp);
 	while (TRUE)
 	{
-		user_input = NULL;
-		signal(SIGINT, handle_signals);
-		signal(SIGQUIT, SIG_IGN);
+		init_signals();
 		user_input = ft_readline();
 		check_user_input(user_input);
 		add_history(user_input);
@@ -40,7 +37,6 @@ int	main(int arg_count, char **arg_list, char **envp)
 		}
 		free(user_input);
 		ft_free_matrix(lexer.tokens);
-		//system("leaks minishell");
 	}
 	return (g_exitcode);
 }

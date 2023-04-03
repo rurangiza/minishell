@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/03/31 14:41:16 by akorompa         ###   ########.fr        #
+#    Updated: 2023/04/03 16:35:07 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRCS			= 	srcs/main.c \
 					srcs/tokens.c \
 					srcs/lexer.c \
 					srcs/execution.c \
+					srcs/process_routines.c \
 					srcs/redirection.c \
 					srcs/heredoc.c \
 					srcs/errors.c \
@@ -31,6 +32,8 @@ SRCS			= 	srcs/main.c \
 					srcs/signals.c \
 					srcs/debug.c \
 					srcs/interface.c \
+					srcs/calculator.c \
+					srcs/pipeline.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \
@@ -48,7 +51,8 @@ NAME 	= minishell
 LIBFT = libft
 
 CC			= gcc
-CCFLAGS 	= -Wall -Wextra -Werror -ggdb3
+CCFLAGS 	= -Wall -Wextra -Werror -ggdb3 
+SANATIZE	= -g -fsanitize=address
 
 ifeq ($(CURRENT_USER),akorompa)
 	READLINE_LIB = -lreadline -lhistory -L /Users/akorompa/.brew/opt/readline/lib

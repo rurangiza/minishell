@@ -6,11 +6,23 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 12:01:29 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 14:12:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:28:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	init_signals(void)
+{
+	signal(SIGINT, handle_signals);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	init_signals_inprocess(void)
+{
+	signal(SIGINT, handle_inprocess_signals);
+	signal(SIGQUIT, SIG_IGN);
+}
 
 void	handle_signals(int signo)
 {

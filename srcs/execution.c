@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/31 16:45:26 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:56:09 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	destroy(t_prompt *prompt)
-{
-	int i;
-	
-	i = 0;	
-	while (i < prompt->pipe_nb)	
-	{
-		ft_free_matrix(prompt->cmds[i].cmd);
-		if (prompt->cmds[i].cmd_path)
-			free(prompt->cmds[i].cmd_path);
-		
-		i++;	
-	}
-	free(prompt->cmds);
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -34,22 +18,15 @@ void	execute(t_token *token, t_prompt *prompt)
 {	
 	int		index;
 	int		cmd_type;
-	int		status;
 	pid_t	pid;
 
-	// init_execution()
-	prompt->stdio[0] = dup(STDIN_FILENO);
-	prompt->stdio[1] = dup(STDOUT_FILENO);
-	index = 0;
-	if (prompt->pipe_nb > 0)
+	init_exec(prompt);
+	if (!token[0].cmd[0])
 	{
-		prompt->saved_pid = malloc(prompt->pipe_nb * sizeof(pid_t));
-		if (!prompt->saved_pid)
-			return;
+		printf(CRED"Error\033[0m No commands detected\n");
+		return ;
 	}
-	prompt->prevpipe = -1;
-
-	// Loop through all commands
+	index = 0;
 	while (index < prompt->pipe_nb)
 	{
 		if (token[index].cmd && is_builtin(token[index].cmd[0]))
@@ -57,150 +34,20 @@ void	execute(t_token *token, t_prompt *prompt)
 		else
 		{
 			cmd_type = get_cmd_type(prompt->pipe_nb, index);
-			if (cmd_type == _middle)
-			{
-				// if (pipe(prompt->pipends) == -1)
-				// {
-				// 	free(prompt->saved_pid);
-				// 	exit_msg();
-				// }
-				if (pipe(prompt->pipends) == -1)
-					exit_msg();
-			}
-
-			signal(SIGINT, handle_inprocess_signals);
-			signal(SIGQUIT, SIG_IGN);
-
+			createpipe(prompt, cmd_type);
+			init_signals_inprocess();
 			pid = fork();
 			if (pid == -1)
 				exit_msg();
 			else if (pid == 0)
-			{
-				if (cmd_type == _single)
-					single_child(&token[index], prompt);
-				else if (cmd_type == _last)
-					last_child(&token[index], prompt->prevpipe, prompt);
-				else
-					middle_child(&token[index], index, prompt->prevpipe, prompt->pipends, prompt);
-			}
+				child_process(token, prompt, cmd_type, index);
 			prompt->saved_pid[index] = pid;
-			if (cmd_type == _middle)
-			{
-				close(prompt->pipends[WRITE]);
-				prompt->prevpipe = prompt->pipends[READ];
-				if (is_empty_pipe(prompt->pipends[READ]) && ft_strncmp("cat", token->cmd[0], 3) == 0 && !token->cmd[1] && token->infile < 0)
-					close(prompt->pipends[READ]);
-			}
+			parent_process(token, prompt, cmd_type);
 		}
 		index++;
 	}
-	for (int i = 0; i < prompt->pipe_nb; i++)
-	{
-		waitpid(prompt->saved_pid[i], &status, 0);
-		if (WIFEXITED(status))
-		{
-			g_exitcode = WEXITSTATUS(status);
-			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1 && token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
-			{
-				printf("Code before out = %i\n", g_exitcode);
-				exit(g_exitcode);
-			}
-			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			{
-				printf("Received SIGINT\n");
-				g_tools.killed = 1;
-			}
-		}
-	}
-	
-	// terminate_execution()
-	dup2(prompt->stdio[0], STDIN_FILENO);
-	close(prompt->stdio[0]);
-	dup2(prompt->stdio[1], STDOUT_FILENO);
-	close(prompt->stdio[1]);
-	if (prompt->pipe_nb > 0)
-		free(prompt->saved_pid);
-	destroy(prompt);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-int get_cmd_type(int size, int index)
-{
-    if (size == 1)
-        return (_single);
-    else if (index == size - 1 && index != 0)
-        return (_last);
-    return (_middle);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void	single_child(t_token *token, t_prompt *prompt)
-{
-	if (token->infile != -1)
-		redirect_in(token, prompt);
-	if (token->outfile != -1)
-		redirect_out(token);
-	handle_execution_errors(token, prompt);
-	execve(token->cmd_path, token->cmd, prompt->envp);
-	exit_msg();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
-{
-	
-	if (token->infile != -1)
-		redirect_in(token, prompt);
-	else
-		dup2(prevpipe, STDIN_FILENO);
-	close(prevpipe);
-	if (token->outfile != -1)
-		redirect_out(token);
-	handle_execution_errors(token, prompt);
-	execve(token->cmd_path, token->cmd, prompt->envp);
-	exit_msg();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt)
-{
-	(void)prevpipe; // Delete and remove from arguments
-	close(pipends[READ]);
-			
-	if (token->infile != -1)
-		redirect_in(token, prompt);
-	else if (index > 0)
-	{
-		dup2(prompt->prevpipe, STDIN_FILENO);
-		close(prompt->prevpipe);
-	}
-	if (token->outfile != -1)
-		redirect_out(token);
-	else
-		dup2(pipends[WRITE], STDOUT_FILENO);
-	close(pipends[WRITE]);
-	handle_execution_errors(token, prompt);
-	execve(token->cmd_path, token->cmd, prompt->envp);
-	exit_msg();
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevpipe, t_prompt *prompt)
-{
-	(void)child_pid;
-	(void)prompt;
-    if (cmd_type == _middle)
-    {
-        close(pipends[WRITE]);
-        *prevpipe = pipends[READ];
-    }
-    else if (cmd_type == _last)
-        close(*prevpipe);
+	check_cmds_status(token, prompt);
+	terminate_exec(prompt);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -208,14 +55,8 @@ void    parent_process(int child_pid, t_state cmd_type, int *pipends, int *prevp
 void	execute_builtins(t_token *token, t_prompt *prompt, int index)
 {
 	int	status;
-	
-	if (token->infile != -1)
-		redirect_in(token, prompt);
-	if (token->outfile != -1)
-		redirect_out(token);
-	if (index > 0)
-		close(prompt->prevpipe);
-	
+
+	simple_redirect(token, prompt, index);
 	status = 0;
 	if (ft_strncmp(token->cmd[0], "echo", 4) == 0)
 		echo(token);
@@ -234,6 +75,5 @@ void	execute_builtins(t_token *token, t_prompt *prompt, int index)
 		status = my_exit(token);
 		if (prompt->pipe_nb == 1 && status != -1)
 			exit(status);
-		
 	}
 }

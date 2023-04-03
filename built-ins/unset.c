@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 11:34:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:29:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,53 @@
  * 
 */
 
+/* Check if current item in environemnt is the target */
+static int	is_variable_to_be_deleted(char *target, char *source)
+{
+	int	src_len;
+
+	src_len = ft_strlen(source);
+	if (ft_strncmp(target, source, src_len) == 0 && target[src_len] == '=')
+		return (TRUE);
+	return (FALSE);
+}
+
+/* Check whether a variable {token} is in the global environment */
+static int	is_in_environment(char *variable, t_prompt *prompt)
+{
+	int	index;
+	int	variable_length;
+
+	variable_length = ft_strlen(variable);
+	index = 0;
+	while (prompt->envp[index])
+	{
+		if (ft_strncmp(prompt->envp[index], variable, variable_length) == 0
+			&& prompt->envp[index][variable_length] == '=')
+			return (1);
+		index++;
+	}
+	return (0);
+}
+
+static int	is_valid_identifier(char *str)
+{
+	int	index;
+
+	index = 0;
+	if (str)
+	{
+		while (str[index])
+		{
+			if (index == 0 && !ft_isalpha(str[index]))
+				return (0);
+			if (!ft_isalnum(str[index]) && str[index] != '_')
+				return (0);
+			index++;
+		}
+	}
+	return (1);
+}
 
 void	unset(t_token *token, t_prompt *prompt)
 {

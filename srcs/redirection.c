@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/30 11:30:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:53:43 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,14 @@ void	redirect_out(t_token *token)
 {
 	dup2(token->outfile, STDOUT_FILENO);
 	close(token->outfile);
+}
+
+void	simple_redirect(t_token *token, t_prompt *prompt, int index)
+{
+	if (token->infile != -1)
+		redirect_in(token, prompt);
+	if (token->outfile != -1)
+		redirect_out(token);
+	if (index > 0)
+		close(prompt->prevpipe);
 }

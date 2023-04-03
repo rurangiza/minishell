@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/03/31 15:41:06 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:20:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,4 +137,13 @@ char	*ft_strjoin_freeboth(char *s1, char *s2)
 	free(s1);
 	free(s2);
 	return (tab);
+}
+
+int	get_cmd_type(int size, int index)
+{
+	if (size == 1)
+		return (_single);
+	else if (index == size - 1 && index != 0)
+		return (_last);
+	return (_middle);
 }

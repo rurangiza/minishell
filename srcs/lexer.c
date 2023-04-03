@@ -290,7 +290,7 @@ void	delete_quotes(char **tokens)
 t_lexer	lexerinho(char *prompt, char **envp)
 {
 	(void)envp;
-	t_lexer lexer;
+	t_lexer	lexer;
 
 	if (!prompt || check_quotes(prompt) == -1)
 	{
