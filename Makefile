@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/03 16:35:07 by arurangi         ###   ########.fr        #
+#    Updated: 2023/04/03 17:13:37 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,7 +83,7 @@ fclean: 	clean
 re:				fclean all
 
 vld:
-		@valgrind --leak-check=full --track-origins=yes $(EXEC_FILE)
+		@valgrind --leak-check=full --track-origins=yes --show-leak-kinds=definite $(EXEC_FILE)
 		
 debug:	
 		@valgrind --leak-check=full --track-origins=yes --vgdb-error=0 $(EXEC_FILE)

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/03 16:56:09 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:11:55 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,9 @@ void	execute_builtins(t_token *token, t_prompt *prompt, int index)
 	{
 		status = my_exit(token);
 		if (prompt->pipe_nb == 1 && status != -1)
+		{
+			terminate_exec(prompt);
 			exit(status);
+		}
 	}
 }

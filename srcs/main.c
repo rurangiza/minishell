@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/03 15:55:47 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:06:44 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 		}
 		free(user_input);
 		ft_free_matrix(lexer.tokens);
+		system("leaks minishell");
 	}
 	return (g_exitcode);
 }
