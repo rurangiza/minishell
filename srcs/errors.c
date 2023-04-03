@@ -6,16 +6,11 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 16:32:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/03 16:57:28 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/03 17:02:36 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// void	return_msg(char *msg)
-// {
-// 	printf(CRED"Error\033[0m No commands detected\n");
-// }
 
 void	exit_msg(void)
 {
