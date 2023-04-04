@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/03 15:28:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:07:14 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,57 @@ void	cd(char *directory, t_prompt *prompt)
 {
 	char	*path;
 	char	*oldpwd;
+	char	*prefix;
 	char	*pwd;
+
+	path = ft_find_destination(directory, prompt);
+	if (!path)
+		return ;
+	oldpwd = save_cwd();
+	if (chdir(path) == -1)
+	{
+		ft_freeduo(path, oldpwd);
+		printf("bash: cd: %s: No such file or directory\n", directory);
+	}
+	else
+	{
+		prefix = ft_strdup("PWD=");
+		pwd = ft_strjoin_freeboth(prefix, path);
+		update_pwd(oldpwd, pwd, prompt);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+static char	*convert_aliases(char *directory, t_prompt *prompt)
+{
+	char	*path;
+
+	path = NULL;
+	if (directory[0] == '-')
+	{
+		path = get_variable_in_environment("OLDPWD=", prompt);
+		if (path == NULL)
+			return (NULL);
+		else
+			printf("%s\n", path);
+	}
+	else if (directory[0] == '~')
+		path = ft_strdup(getenv("HOME"));
+	else if (directory[0] == '/')
+		path = ft_strdup("/");
+	return (path);
+}
+
+char	*ft_find_destination(char *directory, t_prompt *prompt)
+{
+	char	*path;
 
 	path = NULL;
 	if (!directory)
 		path = get_variable_in_environment("HOME=", prompt);
-	else if (ft_strlen(directory) == 1 && is_special_symbol(directory))
-	{
-		if (directory[0] == '-')
-		{
-			path = get_variable_in_environment("OLDPWD=", prompt);
-			if (path == NULL)
-				return ;
-			else
-				printf("%s\n", path);
-		}
-		else if (directory[0] == '~')
-			path = ft_strdup(getenv("HOME"));
-		else if (directory[0] == '/')
-			path = ft_strdup("/");
-	}
+	else if (ft_strlen(directory) == 1 && is_path_alias(directory))
+		path = convert_aliases(directory, prompt);
 	else if (directory[0] == '/')
 		path = ft_strdup(directory);
 	else
@@ -46,70 +77,10 @@ void	cd(char *directory, t_prompt *prompt)
 		else
 			path = ft_strjoin_trio(path, "/", directory);
 	}
-
-	oldpwd = save_cwd();
-	if (!path)
-		return ;
-    if (chdir(path) == -1)
-	{
-		free(path);
-		free(oldpwd);
-		printf("bash: cd: %s: No such file or directory\n", directory);
-	}
-	else
-	{
-		char *tmp = ft_strdup("PWD=");
-		pwd = ft_strjoin_freeboth(tmp, path);
-		update_pwd(oldpwd, pwd, prompt);
-	}
+	return (path);
 }
 
-char	*save_cwd(void)
-{
-	char	*cwd;
-	char	*oldpwd;
-	
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (NULL);
-	oldpwd = ft_strjoin("OLDPWD=", cwd);
-	free(cwd);
-	return (oldpwd);
-}
-
-char	*get_variable_in_environment(char *variable, t_prompt *prompt)
-{
-	int index = 0;
-	int	var_length = ft_strlen(variable);
-
-	while (prompt->envp[index])
-	{
-		if (ft_strncmp(prompt->envp[index], variable, var_length) == 0)
-			return (ft_substr(prompt->envp[index], var_length, ft_strlen(prompt->envp[index])));
-		index++;
-	}
-	write(1, "bash: cd: ", 10);
-	index = 0;
-	while (variable[index] && variable[index] != '=')
-		write(1, &variable[index++], 1);
-	write(1, " not set\n", 9);
-	return (NULL);
-}
-
-char	*getenv_custm(char *variable, t_prompt *prompt)
-{
-	int index = 0;
-	int	var_length = ft_strlen(variable);
-
-	while (prompt->envp[index])
-	{
-		if (ft_strncmp(prompt->envp[index], variable, var_length) == 0)
-			return (ft_substr(prompt->envp[index], var_length, ft_strlen(prompt->envp[index])));
-		index++;
-	}
-	index = 0;
-	return (NULL);
-}
+///////////////////////////////////////////////////////////////////////////////
 
 void	update_pwd(char *oldpwd, char *pwd, t_prompt *prompt)
 {
@@ -137,32 +108,30 @@ void	update_pwd(char *oldpwd, char *pwd, t_prompt *prompt)
 		add_missing_oldpwd(oldpwd, prompt);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void	add_missing_oldpwd(char *newold, t_prompt *prompt)
 {
-	int size;
-	int i;
-	char **tmp;
+	int		size;
+	int		index_dest;
+	int		index_src;
+	char	**new_envp;
 
-	size = 0;
-	while (prompt->envp[size])
-		size++;
-	size += 1;
-	tmp = malloc((size + 1) * sizeof(char *));
-	if (!tmp)
+	size = ft_tablen(prompt->envp) + 1;
+	new_envp = malloc((size + 1) * sizeof(char *));
+	if (!new_envp)
 	{
 		free(newold);
 		return ;
 	}
-	
-	tmp[0] = newold;
-	
-	i = 1;
-	int j = 0;
-	while (prompt->envp[j])
+	new_envp[0] = newold;
+	index_dest = 1;
+	index_src = 0;
+	while (prompt->envp[index_src])
 	{
-		tmp[i++] = ft_strdup(prompt->envp[j++]);
+		new_envp[index_dest++] = ft_strdup(prompt->envp[index_src++]);
 	}
-	tmp[i] = NULL;
+	new_envp[index_dest] = NULL;
 	ft_free_matrix(prompt->envp);
-	prompt->envp = tmp;
+	prompt->envp = new_envp;
 }

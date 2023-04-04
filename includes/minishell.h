@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 15:56:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:06:07 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,22 @@ void	exec_builtins(t_token *token, t_prompt *prompt, int index);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
+int		update_newlinemode(t_token *token, int index, int *newline_mode);
+
 void	pwd(t_token *token);
 void	env(t_token *tokens, t_prompt *prompt);
 int		export(t_token *tokens, t_prompt *prompt);
+
 void	unset(t_token *token, t_prompt *prompt);
+char	**ft_remove_variable(t_token *token, t_prompt *prompt, int index);
+int		is_in_environment(char *variable, t_prompt *prompt);
+int		is_valid_identifier(char *str);
+int		is_variable_to_be_deleted(char *target, char *source);
+
 int		my_exit(t_token *tokens);
 
 void	cd(char *directory, t_prompt *prompt);
+char	*ft_find_destination(char *directory, t_prompt *prompt);
 char	*save_cwd(void);
 
 int		is_echo_option(char *str);
@@ -182,7 +191,7 @@ char	*getenv_custm(char *variable, t_prompt *prompt); // Same without message
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
-int		is_special_symbol(char *directory);
+int		is_path_alias(char *directory);
 void	check_user_input(char *input);
 int		is_empty_pipe(int read_end);
 char	*ft_strjoin_freeboth(char *s1, char *s2);

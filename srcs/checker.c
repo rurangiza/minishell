@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/04 14:38:49 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:54:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_builtin(char *cmd)
 	return (FALSE);
 }
 
-int	is_special_symbol(char *directory)
+int	is_path_alias(char *directory)
 {
 	if (ft_strlen(directory) != 1)
 		return (0);
