@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_mgmt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 12:52:58 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/04 12:53:01 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 13:46:00 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,15 @@ void	ft_free_matrix(char **matrix)
 {
 	int	index;
 
-	if (!matrix || !matrix[0])
+	if (!matrix)
 		return ;
 	index = 0;
 	while (matrix[index])
-		free(matrix[index++]);
+	{
+		if(matrix[index])
+			free(matrix[index]);
+		index++;		
+	}
 	free(matrix);
 }
 
