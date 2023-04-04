@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 12:59:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:45:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,8 @@ void	init_heredoc(char *limiter, int *ends, char **stash, char **buffer);
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
 void	terminate_exec(t_prompt *prompt);
+void	ft_freetrio(char *s1, char *s2, char *s3);
+void	ft_freeduo(char *s1, char *s2);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
@@ -184,6 +186,9 @@ int		is_special_symbol(char *directory);
 void	check_user_input(char *input);
 int		is_empty_pipe(int read_end);
 char	*ft_strjoin_freeboth(char *s1, char *s2);
+
+/* ~~~~~~~~~~ CHECKER ~~~~~~~~~~~~~~ */
+int		ft_isspace(char c);
 
 //void	hanging_cats(t_token *token);
 
