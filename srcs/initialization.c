@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 11:07:15 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/03 17:11:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:44:51 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,5 @@ void	init_prompt(t_prompt *prompt)
 	prompt->cmds = NULL;
 	prompt->path = NULL;
 	prompt->saved_pid = NULL;
-	prompt->prevpipe = -1;
-}
-
-void	init_exec(t_prompt *prompt)
-{
-	prompt->stdio[0] = dup(STDIN_FILENO);
-	prompt->stdio[1] = dup(STDOUT_FILENO);
-	if (prompt->pipe_nb > 0)
-	{
-		prompt->saved_pid = malloc(prompt->pipe_nb * sizeof(pid_t));
-		if (!prompt->saved_pid)
-			return ;
-	}
 	prompt->prevpipe = -1;
 }

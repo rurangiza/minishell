@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 15:10:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/03/31 13:24:51 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:59:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,16 @@
 
 int	heredoc(char *limiter, int var_expand, t_prompt *prompt)
 {
-	char	*stash = NULL;
-	char	*buffer = NULL;
+	char	*stash;
+	char	*buffer;
 	int		ends[2];
 
-	if (pipe(ends) == -1)
-		return (-1);
-	if(limiter)
-		printf(CBOLD"Enter input below. Write \033[31m%s\033[0m to exit\n"CRESET, limiter);
+	init_heredoc(limiter, ends, &stash, &buffer);
 	while (TRUE)
 	{
 		buffer = readline("> ");
-        if (buffer == NULL)
-            exit_msg();
+		if (buffer == NULL)
+			exit_msg();
 		if (ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0
 			&& ft_strlen(buffer) == ft_strlen(limiter))
 		{
@@ -44,24 +41,40 @@ int	heredoc(char *limiter, int var_expand, t_prompt *prompt)
 	return (ends[READ]);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
+void	init_heredoc(char *limiter, int *ends, char **stash, char **buffer)
+{
+	*stash = NULL;
+	*buffer = NULL;
+	if (pipe(ends) == -1)
+		return ;
+	if (limiter)
+		printf(CBOLD"Enter input below. Write \033[31m%s\033[0m to exit\n"
+			CRESET, limiter);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 // Similar to get_variable_environment()
 char	*get_envp_variable(char *variable, char **envp)
 {
-	int index = 0;
-	char	*tmp;
+	char	*prefix;
+	int		index;
+	int		len;
 
-	tmp = ft_strjoin(variable, "=");
-	
-	int len = ft_strlen(tmp);
+	prefix = ft_strjoin(variable, "=");
+	len = ft_strlen(prefix);
+	index = 0;
 	while (envp[index])
 	{
-		if (ft_strncmp(envp[index], tmp, len) == 0)
+		if (ft_strncmp(envp[index], prefix, len) == 0)
 		{
-			free(tmp);
+			free(prefix);
 			return (ft_substr(envp[index], len, ft_strlen(envp[index])));
 		}
 		index++;
 	}
-	free(tmp);
+	free(prefix);
 	return (NULL);
 }

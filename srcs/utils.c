@@ -6,11 +6,18 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/03 16:20:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:04:09 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int ft_isspace(char c)
+{
+	if (c == ' ')
+		return (1);
+	return (0);
+}
 
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 {
@@ -48,17 +55,6 @@ char	*ft_strjoin_trio(char *s1, char *s2, char *s3)
 	return (tmp);
 }
 
-// void	handle_spacial()
-// {
-	
-// 	expanded = ft_itoa(g_exitcode);
-// 	end = start + 1;
-// 	tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, ft_strdup(buffer + end));
-// 	free(expanded);
-// 	free(buffer);
-// 	return(tmp);
-// }
-
 char *expand_variable(char *buffer, char **envp)
 {
 	int		start;
@@ -66,40 +62,29 @@ char *expand_variable(char *buffer, char **envp)
 	char	*tmp;
 	char	*variable;
 	char	*expanded;
-	
-	// Find start
+
 	start = ft_strchr_mod(buffer, '$') + 1;
 	if (!buffer[start] || (buffer[start] == '\"') || buffer[start] == '?')
 	{
 		expanded = ft_itoa(g_exitcode);
 		end = start + 1;
-		
 		char *sub = ft_substr(buffer, 0, start - 1);
 		char	*sub2 = ft_strdup(buffer + end);
 		tmp = ft_strjoin_trio(sub, expanded, sub2);
-		//free(sub);
 		free(sub2);
 		free(expanded);
 		free(buffer);
-		return(tmp);
+		return (tmp);
 	}
-	// Find end
 	end = start;
 	while (buffer[end] && !ft_isspace(buffer[end]) && buffer[end] != '\'' && buffer[end] != '\"' && buffer[end] != '$')
 		end++;
-	printf("s=%c e=%c\n", buffer[start], buffer[end]);
-	// Isolate the variable
 	variable = ft_substr(buffer, start, end - start);
-	// Check if variable exists in envp
 	expanded = get_envp_variable(variable, envp);
 	if (expanded)
 		tmp = ft_strjoin_trio(ft_substr(buffer, 0, start - 1), expanded, buffer + end);
 	else
-	{
-		//printf("---- in here\n");
 		tmp = ft_strjoin_mod(ft_substr(buffer, 0, start - 1), buffer + end);
-		//tmp = NULL;
-	}
 	free(expanded);
 	free(variable);
 	free(buffer);

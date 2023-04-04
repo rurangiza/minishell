@@ -3,88 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 13:55:10 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 15:29:04 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:02:55 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int ft_isspace(char c)
+char	*free_stash(char *stash)
 {
-	if (c == ' ')
-		return (1);
-	return (0);
+	free(stash);
+	return (NULL);
 }
 
-char    *free_stash(char *stash)
+char	*ft_strjoin_mod(char *stash, char *buffer)
 {
-    free(stash);
-    return (NULL);
+	int		i;
+	int		j;
+	char	*tmp;
+
+	if (!stash)
+	{
+		stash = ft_strdup("");
+		if (!stash)
+			return (NULL);
+	}
+	if (!buffer)
+		return (NULL);
+	tmp = malloc(sizeof(char) * ((ft_strlen(stash) + ft_strlen(buffer)) + 1));
+	if (!tmp)
+		return (NULL);
+	i = -1;
+	j = 0;
+	while (stash[++i])
+		tmp[i] = stash[i];
+	while (buffer[j])
+		tmp[i++] = buffer[j++];
+	tmp[ft_strlen(stash) + ft_strlen(buffer)] = '\0';
+	free(stash);
+	return (tmp);
 }
 
-char    *ft_strjoin_mod(char *stash, char *buffer)
+int	ft_strchr_mod(const char *s, char ch)
 {
-    int        i;
-    int        j;
-    char    *tmp;
+	int	index;
 
-    if (!stash)
-    {
-        stash = ft_strdup("");
-        if (!stash)
-            return (NULL);
-    }
-    if (!buffer)
-        return (NULL);
-    tmp = malloc(sizeof(char) * ((ft_strlen(stash) + ft_strlen(buffer)) + 1));
-    if (!tmp)
-        return (NULL);
-    i = -1;
-    j = 0;
-    while (stash[++i])
-        tmp[i] = stash[i];
-    while (buffer[j])
-        tmp[i++] = buffer[j++];
-    tmp[ft_strlen(stash) + ft_strlen(buffer)] = '\0';
-    free(stash);
-    return (tmp);
-}
-
-int ft_strchr_mod(const char *s, char ch)
-{
-    int        index;
-
-    index = 0;
-    if (s && ch)
-    {
-        while (s[index])
-        {
+	index = 0;
+	if (s && ch)
+	{
+		while (s[index])
+		{
 			if (s[index] == '\'')
 			{
 				index++;
-				while(s[index] && s[index] != '\'')
+				while (s[index] && s[index] != '\'')
 					index++;
 			}
-            if (s[index] == ch && s[index + 1] && s[index + 1] != '\"')
-                return (index);
-            if (!s[index])
-                break ;
-            index++;
-        }
-    }
-    return (-1);
+			if (s[index] == ch && s[index + 1] && s[index + 1] != '\"')
+				return (index);
+			if (!s[index])
+				break ;
+			index++;
+		}
+	}
+	return (-1);
 }
 
-void    expander(t_lexer *lexer, char **envp)
+void	expander(t_lexer *lexer, char **envp)
 {
-	int i;
+	int	i;
+
 	(void)envp;
-	
 	i = 0;
-	while(lexer->tmp[i])
+	while (lexer->tmp[i])
 	{
 		while (ft_strchr_mod(lexer->tmp[i], '$') != -1)
 		{

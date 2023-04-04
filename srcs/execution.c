@@ -6,44 +6,37 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/03 17:11:55 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:45:23 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-///////////////////////////////////////////////////////////////////////////////
+/* 
+ * Description: 
+ * - This function execute commands, handle redirections and exit status
+ * Arguments
+ * - [0] token :	list of command structures containing valuable data about
+ * 					each command 
+ * - [1] prompt :	main structure contain all tokens and informations about
+ * 					the program such as (envp, nbr of pipes, ...)
+*/
 
 void	execute(t_token *token, t_prompt *prompt)
 {	
 	int		index;
-	int		cmd_type;
-	pid_t	pid;
+	int		status;
 
-	init_exec(prompt);
-	if (!token[0].cmd[0])
-	{
-		printf(CRED"Error\033[0m No commands detected\n");
+	status = init_exec(token, prompt);
+	if (status == STAT_NEG)
 		return ;
-	}
 	index = 0;
 	while (index < prompt->pipe_nb)
 	{
 		if (token[index].cmd && is_builtin(token[index].cmd[0]))
-			execute_builtins(token, prompt, index);
+			exec_builtins(token, prompt, index);
 		else
-		{
-			cmd_type = get_cmd_type(prompt->pipe_nb, index);
-			createpipe(prompt, cmd_type);
-			init_signals_inprocess();
-			pid = fork();
-			if (pid == -1)
-				exit_msg();
-			else if (pid == 0)
-				child_process(token, prompt, cmd_type, index);
-			prompt->saved_pid[index] = pid;
-			parent_process(token, prompt, cmd_type);
-		}
+			exec_cmds(token, prompt, index);
 		index++;
 	}
 	check_cmds_status(token, prompt);
@@ -52,7 +45,47 @@ void	execute(t_token *token, t_prompt *prompt)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	execute_builtins(t_token *token, t_prompt *prompt, int index)
+int	init_exec(t_token *token, t_prompt *prompt)
+{
+	if (!token[0].cmd[0])
+	{
+		printf(CRED"Error\033[0m No commands detected\n");
+		return (STAT_NEG);
+	}
+	prompt->stdio[0] = dup(STDIN_FILENO);
+	prompt->stdio[1] = dup(STDOUT_FILENO);
+	if (prompt->pipe_nb > 0)
+	{
+		prompt->saved_pid = malloc(prompt->pipe_nb * sizeof(pid_t));
+		if (!prompt->saved_pid)
+			return (STAT_NEG);
+	}
+	prompt->prevpipe = -1;
+	return (STAT_POS);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void	exec_cmds(t_token *token, t_prompt *prompt, int index)
+{
+	int		cmd_type;
+	pid_t	pid;
+
+	cmd_type = get_cmd_type(prompt->pipe_nb, index);
+	createpipe(prompt, cmd_type);
+	init_signals_inprocess();
+	pid = fork();
+	if (pid == -1)
+		exit_msg();
+	else if (pid == 0)
+		child_process(token, prompt, cmd_type, index);
+	prompt->saved_pid[index] = pid;
+	parent_process(token, prompt, cmd_type);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void	exec_builtins(t_token *token, t_prompt *prompt, int index)
 {
 	int	status;
 

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/03 16:55:59 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 11:58:29 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@
 # define FALSE	0
 # define HERE_DOC -3
 # define NO_REDIR -1
+# define STAT_POS 1
+# define STAT_NEG -1
 
 extern int	g_exitcode;
 int g_exitcode;
@@ -124,6 +126,7 @@ char	*find_path(char **envp);
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
 void	execute(t_token *token, t_prompt *prompt);
+void	exec_cmds(t_token *token, t_prompt *prompt, int index);
 
 void	parent_process(t_token *token, t_prompt *prompt, int cmd_type);
 void	child_process(t_token *token, t_prompt *prompt, int cmd_type, int index);
@@ -142,7 +145,7 @@ int		get_cmd_type(int size, int index);
 
 int		heredoc(char *limiter, int var_expdr, t_prompt *prompt);
 
-void	execute_builtins(t_token *token, t_prompt *prompt, int index);
+void	exec_builtins(t_token *token, t_prompt *prompt, int index);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
@@ -163,7 +166,8 @@ void	init_shell(t_prompt *prompt, int argc, char **argv, char **envp);
 void	init_prompt(t_prompt *prompt);
 void	init_signals(void);
 void	init_signals_inprocess(void);
-void	init_exec(t_prompt *prompt);
+int		init_exec(t_token *token, t_prompt *prompt);
+void	init_heredoc(char *limiter, int *ends, char **stash, char **buffer);
 
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
