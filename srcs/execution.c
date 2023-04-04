@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/04 11:45:23 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:53:02 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,15 @@ int	init_exec(t_token *token, t_prompt *prompt)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+int	get_cmd_type(int size, int index)
+{
+	if (size == 1)
+		return (_single);
+	else if (index == size - 1 && index != 0)
+		return (_last);
+	return (_middle);
+}
 
 void	exec_cmds(t_token *token, t_prompt *prompt, int index)
 {

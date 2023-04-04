@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 08:52:49 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/04 15:46:26 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:57:14 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char	*expand_variable(char *buffer, char **envp)
 	char	*expanded;
 
 	start = ft_strchr_mod(buffer, '$') + 1;
+	end = 0;
 	if (!buffer[start] || (buffer[start] == '\"') || buffer[start] == '?')
 	{
 		tmp = expand_exitstatus(buffer, start, end);
@@ -129,11 +130,3 @@ char	*ft_strjoin_freeboth(char *s1, char *s2)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int	get_cmd_type(int size, int index)
-{
-	if (size == 1)
-		return (_single);
-	else if (index == size - 1 && index != 0)
-		return (_last);
-	return (_middle);
-}

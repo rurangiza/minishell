@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 15:45:24 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:56:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ char	*ft_strjoin_freeboth(char *s1, char *s2);
 
 /* ~~~~~~~~~~ CHECKER ~~~~~~~~~~~~~~ */
 int		ft_isspace(char c);
+int		is_ending_character(char *buffer, int end);
 
 //void	hanging_cats(t_token *token);
 
