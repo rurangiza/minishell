@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 12:59:22 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:07:03 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,12 @@ t_lexer	lexerinho(char *prompt, char **envp);
 char	**token(t_lexer *lexer);
 char	*delete_quotes_1(char *str, char c);
 int		get_size(char *str, char c);
+int		count_words(char *prompt);
+int		check_quotes(char *prompt);
+int		skip_quote(char *prompt, int i, char quote);
+int		skip_quote_count(char *prompt, int i, char quote);
+int		skip_spaces(char *prompt, int i);
+char	**ft_cmd_lexer(char *prompt);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
 void	expander(t_lexer *lexer, char **envp);

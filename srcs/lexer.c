@@ -13,192 +13,54 @@
 
 #include "../includes/minishell.h"
 
-static int count_words(char *prompt)
-{
-	int i;
-	int count;
+// int count_words(char *prompt)
+// {
+// 	int i;
+// 	int count;
 
-	i = 0;
-	count = 0;
-	if (!prompt)
-		return (0);
-	while(prompt[i])
-	{
-		while(prompt[i] != '\0' && prompt[i] == ' ')
-			i++;
-		if (prompt[i] != '\0')
-		{
-			while(prompt[i] && prompt[i] != ' ' && prompt[i] != '\"' && prompt[i] != '\'')
-				i++;
-			if (prompt[i] == '\"')
-			{
-				i++;
-				while(prompt[i])
-				{
-					if (prompt[i] == '\"')
-						break ;
-					i++;
-				}
-				if (prompt[i] == '\0')
-					return (-1);
-			}
-			else if (prompt[i] == '\'')
-			{
-				i++;
-				while (prompt[i])
-				{
-					if (prompt[i] == '\'')
-						break ;
-					i++;
-				}
-				if (prompt[i] == '\0')
-					return (-1);
-			}
-			count++;
-		}
-		while(prompt[i] != '\0' && prompt[i] != ' ')
-			i++;
-	}
-	return(count);
-}
-
-static int check_quotes(char *prompt)
-{
-	int i;
-	int count;
-	int count2;
-
-	i = 0;
-	count = 0;
-	count2 = 0;
-	while (prompt[i])
-	{
-		if (prompt[i] && prompt[i] == '\'')
-		{
-			count++;
-			i++;
-			while (prompt[i] && prompt[i] != '\'')
-				i++;
-			if (prompt[i] && prompt[i] == '\'')
-			{
-				count++;
-			}
-		}
-		if (prompt[i] && prompt[i] == '\"')
-		{
-			count2++;
-			i++;
-			while(prompt[i] && prompt[i] != '\"')
-				i++;
-			if (prompt[i] && prompt[i] == '\"')
-			{
-				count2++;
-			}
-		}
-		if (!prompt[i])
-			break ;
-		i++;
-	}
-	if (((count2 % 2) != 0) || ((count % 2) != 0))
-		return (-1);
-	else
-		return (0);
-	return (0);
-}
-
-static int ft_word_len(char *prompt)
-{
-	int i;
-
-	i = 0;
-	while (prompt[i] && prompt[i] != ' ')
-	{
-		if (prompt[i] == '\"')
-		{
-			i++;
-			while (prompt[i] && prompt[i] != '\"')
-				i++;
-		}
-		else if (prompt[i] == '\'')
-		{
-			i++;
-			while (prompt[i] && prompt[i] != '\'')
-				i++;
-		}
-		if (!prompt[i]) //! added to prevent SEGFAULT in next loop condition
-			break ;
-		i++;
-	}
-	return (i);
-}
-
-char *ft_get_words(char *prompt)
-{
-	int i;
-	int j;
-	char *str;
-	
-	i = 0;
-	j = ft_word_len(prompt);
-	str = malloc(sizeof(char) * (j + 1));
-	if (!str)
-		return (NULL);
-	while (i < j)
-	{
-		str[i] = prompt[i];
-		i++;
-	}
-	str[i] = 0;
-	return(str);
-}
-
-char **ft_cmd_lexer(char *prompt)
-{
-	char **arr;
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	if (!prompt)
-		return (NULL);
-	if(count_words(prompt) == -1)
-	{
-		printf("syntax error\n");
-		return(NULL);
-	}
-	arr = malloc(sizeof(char *) * (count_words(prompt) + 1));
-	if (!arr)
-		return (NULL);
-	while(prompt[i])
-	{
-		while (prompt[i] && prompt[i] == ' ')
-			i++;
-		if (prompt[i] != '\0')
-		{
-			arr[j] = ft_get_words(prompt + i);
-			while(prompt[i] && prompt[i] != ' ' && prompt[i] != '\"' && prompt[i] != '\'')
-				i++;
-			if (prompt[i] == '\"')
-			{
-				i++;
-				while (prompt[i] != '\"' && prompt[i])
-					i++;
-			}
-			else if (prompt[i] == '\'')
-			{
-				i++;
-				while(prompt[i] != '\'' && prompt[i])
-					i++;
-			}
-			j++;
-		}
-		while (prompt[i] && prompt[i] != ' ')
-			i++;
-	}
-	arr[j] = 0;
-	return (arr);
-}
+// 	i = 0;
+// 	count = 0;
+// 	if (!prompt)
+// 		return (0);
+// 	while(prompt[i])
+// 	{
+// 		while(prompt[i] != '\0' && prompt[i] == ' ')
+// 			i++;
+// 		if (prompt[i] != '\0')
+// 		{
+// 			while(prompt[i] && prompt[i] != ' ' && prompt[i] != '\"' && prompt[i] != '\'')
+// 				i++;
+// 			if (prompt[i] == '\"')
+// 			{
+// 				i++;
+// 				while(prompt[i])
+// 				{
+// 					if (prompt[i] == '\"')
+// 						break ;
+// 					i++;
+// 				}
+// 				if (prompt[i] == '\0')
+// 					return (-1);
+// 			}
+// 			else if (prompt[i] == '\'')
+// 			{
+// 				i++;
+// 				while (prompt[i])
+// 				{
+// 					if (prompt[i] == '\'')
+// 						break ;
+// 					i++;
+// 				}
+// 				if (prompt[i] == '\0')
+// 					return (-1);
+// 			}
+// 			count++;
+// 		}
+// 		while(prompt[i] != '\0' && prompt[i] != ' ')
+// 			i++;
+// 	}
+// 	return(count);
+// }
 
 int	get_size(char *str, char c)
 {
@@ -261,10 +123,7 @@ void	delete_quotes(char **tokens)
 		{
 			i++;
 			if (tokens[i] && tokens[i + 1] && tokens[i][0] == '<')
-			{
 				i += 2;
-				//printf("tokens[i]%s\n", tokens[i]);
-			}
 		}
 		j = 0;
 		while (tokens[i] && tokens[i][j])
@@ -294,7 +153,7 @@ t_lexer	lexerinho(char *prompt, char **envp)
 
 	if (!prompt || check_quotes(prompt) == -1)
 	{
-		printf("syntax error\n");
+		printf("syntax error in quotes\n");
 		lexer.tmp = NULL;
 		lexer.tokens = NULL;
 		return (lexer);

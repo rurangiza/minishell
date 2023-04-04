@@ -2,9 +2,6 @@ echo $ $USER
 export VAR=value (should update variable)
 echo "'$HOME'"
 
-~~~~ BUG ~~~~
-< Makefile < exemple cat : "aucune commande detectee" (parsing)
-
 ~~~~ LEAKS ~~~~
 in lexerinfo:ft_cmd_lexer(): pressing ENTER two times on empty prompt
 cd .. : "error for object 0x7fa3e4804360: pointer being freed was not allocated"
