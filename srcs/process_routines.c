@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 16:17:06 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/03 16:57:09 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:56:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	child_process(t_token *token, t_prompt *prompt, int cmd_type, int index)
 	else if (cmd_type == _last)
 		last_child(&token[index], prompt->prevpipe, prompt);
 	else
-		middle_child(&token[index], index, prompt->prevpipe, prompt->pipends, prompt);
+		middle_child(&token[index], prompt, index);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -53,10 +53,9 @@ void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt)
+void	middle_child(t_token *token, t_prompt *prompt, int index)
 {
-	(void)prevpipe; // Delete and remove from arguments
-	close(pipends[READ]);
+	close(prompt->pipends[READ]);
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	else if (index > 0)
@@ -67,8 +66,8 @@ void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_promp
 	if (token->outfile != -1)
 		redirect_out(token);
 	else
-		dup2(pipends[WRITE], STDOUT_FILENO);
-	close(pipends[WRITE]);
+		dup2(prompt->pipends[WRITE], STDOUT_FILENO);
+	close(prompt->pipends[WRITE]);
 	handle_execution_errors(token, prompt);
 	execve(token->cmd_path, token->cmd, prompt->envp);
 	exit_msg();

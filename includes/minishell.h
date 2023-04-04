@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 11:58:29 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 12:59:22 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,15 @@
 # define STAT_NEG -1
 
 extern int	g_exitcode;
-int g_exitcode;
+int			g_exitcode;
 
-typedef struct s_tools {
-	int		exit_code;
-	char	**environment;
-	int		killed;
-} t_tools;
-
-t_tools g_tools;
+struct stat	sb;
 
 typedef struct s_lexer
 {
 	char **tokens;
 	char **tmp;
 }	t_lexer;
-
-struct stat sb;
 
 typedef struct s_token
 {
@@ -85,7 +77,7 @@ typedef struct s_token
 	int				infile;
 	char			*delimiter;
 	int				heredoc_mode;
-	struct stat 	stats;
+	struct stat		stats;
 }	t_token;
 
 typedef struct s_prompt
@@ -101,11 +93,11 @@ typedef struct s_prompt
 }	t_prompt;
 
 typedef enum e_state {
-    _single	= 0,
-    _last	= 1,
-    _middle	= 2,
+	_single		= 0,
+	_last		= 1,
+	_middle		= 2,
 	_FREEBUCKET = 11,
-} t_state;
+}	t_state;
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
 t_lexer	lexerinho(char *prompt, char **envp);
@@ -129,10 +121,11 @@ void	execute(t_token *token, t_prompt *prompt);
 void	exec_cmds(t_token *token, t_prompt *prompt, int index);
 
 void	parent_process(t_token *token, t_prompt *prompt, int cmd_type);
-void	child_process(t_token *token, t_prompt *prompt, int cmd_type, int index);
+void	child_process(t_token *token, t_prompt *prompt,
+			int cmd_type, int index);
 void	single_child(t_token *token, t_prompt *prompt);
 void	last_child(t_token *token, int prevpipe, t_prompt *prompt);
-void	middle_child(t_token *token, int index, int prevpipe, int *pipends, t_prompt *prompt);
+void	middle_child(t_token *token, t_prompt *prompt, int index);
 
 void	check_cmds_status(t_token *token, t_prompt *prompt);
 
