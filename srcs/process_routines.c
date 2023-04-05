@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 16:17:06 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/04 14:38:40 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:40:02 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	child_process(t_token *token, t_prompt *prompt, int cmd_type, int index)
 	if (cmd_type == _single)
 		single_child(&token[index], prompt);
 	else if (cmd_type == _last)
-		last_child(&token[index], prompt->prevpipe, prompt);
+		last_child(&token[index], prompt);
 	else
 		middle_child(&token[index], prompt, index);
 }
@@ -37,15 +37,17 @@ void	single_child(t_token *token, t_prompt *prompt)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	last_child(t_token *token, int prevpipe, t_prompt *prompt)
+void	last_child(t_token *token, t_prompt *prompt)
 {
 	if (token->infile != -1)
 		redirect_in(token, prompt);
 	else
-		dup2(prevpipe, STDIN_FILENO);
-	close(prevpipe);
+		dup2(prompt->prevpipe, STDIN_FILENO);
+	close(prompt->prevpipe);
 	if (token->outfile != -1)
 		redirect_out(token);
+	else
+		dup2(prompt->stdio[WRITE], STDOUT_FILENO);
 	handle_execution_errors(token, prompt);
 	execve(token->cmd_path, token->cmd, prompt->envp);
 	exit_msg();

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 14:18:58 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 17:01:23 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,13 +138,13 @@ char	*find_path(char **envp);
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
 
 void	execute(t_token *token, t_prompt *prompt);
-void	exec_cmds(t_token *token, t_prompt *prompt, int index);
+void	exec_cmds(t_token *token, t_prompt *prompt, int index, int cmd_type);
 
 void	parent_process(t_token *token, t_prompt *prompt, int cmd_type);
 void	child_process(t_token *token, t_prompt *prompt,
 			int cmd_type, int index);
 void	single_child(t_token *token, t_prompt *prompt);
-void	last_child(t_token *token, int prevpipe, t_prompt *prompt);
+void	last_child(t_token *token, t_prompt *prompt);
 void	middle_child(t_token *token, t_prompt *prompt, int index);
 
 void	check_cmds_status(t_token *token, t_prompt *prompt);
