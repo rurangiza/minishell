@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 11:36:57 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 12:00:52 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	expander(t_lexer *lexer, char **envp);
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*get_envp_variable(char *variable, char **envp);
 
-void	parser(t_prompt *prompt, t_lexer *lexer, char **envp);
+void	parser(t_prompt *prompt, t_lexer *lexer);
 int		is_valid_cmd(char *str, char **path);
 int		is_valid_cmd_bis(char *str, char *path);
 char	*find_path(char **envp);
@@ -258,4 +258,13 @@ int		ft_tablen(char **tab);
 /* ~~~~~~~~~~ CALCULATOR ~~~~~~~~~~~~~~ */
 void	createpipe(t_prompt *prompt, int cmd_type);
 
+/* ~~~~~~~~~~ CALCULATOR ~~~~~~~~~~~~~~ */
+int		is_sep(char *sep, char c);
+void	check_heredoc_mod(char *str, t_token *cmd);
+int		get_size_delimiter(char *str);
+
+int		get_pipe_nb(t_lexer *lexer);
+int		get_outfile_apmod(char *str);
+int		get_outfile(char *str);
+int		get_infile(char *str);
 #endif

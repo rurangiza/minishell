@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/04 17:05:21 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:43:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,3 @@ int	is_variable_to_be_deleted(char *target, char *source)
 		return (TRUE);
 	return (FALSE);
 }
-

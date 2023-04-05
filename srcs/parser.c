@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 11:27:11 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:55:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*find_path(char **envp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (envp[i])
@@ -30,7 +30,7 @@ char	*find_path(char **envp)
 
 int	is_built_in(char *str)
 {
-	if(ft_strncmp(str, "echo", 4) == 0
+	if (ft_strncmp(str, "echo", 4) == 0
 		|| ft_strncmp(str, "cd", 2) == 0
 		|| ft_strncmp(str, "pwd", 3) == 0
 		|| ft_strncmp(str, "export", 6) == 0
@@ -43,67 +43,13 @@ int	is_built_in(char *str)
 	return (0);
 }
 
-static int get_pipe_nb(t_lexer *lexer)
+char	*get_cmd_path(char *str, char **path)
 {
-	int i;
-	int count;
-
-	i = 0;
-	count = 0;
-	if (!ft_strncmp(lexer->tokens[i], "|", 1))
-		return (-1);
-	while (lexer->tokens[i])
-	{
-		if (!ft_strncmp(lexer->tokens[i], "|", 1))
-		{
-			if (!ft_strncmp(lexer->tokens[i + 1],"|", 1) && lexer->tokens[i + 1])
-				return (-1);
-			count++;
-		}
-		i++;
-	}
-	return (count);
-}
-
-int get_outfile_apmod(char *str)
-{
-	int outfile;
-	
-	if (!str)
-		return (-2);
-	outfile = open(str, O_APPEND | O_RDWR | O_CREAT, 0644);
-	if (outfile < 0)
-		return (-1);
-	return (outfile);
-}
-
-int get_outfile(char *str)
-{
-	int outfile;
-
-	outfile = open(str, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (outfile < 0)
-		return (-1);
-	return (outfile);
-}
-
-int get_infile(char *str)
-{
-	int infile;
-	
-	infile = open(str, O_RDONLY);
-	if (infile < 0)
-		return (-1);
-	return (infile);
-}
-
-char *get_cmd_path(char *str, char **path)
-{
-	char *tmp;
-	char *cmd;
+	char	*tmp;
+	char	*cmd;
 
 	if (!path)
-		return(NULL);
+		return (NULL);
 	while (*path)
 	{
 		tmp = ft_strjoin(*path, "/");
@@ -119,24 +65,25 @@ char *get_cmd_path(char *str, char **path)
 
 int	get_cmd_len(char **tokens, int i)
 {
-	int len;
-	//int j;
-	
-	//j = 1;
+	int	len;
+
 	len = 0;
-	while(tokens[i] && ft_strncmp(tokens[i], "|", 1) && ft_strncmp(tokens[i], ">", 1) && ft_strncmp(tokens[i], "<", 1))
+	while (tokens[i]
+		&& ft_strncmp(tokens[i], "|", 1)
+		&& ft_strncmp(tokens[i], ">", 1)
+		&& ft_strncmp(tokens[i], "<", 1))
 	{
 		len++;
 		i++;
 	}
-	return(len);
+	return (len);
 }
 
-char **get_built_in(char **tokens, int i)
+char	**get_built_in(char **tokens, int i)
 {
-	char **cmd;
-	int j;
-	int len;
+	char	**cmd;
+	int		j;
+	int		len;
 
 	j = 0;
 	len = get_cmd_len(tokens, i);
@@ -153,11 +100,11 @@ char **get_built_in(char **tokens, int i)
 	return (cmd);
 }
 
-char **get_cmd(char **tokens, int i)
+char	**get_cmd(char **tokens, int i)
 {
-	char **cmd;
-	int j;
-	int len;
+	char	**cmd;
+	int		j;
+	int		len;
 
 	j = 0;
 	len = get_cmd_len(tokens, i);
@@ -184,72 +131,20 @@ void	init_cmd(t_token *cmd)
 	cmd->cmd = NULL;
 }
 
-void	check_heredoc_mod(char *str, t_token *cmd)
+char	*delete_quotes_2(char *str, char c)
 {
-	int i;
+	int		i;
+	int		j;
+	int		len;
+	char	*token;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\"' || str[i] == '\'')
-		{
-			cmd->heredoc_mode = FALSE;
-			break ;
-		}
-		else
-			cmd->heredoc_mode = TRUE;
-		i++;
-	}
-}
-
-int is_sep(char *sep, char c)
-{
-	int i;
-	
-	i = 0;
-	while (sep[i])
-	{
-		if (sep[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int get_size_delimiter(char *str)
-{
-	int i;
-	int count;
-	
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (is_sep("\'\"", str[i]))
-			i++;
-		else
-		{
-			count++;
-			i++;
-		}
-	}
-	return(count);
-}
-
-char *delete_quotes_2(char *str, char c)
-{
-	int i;
-	int j;
-	int len;
-	char *token;
-	
 	len = get_size(str, c);
 	token = malloc(sizeof (char) * (len + 1));
 	if (!token)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == c)
 			i++;
@@ -266,46 +161,43 @@ char *delete_quotes_2(char *str, char c)
 
 char	*get_delimiter(char *str)
 {
-	int i;
-	char *delimiter;
-	
+	int		i;
+	char	*delimiter;
+
 	i = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '\'')
 		{
 			delimiter = delete_quotes_2(str, '\'');
-			return(delimiter);
+			return (delimiter);
 		}
 		else if (str[i] == '\"')
 		{
 			delimiter = delete_quotes_2(str, '\"');
-			return(delimiter);
+			return (delimiter);
 		}
 		i++;
 	}
-	return(str);
+	return (str);
 }
 
-t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
+t_token	get_cmds(char **tokens, t_prompt *prompt, int *j)
 {
-	int i;
-	t_token cmd;
-	
+	int		i;
+	t_token	cmd;
+
 	i = *j;
 	init_cmd(&cmd);
-	while(tokens[i] && ft_strncmp(tokens[i], "|", 1))
+	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
 	{
-		if(tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
+		if (tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
 		{
 			i++;
 			if (tokens[i] && (tokens[i][0] == tokens[i - 1][0]))
-			{
 				i += 2;
-			}
 			else if (tokens[i])
-				i++;	
-			
+				i++;
 		}
 		if (tokens[i] && tokens[i][0] != '<' && tokens[i][0] != '>')
 		{
@@ -357,12 +249,11 @@ t_token get_cmds(char **tokens, t_prompt *prompt, int *j)
 	return (cmd);
 }
 
-void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
+void	parser(t_prompt *prompt, t_lexer *lexer)
 {
-	(void)envp;
-	char *path;
-	int i;
-	int j;
+	char	*path;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
