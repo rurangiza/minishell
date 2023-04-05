@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory_mgmt.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 12:52:58 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/04 13:46:00 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/04 15:29:16 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_free_matrix(char **matrix)
 	index = 0;
 	while (matrix[index])
 	{
-		if(matrix[index])
+		if (matrix[index])
 			free(matrix[index]);
-		index++;		
+		index++;
 	}
 	free(matrix);
 }
@@ -47,4 +47,17 @@ void	terminate_exec(t_prompt *prompt)
 		i++;
 	}
 	free(prompt->cmds);
+}
+
+void	ft_freetrio(char *s1, char *s2, char *s3)
+{
+	free(s1);
+	free(s2);
+	free(s3);
+}
+
+void	ft_freeduo(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
 }

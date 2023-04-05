@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:05:43 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 16:57:53 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:56:02 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,7 @@ char	**ft_cmd_lexer(char *prompt)
 	if (!prompt)
 		return (NULL);
 	if (count_words(prompt) == -1)
-	{
-		printf("oui\n");
 		return (NULL);
-	}
 	arr = malloc(sizeof(char *) * (count_words(prompt) + 1));
 	if (!arr)
 		return (NULL);
@@ -104,7 +101,7 @@ char	**ft_cmd_lexer(char *prompt)
 			arr[j] = ft_get_words(prompt + i);
 			cmd_lexer(prompt, &i, &j);
 		}
-		i = skip_spaces(prompt, i);
+		i = skip_not_spaces(prompt, i);
 	}
 	arr[j] = 0;
 	return (arr);

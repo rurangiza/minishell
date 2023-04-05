@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   checker_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 14:19:36 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 17:13:52 by arurangi         ###   ########.fr       */
+/*   Created: 2023/04/04 15:44:23 by arurangi          #+#    #+#             */
+/*   Updated: 2023/04/04 15:56:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	pwd(t_token *token)
+int	ft_isspace(char c)
 {
-	char	*str;
-	int		i;
+	if (c == ' ')
+		return (1);
+	return (0);
+}
 
-	i = 1;
-	if (token->cmd[i])
-	{
-		printf("pwd: too many arguments\n");
-		g_exitcode = 0;
-		return ;
-	}
-	str = getcwd(NULL, 0);
-	printf("%s\n", str);
-	free(str);
+int	is_ending_character(char *buffer, int end)
+{
+	if (ft_isspace(buffer[end])
+		|| buffer[end] == '\''
+		|| buffer[end] == '\"'
+		|| buffer[end] == '$')
+		return (TRUE);
+	return (FALSE);
 }

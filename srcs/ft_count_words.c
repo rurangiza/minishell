@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 16:41:33 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 17:07:36 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:52:59 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ int	count_words_2(char *prompt, int *i, int *count)
 	while (prompt[*i] && prompt[*i] != ' '
 		&& prompt[*i] != '\"' && prompt[*i] != '\'')
 		(*i)++;
-	if (prompt[*i] == '\"')
+	if (prompt[*i] && prompt[*i] == '\"')
 	{
 		*i = skip_quote_count(prompt, *i, prompt[*i]);
 		if (*i == -1)
 			return (-1);
 	}
-	else if (prompt[*i] == '\'')
+	else if (prompt[*i] && prompt[*i] == '\'')
 	{
 		*i = skip_quote_count(prompt, *i, prompt[*i]);
 		if (*i == -1)
@@ -50,7 +50,7 @@ int	count_words(char *prompt)
 			if (count_words_2(prompt, &i, &count) == -1)
 				return (-1);
 		}
-		i = skip_spaces(prompt, i);
+		i = skip_not_spaces(prompt, i);
 	}
 	return (count);
 }

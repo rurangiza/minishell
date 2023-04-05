@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 17:07:03 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 10:31:33 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,18 @@ struct stat	sb;
 
 typedef struct s_lexer
 {
-	char **tokens;
-	char **tmp;
+	char	**tokens;
+	char	**tmp;
 }	t_lexer;
+
+typedef struct s_utils
+{
+	int	i;
+	int	k;
+	int	count;
+	int	len;
+	int	j;
+}	t_utils;
 
 typedef struct s_token
 {
@@ -82,9 +91,9 @@ typedef struct s_token
 
 typedef struct s_prompt
 {
-	t_token	*cmds; // free
-	char	**path; // free
-	char	**envp; // free
+	t_token	*cmds;
+	char	**path;
+	char	**envp;
 	int		pipe_nb;
 	int		prevpipe;
 	int		pipends[2];
@@ -102,13 +111,20 @@ typedef enum e_state {
 /* ~~~~~~~~~~~~~~~~~~~~~~~ LEXER ~~~~~~~~~~~~~~~~~~~~~~~ */
 t_lexer	lexerinho(char *prompt, char **envp);
 char	**token(t_lexer *lexer);
+char	*get_tokens(char *str, int *j, int *k);
+int		get_nb_token(char *str);
+int		len_utils(char *str, int *len, int i, char sep);
+int		len_tokens(char *str);
+void	found_set(char *str, int i, int *j, int *k);
 char	*delete_quotes_1(char *str, char c);
 int		get_size(char *str, char c);
 int		count_words(char *prompt);
 int		check_quotes(char *prompt);
 int		skip_quote(char *prompt, int i, char quote);
 int		skip_quote_count(char *prompt, int i, char quote);
+int		skip_not_spaces(char *prompt, int i);
 int		skip_spaces(char *prompt, int i);
+int		skip_red(char **token, int i);
 char	**ft_cmd_lexer(char *prompt);
 
 /* ~~~~~~~~~~~~~~~~~~~~~~ EXPANDER ~~~~~~~~~~~~~~~~~~~~~ */
@@ -148,13 +164,22 @@ void	exec_builtins(t_token *token, t_prompt *prompt, int index);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);
+int		update_newlinemode(t_token *token, int index, int *newline_mode);
+
 void	pwd(t_token *token);
 void	env(t_token *tokens, t_prompt *prompt);
 int		export(t_token *tokens, t_prompt *prompt);
+
 void	unset(t_token *token, t_prompt *prompt);
+char	**ft_remove_variable(t_token *token, t_prompt *prompt, int index);
+int		is_in_environment(char *variable, t_prompt *prompt);
+int		is_valid_identifier(char *str);
+int		is_variable_to_be_deleted(char *target, char *source);
+
 int		my_exit(t_token *tokens);
 
 void	cd(char *directory, t_prompt *prompt);
+char	*ft_find_destination(char *directory, t_prompt *prompt);
 char	*save_cwd(void);
 
 int		is_echo_option(char *str);
@@ -171,6 +196,8 @@ void	init_heredoc(char *limiter, int *ends, char **stash, char **buffer);
 /* ~~~~~~~~~~~ MEMORY MANAGEMENT ~~~~~~~~~~~~~ */
 void	ft_free_matrix(char **matrix);
 void	terminate_exec(t_prompt *prompt);
+void	ft_freetrio(char *s1, char *s2, char *s3);
+void	ft_freeduo(char *s1, char *s2);
 
 /* ~~~~~~~~~~~~~ ERROR HANDLING ~~~~~~~~~~~~~~~ */
 void	exit_msg(void);
@@ -186,10 +213,14 @@ char	*getenv_custm(char *variable, t_prompt *prompt); // Same without message
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);
-int		is_special_symbol(char *directory);
+int		is_path_alias(char *directory);
 void	check_user_input(char *input);
 int		is_empty_pipe(int read_end);
 char	*ft_strjoin_freeboth(char *s1, char *s2);
+
+/* ~~~~~~~~~~ CHECKER ~~~~~~~~~~~~~~ */
+int		ft_isspace(char c);
+int		is_ending_character(char *buffer, int end);
 
 //void	hanging_cats(t_token *token);
 

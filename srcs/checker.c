@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/03 15:33:48 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 16:54:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_builtin(char *cmd)
 	return (FALSE);
 }
 
-int	is_special_symbol(char *directory)
+int	is_path_alias(char *directory)
 {
 	if (ft_strlen(directory) != 1)
 		return (0);
@@ -56,4 +56,24 @@ void	check_user_input(char *input)
 {
 	if (!input)
 		exit (130);
+}
+
+void	check_cmds_status(t_token *token, t_prompt *prompt)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < prompt->pipe_nb)
+	{
+		waitpid(prompt->saved_pid[i], &status, 0);
+		if (WIFEXITED(status))
+		{
+			g_exitcode = WEXITSTATUS(status);
+			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1
+				&& token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
+				exit(g_exitcode);
+		}
+		i++;
+	}
 }

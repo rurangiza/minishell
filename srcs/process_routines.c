@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 16:17:06 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/04 12:56:11 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/04 14:38:40 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,25 +85,5 @@ void	parent_process(t_token *token, t_prompt *prompt, int cmd_type)
 			&& ft_strncmp("cat", token->cmd[0], 3) == 0
 			&& !token->cmd[1] && token->infile < 0)
 			close(prompt->pipends[READ]);
-	}
-}
-
-void	check_cmds_status(t_token *token, t_prompt *prompt)
-{
-	int	i;
-	int	status;
-
-	i = 0;
-	while (i < prompt->pipe_nb)
-	{
-		waitpid(prompt->saved_pid[i], &status, 0);
-		if (WIFEXITED(status))
-		{
-			g_exitcode = WEXITSTATUS(status);
-			if (WEXITSTATUS(status) != 0 && prompt->pipe_nb == 1
-				&& token[i].cmd && ft_strncmp("exit", token[i].cmd[0], 4) == 0)
-				exit(g_exitcode);
-		}
-		i++;
 	}
 }

@@ -6,67 +6,17 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-
-/*   Updated: 2023/03/27 14:47:09 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 10:44:47 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// int count_words(char *prompt)
-// {
-// 	int i;
-// 	int count;
-
-// 	i = 0;
-// 	count = 0;
-// 	if (!prompt)
-// 		return (0);
-// 	while(prompt[i])
-// 	{
-// 		while(prompt[i] != '\0' && prompt[i] == ' ')
-// 			i++;
-// 		if (prompt[i] != '\0')
-// 		{
-// 			while(prompt[i] && prompt[i] != ' ' && prompt[i] != '\"' && prompt[i] != '\'')
-// 				i++;
-// 			if (prompt[i] == '\"')
-// 			{
-// 				i++;
-// 				while(prompt[i])
-// 				{
-// 					if (prompt[i] == '\"')
-// 						break ;
-// 					i++;
-// 				}
-// 				if (prompt[i] == '\0')
-// 					return (-1);
-// 			}
-// 			else if (prompt[i] == '\'')
-// 			{
-// 				i++;
-// 				while (prompt[i])
-// 				{
-// 					if (prompt[i] == '\'')
-// 						break ;
-// 					i++;
-// 				}
-// 				if (prompt[i] == '\0')
-// 					return (-1);
-// 			}
-// 			count++;
-// 		}
-// 		while(prompt[i] != '\0' && prompt[i] != ' ')
-// 			i++;
-// 	}
-// 	return(count);
-// }
-
 int	get_size(char *str, char c)
 {
-	int i;
-	int count;
-	
+	int	i;
+	int	count;
+
 	i = 0;
 	count = 0;
 	while (str[i])
@@ -82,20 +32,20 @@ int	get_size(char *str, char c)
 	return (count);
 }
 
-char *delete_quotes_1(char *str, char c)
+char	*delete_quotes_1(char *str, char c)
 {
-	int i;
-	int j;
-	int len;
-	char *token;
-	
+	int		i;
+	int		j;
+	int		len;
+	char	*token;
+
 	len = get_size(str, c);
 	token = malloc(sizeof (char) * (len + 1));
 	if (!token)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while(str[i])
+	while (str[i])
 	{
 		if (str[i] == c)
 			i++;
@@ -113,44 +63,38 @@ char *delete_quotes_1(char *str, char c)
 
 void	delete_quotes(char **tokens)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
-	i = 0;
-	while(tokens[i])
+	i = -1;
+	while (tokens[++i])
 	{
 		if (tokens[i] && tokens[i][0] == '<')
-		{
-			i++;
-			if (tokens[i] && tokens[i + 1] && tokens[i][0] == '<')
-				i += 2;
-		}
-		j = 0;
-		while (tokens[i] && tokens[i][j])
+			i = skip_red(tokens, i);
+		j = -1;
+		while (tokens[i] && tokens[i][++j])
 		{
 			if (tokens[i][j] == '\'')
 			{
 				tokens[i] = delete_quotes_1(tokens[i], '\'');
-				break ;	
+				break ;
 			}
 			else if (tokens[i][j] == '\"')
 			{
 				tokens[i] = delete_quotes_1(tokens[i], '\"');
 				break ;
 			}
-			j++;
 		}
 		if (!tokens[i])
 			break ;
-		i++;
 	}
 }
 
 t_lexer	lexerinho(char *prompt, char **envp)
 {
-	(void)envp;
 	t_lexer	lexer;
 
+	(void)envp;
 	if (!prompt || check_quotes(prompt) == -1)
 	{
 		printf("syntax error in quotes\n");

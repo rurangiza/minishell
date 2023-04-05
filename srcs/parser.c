@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 14:05:45 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 10:52:27 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,61 +26,6 @@ char	*find_path(char **envp)
 	if (!envp[i])
 		return (NULL);
 	return (*(envp + i) + 5);
-}
-/*
- * Utile dans l'execution pour
- * - verifier que PATH est present
-*/
-int is_valid_cmd_bis(char *str, char *path) 
-{
-	char *tmp;
-	char *cmd;
-	char **splited;
-	int index = 0;
-
-	if (path == NULL)
-		return (0);
-	splited = ft_split(path, ':');
-	// if (!splited)
-		
-	while (splited[index])
-	{
-		tmp = ft_strjoin(splited[index], "/");
-		cmd = ft_strjoin(tmp, str);
-		free(tmp);
-		if (access(cmd, 0) == 0)
-		{
-			free(cmd);
-			return (1);
-		}
-		free(cmd);
-		index++;
-	}
-	for (int i = 0; splited[i]; i++)
-		free(splited[i]);
-	free(splited);
-	return (0);
-}
-
-int is_valid_cmd(char *str, char **path)
-{
-	char *tmp;
-	char *cmd;
-
-	while (*path)
-	{
-		tmp = ft_strjoin(*path, "/");
-		cmd = ft_strjoin(tmp, str);
-		free(tmp);
-		if (access(cmd, 0) == 0)
-		{
-			free(cmd);
-			return (1);
-		}
-		free(cmd);
-		path++;
-	}
-	return (0);
 }
 
 int	is_built_in(char *str)
@@ -222,7 +167,6 @@ char **get_cmd(char **tokens, int i)
 	while (j < len)
 	{
 		cmd[j] = ft_strdup(tokens[i]);
-		//printf("%s\n", cmd[j]);
 		i++;
 		j++;
 	}
@@ -423,10 +367,7 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 	i = 0;
 	j = 0;
 	if (!lexer || !lexer->tokens || !lexer->tokens[0])
-	{
-		
 		return ;
-	}
 	prompt->pipe_nb = get_pipe_nb(lexer);
 	if (prompt->pipe_nb == -1)
 		return ;
@@ -442,6 +383,5 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		i++;
 	}
 	ft_free_matrix(prompt->path);
-	//ft_free_matrix(lexer->tokens);
 	prompt->pipe_nb += 1; // CHECK THIS
 }

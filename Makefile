@@ -6,7 +6,7 @@
 #    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/04 16:42:06 by akorompa         ###   ########.fr        #
+#    Updated: 2023/04/05 10:33:39 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ SRCS			= 	srcs/main.c \
 					srcs/parser.c \
 					srcs/expander.c \
 					srcs/tokens.c \
+					srcs/tokens_utils.c \
+					srcs/get_tokens.c \
 					srcs/lexer.c \
 					srcs/lexer_utils.c \
 					srcs/quotes_checking.c \
@@ -30,6 +32,7 @@ SRCS			= 	srcs/main.c \
 					srcs/errors.c \
 					srcs/utils.c \
 					srcs/checker.c \
+					srcs/checker_2.c \
 					srcs/memory_mgmt.c \
 					srcs/initialization.c \
 					srcs/error_handling.c \
@@ -45,6 +48,7 @@ SRCS			= 	srcs/main.c \
 					built-ins/unset.c \
 					built-ins/cd.c \
 					built-ins/exit.c \
+					built-ins/builtins_utils.c \
 
 INCLUDES		= includes/minishell.h
 
@@ -67,14 +71,14 @@ else
 endif
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+	$(CC) -Wall -Wextra -Werror $(SANATIZE) -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
 
 
 all:		${NAME}
 
 ${NAME}:	${OBJS} ${INCLUDES}
 			make -C $(LIBFT)
-			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
+			$(CC) $(CCFLAGS) $(SANATIZE) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
 
 clean:
 				rm -f ${OBJS}

@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 14:41:27 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 17:10:51 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/04 18:04:46 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,21 @@
 int	skip_spaces(char *prompt, int i)
 {
 	while (prompt[i] && prompt[i] == ' ')
+		i++;
+	return (i);
+}
+
+int	skip_red(char **tokens, int i)
+{
+	i++;
+	if (tokens[i] && tokens[i + 1] && tokens[i][0] == '<')
+		i += 2;
+	return (i);
+}
+
+int	skip_not_spaces(char *prompt, int i)
+{
+	while (prompt[i] && prompt[i] != ' ')
 		i++;
 	return (i);
 }

@@ -6,15 +6,15 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/27 14:42:43 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:14:47 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int ft_isset(char *set, char c)
+static int	ft_isset(char *set, char c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (set[i])
@@ -26,71 +26,10 @@ static int ft_isset(char *set, char c)
 	return (0);
 }
 
-static int get_nb_token(char *str)
+int	len_tokens(char *str)
 {
-	int i;
-	int count;
-	
-	count = 1;
-	i = 0;
-	if (str[i] && str[1] == '\0')
-		return (1);
-	if (str[i] == '|' || str[i] == '>' || str[i] == '<')
-	{
-		if (str[i + 1] && !(str[i] == '|' || str[i] == '>' || str[i] == '<'))
-			count++;
-		i++;
-	}
-	while(str[i])
-	{
-		if (str[i] == '\'')
-		{
-			i++;
-			while(str[i] && str[i] != '\'') //! added 'str[i]' to prevent SEGFAULT
-			i++;
-		}
-		if (str[i] == '\"')
-		{
-			i++;
-			while (str[i] != '\"')
-				i++;
-		}
-		if (str[i] == '|')
-		{
-			count++;
-			if (str[i + 1] == '|')
-				i++;
-			if (str[i + 1] && str[i + 1] != '|')
-				count++;
-			i++;
-		}
-		if (str[i] == '>')
-		{
-			count++;
-			if (str[i + 1] == '>')
-				i++;
-			if (str[i + 1] && str[i + 1] != '>')
-				count++;
-		}
-		if (str[i] == '<')
-		{
-			count++;
-			if (str[i + 1] == '<')
-				i++;
-			if (str[i + 1] && str[i + 1] != '<')
-				count++;
-		}
-		if (!str[i])
-			break ;
-		i++;
-	}
-	return (count);
-}
-
-int len_tokens(char *str)
-{
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	len = 0;
 	i = 0;
@@ -99,26 +38,10 @@ int len_tokens(char *str)
 	while (str[i] && !ft_isset("<|>", str[i]))
 	{
 		if (str[i] == '\'')
-		{
-			i++;
-			len++;
-			while(str[i] && str[i] != '\'') //! added 'str[i]' to prevent SEGFAULT
-			{
-				i++;
-				len++;
-			}
-		}
+			i = len_utils(str, &len, i, str[i]);
 		if (str[i] == '\"')
-		{
-			i++;
-			len++;
-			while (str[i] != '\"')
-			{
-				i++;
-				len++;
-			}
-		}
-		if (!str[i]) //! added to prevent SEGFAULT in loop condition
+			i = len_utils(str, &len, i, str[i]);
+		if (!str[i])
 			break ;
 		i++;
 		len++;
@@ -141,13 +64,7 @@ char *get_tokens(char *str, int *j, int *k)
 	if (ft_isset("<|>", str[i]))
 	{
 		line[i] = str[i];
-		if (str[i + 1])
-			(*j)++;
-		else if (str[i + 1] == '\0')
-		{
-			(*k)++;
-			*j = 0;
-		}
+		found_set(str, i, j, k);
 	}
 	while (str[i] && !ft_isset("<|>", str[i]))
 	{
@@ -156,7 +73,7 @@ char *get_tokens(char *str, int *j, int *k)
 			line[i] = str[i];
 			(*j)++;
 			i++;
-			while (str[i] && str[i] != '\'') //! added 'str[i]' to prevent SEGFAULT
+			while (str[i] && str[i] != '\'')
 			{
 				line[i] = str[i];
 				i++;
@@ -178,13 +95,7 @@ char *get_tokens(char *str, int *j, int *k)
 		line[i] = str[i];
 		(*j)++;
 		i++;
-		
-		/*
-		** Next condition causes errors when:
-		** (str[i] == '\0') => SEGFAULT for : echo "c'est"'
-		** (str[i] && str[i] == '\0') => echo "$HOME" (stops working)
-		*/
-		if (str[i] == '\0') //! CHECK THIS OUT
+		if (str[i] == '\0')
 		{
 			*j = 0;
 			(*k)++;
@@ -195,33 +106,31 @@ char *get_tokens(char *str, int *j, int *k)
 	return (line);
 }
 
-char **token(t_lexer *lexer)
+char	**token(t_lexer *lexer)
 {
-	char **tokens;
-	int i;
-	int k;
-	int count;
-	int len;
-	int j;
-	
+	char	**tokens;
+	t_utils	utils;
+	int		i;
+	int		j;
+
 	i = 0;
-	count = 0;
+	utils.count = 0;
 	while (lexer->tmp[i])
 	{
-		len = get_nb_token(lexer->tmp[i]);
-		count += len;
+		utils.len = get_nb_token(lexer->tmp[i]);
+		utils.count += utils.len;
 		i++;
 	}
-	tokens = malloc(sizeof(char *) * (count + 1));
+	tokens = malloc(sizeof(char *) * (utils.count + 1));
 	if (!tokens)
 		return (NULL);
 	i = 0;
-	k = 0;
+	utils.k = 0;
 	j = 0;
-	while(k < count)
+	while (utils.k < utils.count)
 	{
-		tokens[k++] = get_tokens(lexer->tmp[i] + j, &j, &i);
+		tokens[utils.k++] = get_tokens(lexer->tmp[i] + j, &j, &i);
 	}
-	tokens[k] = 0;
+	tokens[utils.k] = 0;
 	return (tokens);
 }
