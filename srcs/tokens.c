@@ -6,13 +6,13 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 12:54:35 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 11:14:47 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:26:02 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	ft_isset(char *set, char c)
+int	ft_isset(char *set, char c)
 {
 	int	i;
 
@@ -49,62 +49,62 @@ int	len_tokens(char *str)
 	return (len);
 }
 
-char *get_tokens(char *str, int *j, int *k)
-{
-	int i;
-	int len;
-	char *line;
+// char *get_tokens(char *str, int *j, int *k)
+// {
+// 	int i;
+// 	int len;
+// 	char *line;
 
-	i = 0;
-	len = len_tokens(str);
-	line = malloc(sizeof(char) * (len + 1));
-	if (!line)
-		return (NULL);
-	i = 0;
-	if (ft_isset("<|>", str[i]))
-	{
-		line[i] = str[i];
-		found_set(str, i, j, k);
-	}
-	while (str[i] && !ft_isset("<|>", str[i]))
-	{
-		if (str[i] == '\'')
-		{
-			line[i] = str[i];
-			(*j)++;
-			i++;
-			while (str[i] && str[i] != '\'')
-			{
-				line[i] = str[i];
-				i++;
-				(*j)++;
-			}
-		}
-		if (str[i] == '\"')
-		{
-			line[i] = str[i];
-			(*j)++;
-			i++;
-			while (str[i] != '\"')
-			{
-				line[i] = str[i];
-				i++;
-				(*j)++;
-			}
-		}
-		line[i] = str[i];
-		(*j)++;
-		i++;
-		if (str[i] == '\0')
-		{
-			*j = 0;
-			(*k)++;
-			break ;
-		}
-	}
-	line[len] = 0;
-	return (line);
-}
+// 	i = 0;
+// 	len = len_tokens(str);
+// 	line = malloc(sizeof(char) * (len + 1));
+// 	if (!line)
+// 		return (NULL);
+// 	i = 0;
+// 	if (ft_isset("<|>", str[i]))
+// 	{
+// 		line[i] = str[i];
+// 		found_set(str, i, j, k);
+// 	}
+// 	while (str[i] && !ft_isset("<|>", str[i]))
+// 	{
+// 		if (str[i] == '\'')
+// 		{
+// 			line[i] = str[i];
+// 			(*j)++;
+// 			i++;
+// 			while (str[i] && str[i] != '\'')
+// 			{
+// 				line[i] = str[i];
+// 				i++;
+// 				(*j)++;
+// 			}
+// 		}
+// 		if (str[i] == '\"')
+// 		{
+// 			line[i] = str[i];
+// 			(*j)++;
+// 			i++;
+// 			while (str[i] != '\"')
+// 			{
+// 				line[i] = str[i];
+// 				i++;
+// 				(*j)++;
+// 			}
+// 		}
+// 		line[i] = str[i];
+// 		(*j)++;
+// 		i++;
+// 		if (str[i] == '\0')
+// 		{
+// 			*j = 0;
+// 			(*k)++;
+// 			break ;
+// 		}
+// 	}
+// 	line[len] = 0;
+// 	return (line);
+// }
 
 char	**token(t_lexer *lexer)
 {

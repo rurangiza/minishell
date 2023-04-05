@@ -6,67 +6,16 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 14:18:01 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:01:20 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int envp_len(t_prompt *prompt)
+int	tokens_to_export(char **cmd)
 {
-	int i;
-
-	i = 0;
-	while (prompt->envp[i])
-	{
-		i++;
-	}
-	return (i);
-}
-
-void	sort_array(t_prompt *prompt)
-{
-	int i;
-	int j;
-	int len;
-	char *tmp;
-
-	i = 0;
-	len = envp_len(prompt);
-	while (i < len)
-	{
-		j = i + 1;
-		while (j < len)
-		{
-			if (ft_strncmp(prompt->envp[i], prompt->envp[j], ft_strlen(prompt->envp[i])) > 0)
-			{
-				tmp = prompt->envp[i];
-				prompt->envp[i] = prompt->envp[j];
-				prompt->envp[j] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-void	print_export(t_prompt *prompt)
-{
-	int i;
-
-	i = 0;
-	sort_array(prompt);
-	while (prompt->envp[i])
-	{
-		printf("declare -x %s\n", prompt->envp[i]);
-		i++;
-	}
-}
-
-int tokens_to_export(char **cmd)
-{
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	if (!cmd[1])
 		return (0);
@@ -82,9 +31,9 @@ int tokens_to_export(char **cmd)
 
 int	check_export(char **cmd)
 {
-	int i;
-	int j;
-	int n;
+	int	i;
+	int	j;
+	int	n;
 
 	i = 1;
 	n = 0;
@@ -116,8 +65,8 @@ int	check_export(char **cmd)
 
 void	export_2(char **cpy, int size, int len, t_prompt *prompt)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < size)
@@ -134,45 +83,12 @@ void	export_2(char **cpy, int size, int len, t_prompt *prompt)
 	cpy[i] = 0;
 }
 
-int arr_len(char **arr)
-{
-	int i;
-
-	i = 0;
-	while (arr[i])
-		i++;
-	return (i);
-}
-
-char **ft_dup_matrix(char **arr)
-{
-	char **cpy;
-	int len;
-	int i;
-	
-	len = arr_len(arr);
-	i = 0;
-	cpy = malloc(sizeof(char *) * (len + 1));
-	if (!cpy)
-		return (NULL);
-	while (i < len)
-	{
-		cpy[i] = ft_strdup(arr[i]);
-		i++;
-	}
-	cpy[i] = 0;
-	ft_free_matrix(arr);
-	return (cpy);
-}
-
 int	export(t_token *tokens, t_prompt *prompt)
 {
-	char **cpy;
-	int size;
-	int len;
-	// int i;
-	// int j;
-	
+	char	**cpy;
+	int		size;
+	int		len;
+
 	if (!tokens->cmd[1])
 	{
 		print_export(prompt);
@@ -180,7 +96,7 @@ int	export(t_token *tokens, t_prompt *prompt)
 	}
 	if (check_export(tokens->cmd))
 		return (printf("export : 'var_name=value'\n"));
-	size = envp_len(prompt);
+	size = ft_tablen(prompt->envp);
 	len = tokens_to_export(tokens->cmd);
 	cpy = malloc(sizeof(char *) * ((size + len) + 1));
 	if (!cpy)

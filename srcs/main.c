@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/04 16:35:01 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:51:44 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	main(int arg_count, char **arg_list, char **envp)
 		}
 		free(user_input);
 		ft_free_matrix(lexer.tokens);
-		//system("leaks minishell");
 	}
 	return (g_exitcode);
 }

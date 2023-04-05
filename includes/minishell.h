@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 10:31:33 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:50:15 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int		get_nb_token(char *str);
 int		len_utils(char *str, int *len, int i, char sep);
 int		len_tokens(char *str);
 void	found_set(char *str, int i, int *j, int *k);
+int		ft_isset(char *set, char c);
 char	*delete_quotes_1(char *str, char c);
 int		get_size(char *str, char c);
 int		count_words(char *prompt);
@@ -168,7 +169,13 @@ int		update_newlinemode(t_token *token, int index, int *newline_mode);
 
 void	pwd(t_token *token);
 void	env(t_token *tokens, t_prompt *prompt);
+
 int		export(t_token *tokens, t_prompt *prompt);
+void	sort_array(t_prompt *prompt);
+int		envp_len(t_prompt *prompt);
+void	print_export(t_prompt *prompt);
+int		tokens_to_export(char **cmd);
+int		check_export_2(char *str, int *n);
 
 void	unset(t_token *token, t_prompt *prompt);
 char	**ft_remove_variable(t_token *token, t_prompt *prompt, int index);

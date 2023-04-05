@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 10:26:19 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 10:56:14 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:25:55 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,64 @@ void	found_set(char *str, int i, int *j, int *k)
 	}
 }
 
-void	token_utils(char *str, int i, int *j, int *k)
+char	*only_token(char c)
 {
-	(*j)++;
-	i++;
-	while (str[i] && str[i] != '\'')
-	
+	char	*line;
+	int		i;
+
+	i = 0;
+	line = malloc(sizeof(char) * 2);
+	line[i] = c;
+	line[1] = 0;
+	return (line);
 }
 
-// char	*get_tokens(char *str, int *j, int *k)
-// {
-// 	char	*line;
-// 	int		i;
-// 	int		len;
+int	find_end(char *str, int j)
+{
+	int	end;
 
-// 	len = len_tokens(str);
-// 	line = malloc(sizeof(char) * (len + 1));
-// 	if (!line)
-// 		return (NULL);
-// 	i = 0;
-// }
+	end = j;
+	while (str[j] && !ft_isset("<|>", str[j]))
+	{
+		if (str[j] == '\'')
+		{
+			end = skip_quote(str, j, '\'');
+			j = skip_quote(str, j, '\'');
+		}
+		if (str[j] == '\"')
+		{
+			end = skip_quote(str, j, '\"');
+			j = skip_quote(str, j, '\"');
+		}
+		end++;
+		j++;
+		if (str[j] == '\0')
+			break ;
+	}
+	return (end);
+}
+
+char	*get_tokens(char *str, int *j, int *k)
+{
+	char	*line;
+	int		i;
+	int		end;
+
+	i = 0;
+	end = *j;
+	if (str[i] && ft_isset("<|>", str[i]))
+	{
+		line = only_token(str[i]);
+		found_set(str, i, j, k);
+		return (line);
+	}
+	end = find_end(str, i);
+	line = ft_substr(str, i, end);
+	*j = end;
+	if (str[end] == '\0')
+	{
+		*j = 0;
+		(*k)++;
+	}
+	return (line);
+}
