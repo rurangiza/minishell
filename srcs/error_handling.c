@@ -6,14 +6,16 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/03 15:43:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:17:56 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_executable(char *path, struct stat stat_buffer)
+static int	is_executable(char *path)
 {
+	struct stat	stat_buffer;
+
 	if (ft_strncmp("./", path, 2) == 0)
 	{
 		if (stat(path + 2, &stat_buffer) == -1)
@@ -23,9 +25,10 @@ static int	is_executable(char *path, struct stat stat_buffer)
 	return (FALSE);
 }
 
-static int	is_directory(char *path, struct stat stat_buffer)
+static int	is_directory(char *path)
 {
-	int	file_status;
+	int			file_status;
+	struct stat	stat_buffer;
 
 	file_status = stat(path + 2, &stat_buffer);
 	if (file_status == 0)
@@ -54,9 +57,9 @@ static void	handle_mostcases(t_token *token, t_prompt *prompt)
 	if (ft_strlen(token->cmd[0]) >= 2
 		&& ft_strncmp("./", token->cmd[0], 2) == 0)
 	{
-		if (is_directory(token->cmd[0], token->stats))
+		if (is_directory(token->cmd[0]))
 			exitmsg(": is a directory", token->cmd[0], 126);
-		if (!is_executable(token->cmd[0], token->stats))
+		if (!is_executable(token->cmd[0]))
 			exitmsg(": Permissing denied", token->cmd[0], 126);
 		execve(token->cmd[0], token->cmd, prompt->envp);
 		exitmsg(": No such file or directory", token->cmd[0], 127);

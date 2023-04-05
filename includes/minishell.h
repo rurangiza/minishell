@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 14:08:21 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:18:58 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@
 
 extern int	g_exitcode;
 int			g_exitcode;
-
-struct stat	sb;
 
 typedef struct s_lexer
 {
@@ -173,7 +171,7 @@ void	env(t_token *tokens, t_prompt *prompt);
 int		export(t_token *tokens, t_prompt *prompt);
 char	**ft_dup_matrix(char **arr);
 void	print_export(t_prompt *prompt);
-int	check_export_utils(char *str, int *n);
+int		check_export_utils(char *str, int *n);
 
 void	unset(t_token *token, t_prompt *prompt);
 char	**ft_remove_variable(t_token *token, t_prompt *prompt, int index);
@@ -239,9 +237,6 @@ char	*update_shell_level(char *variable);
 void	handle_signals(int signo);
 void	handle_inprocess_signals(int signo);
 void	handle_inheredoc_signals(int signo);
-
-// void	sigquit_handler(int sig);
-// void	sigquit_handler_inprocess(int sig);
 
 /* ~~~~~~~~~~~~~ INTERFACE ~~~~~~~~~~~~~~~ */
 char	*ft_readline(void);
