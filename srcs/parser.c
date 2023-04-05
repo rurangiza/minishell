@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 10:52:27 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:27:11 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,5 +383,5 @@ void  parser(t_prompt *prompt, t_lexer *lexer, char **envp)
 		i++;
 	}
 	ft_free_matrix(prompt->path);
-	prompt->pipe_nb += 1; // CHECK THIS
+	prompt->pipe_nb += 1;
 }

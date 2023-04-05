@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:56:40 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 14:10:09 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:29:42 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	env(t_token *tokens, t_prompt *prompt)
 {
-	int i;
+	int	i;
 
 	if (tokens->cmd[1])
 	{

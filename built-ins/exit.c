@@ -3,29 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/03/31 14:06:49 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:29:34 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int only_digit(const char *arg)
+int	only_digit(const char *arg)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = ft_strlen(arg);
 	while (arg[i])
 	{
-		
 		if (!ft_isdigit(arg[i]))
-		{
 			break ;
-		}
 		i++;
 		if (i == j)
 			return (0);
@@ -62,8 +59,8 @@ long	ft_atoi_exit(const char *str)
 
 int	check_exit_status(char *arg)
 {
-	int status;
-	
+	int	status;
+
 	status = ft_atoi_exit(arg);
 	if (status >= 0 && status <= 255)
 		return (status);
@@ -74,14 +71,11 @@ int	check_exit_status(char *arg)
 
 int	my_exit(t_token *tokens)
 {
-	int j;
+	int	j;
 
 	printf("exit\n");
 	if (!tokens->cmd[1])
-	{
-		//printf("es\n");
 		return (0);
-	}
 	if (tokens->cmd[2])
 	{
 		printf("minishell: exit: too many arguments\n");
@@ -93,7 +87,8 @@ int	my_exit(t_token *tokens)
 		j = check_exit_status(tokens->cmd[1]);
 		if (only_digit(tokens->cmd[1]))
 		{
-			printf("minishell: exit: %s: numeric argument needed\n", tokens->cmd[1]);
+			printf("minishell: exit: %s: numeric argument needed\n",
+				tokens->cmd[1]);
 			return (255);
 		}
 		else
@@ -101,26 +96,3 @@ int	my_exit(t_token *tokens)
 	}
 	return (0);
 }
-
-// void	my_exit(t_token *tokens)
-// {
-// 	int j;
-
-// 	printf("exit\n");
-// 	if (!tokens->cmd[1])
-// 	{
-// 		//printf("es\n");
-// 		exit (0);
-// 	}
-// 	if (tokens->cmd[1])
-// 	{
-// 		j = check_exit_status(tokens->cmd[1]);
-// 		if (only_digit(tokens->cmd[1]))
-// 		{
-// 			printf("minishell: exit: %s: numeric argument needed\n", tokens->cmd[1]);
-// 			exit (255);
-// 		}
-// 		else
-// 			exit (j);
-// 	}
-// }

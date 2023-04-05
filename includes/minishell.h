@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 10:31:33 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:36:57 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,12 @@ void	echo(t_token *token);
 int		update_newlinemode(t_token *token, int index, int *newline_mode);
 
 void	pwd(t_token *token);
+
 void	env(t_token *tokens, t_prompt *prompt);
+
 int		export(t_token *tokens, t_prompt *prompt);
+char	**ft_dup_matrix(char **arr);
+void	print_export(t_prompt *prompt);
 
 void	unset(t_token *token, t_prompt *prompt);
 char	**ft_remove_variable(t_token *token, t_prompt *prompt, int index);

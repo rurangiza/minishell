@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_tokens.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 10:26:19 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 10:56:14 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 11:26:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ void	found_set(char *str, int i, int *j, int *k)
 	}
 }
 
-void	token_utils(char *str, int i, int *j, int *k)
-{
-	(*j)++;
-	i++;
-	while (str[i] && str[i] != '\'')
+// void	token_utils(char *str, int i, int *j, int *k)
+// {
+// 	(*j)++;
+// 	i++;
+// 	while (str[i] && str[i] != '\'')
 	
-}
+// }
+
 
 // char	*get_tokens(char *str, int *j, int *k)
 // {

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/05 10:33:39 by akorompa         ###   ########.fr        #
+#    Updated: 2023/04/05 11:38:37 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS			= 	srcs/main.c \
 					built-ins/pwd.c \
 					built-ins/env.c \
 					built-ins/export.c \
+					built-ins/export_utils.c \
 					built-ins/echo.c \
 					built-ins/unset.c \
 					built-ins/cd.c \
