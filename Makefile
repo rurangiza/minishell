@@ -6,7 +6,7 @@
 #    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/05 12:01:31 by arurangi         ###   ########.fr        #
+#    Updated: 2023/04/05 13:45:19 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,9 @@ EXEC_FILE		=	$(CURRENT_FOLDER)/minishell
 
 SRCS			= 	srcs/main.c \
 					srcs/parser.c \
-					srcs/getters.c \
+					srcs/parser_init.c \
 					srcs/parser_utils.c \
+					srcs/getters.c \
 					srcs/expander.c \
 					srcs/tokens.c \
 					srcs/tokens_utils.c \

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 12:00:52 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:57:23 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,8 @@ void	expander(t_lexer *lexer, char **envp);
 char	*ft_strjoin_trio(char *s1, char *s2, char *s3);
 char	*get_envp_variable(char *variable, char **envp);
 
+/* ~~~~~~~~~~~~~~~~~~~~~~ PARSER ~~~~~~~~~~~~~~~~~~~~~ */
 void	parser(t_prompt *prompt, t_lexer *lexer);
-int		is_valid_cmd(char *str, char **path);
-int		is_valid_cmd_bis(char *str, char *path);
 char	*find_path(char **envp);
 
 /* ~~~~~~~~~~~ EXECUTION & I/O REDIRECTIONS ~~~~~~~~~~~~ */
@@ -262,6 +261,23 @@ void	createpipe(t_prompt *prompt, int cmd_type);
 int		is_sep(char *sep, char c);
 void	check_heredoc_mod(char *str, t_token *cmd);
 int		get_size_delimiter(char *str);
+
+/* ~~~~~~~~~~ PARSER ~~~~~~~~~~~~~~ */
+int		get_cmd_len(char **tokens, int i);
+
+void	init_cmd(t_token *cmd);
+int		init_redirections(char **tokens, t_token *cmd, int *j);
+void	set_redirections(char **tokens, t_token *cmd, int *i);
+void	init_cmd_data(char **tokens, t_prompt *prompt, int *j, t_token *cmd);
+void	set_cmd_data(char **tokens, t_prompt *prompt, t_token *cmd, int i);
+
+int		is_built_in(char *str);
+
+char	**get_built_in(char **tokens, int i);
+
+char	*get_cmd_path(char *str, char **path);
+char	**get_cmd(char **tokens, int i);
+char	*get_delimiter(char *str);
 
 int		get_pipe_nb(t_lexer *lexer);
 int		get_outfile_apmod(char *str);

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 11:47:28 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 11:52:46 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:42:18 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,55 @@ int	get_size_delimiter(char *str)
 		}
 	}
 	return (count);
+}
+
+char	*delete_quotes_2(char *str, char c)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*token;
+
+	len = get_size(str, c);
+	token = malloc(sizeof (char) * (len + 1));
+	if (!token)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			i++;
+		else
+		{
+			token[j] = str[i];
+			i++;
+			j++;
+		}
+	}
+	token[j] = 0;
+	return (token);
+}
+
+char	*get_delimiter(char *str)
+{
+	int		i;
+	char	*delimiter;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\'')
+		{
+			delimiter = delete_quotes_2(str, '\'');
+			return (delimiter);
+		}
+		else if (str[i] == '\"')
+		{
+			delimiter = delete_quotes_2(str, '\"');
+			return (delimiter);
+		}
+		i++;
+	}
+	return (str);
 }

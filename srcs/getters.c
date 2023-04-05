@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 11:54:01 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 12:01:39 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:44:25 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,24 @@ int	get_infile(char *str)
 	if (infile < 0)
 		return (-1);
 	return (infile);
+}
+
+char	*get_cmd_path(char *str, char **path)
+{
+	char	*tmp;
+	char	*cmd;
+
+	if (!path)
+		return (NULL);
+	while (*path)
+	{
+		tmp = ft_strjoin(*path, "/");
+		cmd = ft_strjoin(tmp, str);
+		free(tmp);
+		if (access(cmd, 0) == 0)
+			return (cmd);
+		free(cmd);
+		path++;
+	}
+	return (NULL);
 }

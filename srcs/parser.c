@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 11:55:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/05 13:54:00 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,57 +26,6 @@ char	*find_path(char **envp)
 	if (!envp[i])
 		return (NULL);
 	return (*(envp + i) + 5);
-}
-
-int	is_built_in(char *str)
-{
-	if (ft_strncmp(str, "echo", 4) == 0
-		|| ft_strncmp(str, "cd", 2) == 0
-		|| ft_strncmp(str, "pwd", 3) == 0
-		|| ft_strncmp(str, "export", 6) == 0
-		|| ft_strncmp(str, "unset", 5) == 0
-		|| ft_strncmp(str, "env", 3) == 0
-		|| ft_strncmp(str, "exit", 4) == 0)
-	{
-		return (1);
-	}
-	return (0);
-}
-
-char	*get_cmd_path(char *str, char **path)
-{
-	char	*tmp;
-	char	*cmd;
-
-	if (!path)
-		return (NULL);
-	while (*path)
-	{
-		tmp = ft_strjoin(*path, "/");
-		cmd = ft_strjoin(tmp, str);
-		free(tmp);
-		if (access(cmd, 0) == 0)
-			return (cmd);
-		free(cmd);
-		path++;
-	}
-	return (NULL);
-}
-
-int	get_cmd_len(char **tokens, int i)
-{
-	int	len;
-
-	len = 0;
-	while (tokens[i]
-		&& ft_strncmp(tokens[i], "|", 1)
-		&& ft_strncmp(tokens[i], ">", 1)
-		&& ft_strncmp(tokens[i], "<", 1))
-	{
-		len++;
-		i++;
-	}
-	return (len);
 }
 
 char	**get_built_in(char **tokens, int i)
@@ -121,133 +70,19 @@ char	**get_cmd(char **tokens, int i)
 	return (cmd);
 }
 
-void	init_cmd(t_token *cmd)
-{
-	cmd->infile = -1;
-	cmd->outfile = -1;
-	cmd->delimiter = NULL;
-	cmd->heredoc_mode = -1;
-	cmd->cmd_path = NULL;
-	cmd->cmd = NULL;
-}
-
-char	*delete_quotes_2(char *str, char c)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*token;
-
-	len = get_size(str, c);
-	token = malloc(sizeof (char) * (len + 1));
-	if (!token)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			i++;
-		else
-		{
-			token[j] = str[i];
-			i++;
-			j++;
-		}
-	}
-	token[j] = 0;
-	return (token);
-}
-
-char	*get_delimiter(char *str)
-{
-	int		i;
-	char	*delimiter;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '\'')
-		{
-			delimiter = delete_quotes_2(str, '\'');
-			return (delimiter);
-		}
-		else if (str[i] == '\"')
-		{
-			delimiter = delete_quotes_2(str, '\"');
-			return (delimiter);
-		}
-		i++;
-	}
-	return (str);
-}
+///////////////////////////////////////////////////////////////////////////////
 
 t_token	get_cmds(char **tokens, t_prompt *prompt, int *j)
 {
-	int		i;
 	t_token	cmd;
 
-	i = *j;
 	init_cmd(&cmd);
-	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
-	{
-		if (tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
-		{
-			i++;
-			if (tokens[i] && (tokens[i][0] == tokens[i - 1][0]))
-				i += 2;
-			else if (tokens[i])
-				i++;
-		}
-		if (tokens[i] && tokens[i][0] != '<' && tokens[i][0] != '>')
-		{
-			if (is_built_in(tokens[i]))
-			{
-				cmd.cmd_path = NULL;
-				cmd.cmd = get_built_in(tokens, i);
-				break ;
-			}
-			else
-			{
-				cmd.cmd_path = get_cmd_path(tokens[i], prompt->path);
-				cmd.cmd = get_cmd(tokens, i);
-				break ;
-			}
-		}
-		else if (!tokens[i])
-			break ;
-	}
-	i = *j;
-	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
-	{
-		if (tokens[i] && tokens[i][0] == '<')
-		{
-			if (tokens[i + 1] && tokens[i + 1][0] == '<' && tokens[i + 2])
-			{
-				cmd.infile = -3;
-				check_heredoc_mod(tokens[i + 2], &cmd);
-				cmd.delimiter = get_delimiter(tokens[i + 2]);
-				i++;
-			}
-			else
-				cmd.infile = get_infile(tokens[i + 1]);
-		}
-		if (tokens[i] && tokens[i][0] == '>')
-		{
-			if (tokens[i + 1] && tokens[i + 1][0] == '>')
-			{
-				if (tokens[i + 2])
-					cmd.outfile = get_outfile_apmod(tokens[i + 2]);
-				i++;
-			}
-			else
-				cmd.outfile = get_outfile(tokens[i + 1]);
-		}
-		i++;
-	}
-	*j = i;
+	init_cmd_data(tokens, prompt, j, &cmd);
+	*j = init_redirections(tokens, &cmd, j);
 	return (cmd);
 }
+
+///////////////////////////////////////////////////////////////////////////////
 
 void	parser(t_prompt *prompt, t_lexer *lexer)
 {
