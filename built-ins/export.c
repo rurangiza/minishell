@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 14:01:20 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:10:52 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,7 @@ int	check_export(char **cmd)
 	while (cmd[i])
 	{
 		j = 0;
-		while (cmd[i][j])
-		{
-			if (cmd[i][j] == '=')
-			{
-				n = 1;
-				break ;
-			}
-			j++;
-		}
+		j = check_export_utils(cmd[i], &n);
 		if (j == (int)ft_strlen(cmd[i]))
 		{
 			n = 0;
@@ -75,7 +67,7 @@ void	export_2(char **cpy, int size, int len, t_prompt *prompt)
 		i++;
 	}
 	j = 0;
-	while (++j < len + 1 )
+	while (++j < len + 1)
 	{
 		cpy[i] = ft_strdup(prompt->cmds->cmd[j]);
 		i++;

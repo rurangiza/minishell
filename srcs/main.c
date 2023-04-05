@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 13:51:44 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/05 14:04:04 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int arg_count, char **arg_list, char **envp)
 		if (lexer.tokens)
 		{
 			init_prompt(&prompt);
-			parser(&prompt, &lexer, envp);
+			parser(&prompt, &lexer);
 			if (prompt.pipe_nb == -1)
 				printf("minishell: syntax error near unexpected token\n");
 			if (prompt.cmds)
