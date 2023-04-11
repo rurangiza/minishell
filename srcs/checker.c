@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 13:51:19 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/11 14:42:54 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	is_builtin(char *cmd)
 
 int	is_path_alias(char *directory)
 {
-	if (ft_strlen(directory) != 1)
-		return (0);
 	if (directory[0] == '-'
 		|| directory[0] == '~'
 		|| directory[0] == '/')

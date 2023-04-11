@@ -5,7 +5,7 @@
 - pipe : verifier quand les commandes snt collees (sans espaces)
 
 ## To-do
-- unset : verifier si la commande est valide avant de voir si il est deja dans l'env 
 - cd ~ , il doit faire plus que revenir au HOME, il doit pouvoir naviguer egalement. 
 
 ## Done
+- unset : verifier si la commande est valide avant de voir si il est deja dans l'env 

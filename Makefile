@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/05 14:09:34 by akorompa         ###   ########.fr        #
+#    Updated: 2023/04/11 14:41:02 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,14 +75,14 @@ else
 endif
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror $(SANATIZE) -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
 
 
 all:		${NAME}
 
 ${NAME}:	${OBJS} ${INCLUDES}
 			make -C $(LIBFT)
-			$(CC) $(CCFLAGS) $(SANATIZE) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
+			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
 
 clean:
 				rm -f ${OBJS}
