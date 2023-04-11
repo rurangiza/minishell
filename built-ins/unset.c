@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 14:02:51 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/11 14:14:59 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	unset(t_token *token, t_prompt *prompt)
 	int		index;
 
 	index = 1;
-	while (token->cmd[index] && is_in_environment(token->cmd[index], prompt))
+	while (token->cmd[index])
 	{
 		if (!is_valid_identifier(token->cmd[index]))
 		{
@@ -25,7 +25,8 @@ void	unset(t_token *token, t_prompt *prompt)
 				token->cmd[index]);
 			return ;
 		}
-		prompt->envp = ft_remove_variable(token, prompt, index);
+		else if (is_in_environment(token->cmd[index], prompt))
+			prompt->envp = ft_remove_variable(token, prompt, index);
 		index++;
 	}
 }
