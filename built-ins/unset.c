@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:00 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/11 14:14:59 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/18 10:35:42 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	is_valid_identifier(char *str)
 	{
 		while (str[index])
 		{
-			if (index == 0 && !ft_isalpha(str[index]))
+			if (index == 0 && !ft_isalpha(str[index]) && str[index] != '_')
 				return (0);
 			if (!ft_isalnum(str[index]) && str[index] != '_')
 				return (0);

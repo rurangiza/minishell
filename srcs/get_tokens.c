@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 10:26:19 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 14:03:54 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:38:16 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*get_tokens(char *str, int *j, int *k)
 	}
 	end = find_end(str, i);
 	line = ft_substr(str, i, end);
-	*j = end;
+	*j += end;
 	if (str[end] == '\0')
 	{
 		*j = 0;

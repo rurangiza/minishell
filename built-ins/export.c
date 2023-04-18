@@ -6,13 +6,13 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 14:10:52 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:10:03 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	tokens_to_export(char **cmd)
+int	tokens_to_export(char **cmd, t_prompt *prompt)
 {
 	int	i;
 	int	count;
@@ -23,7 +23,8 @@ int	tokens_to_export(char **cmd)
 	count = 0;
 	while (cmd[i])
 	{
-		count++;
+		if (!is_env_var(cmd[i], prompt))
+			count++;
 		i++;
 	}
 	return (count);
@@ -32,45 +33,54 @@ int	tokens_to_export(char **cmd)
 int	check_export(char **cmd)
 {
 	int	i;
-	int	j;
-	int	n;
 
 	i = 1;
-	n = 0;
-	if (!cmd[1])
-		return (0);
 	while (cmd[i])
 	{
-		j = 0;
-		j = check_export_utils(cmd[i], &n);
-		if (j == (int)ft_strlen(cmd[i]))
+		if (check_equal(cmd[i]))
 		{
-			n = 0;
-			break ;
+			printf("export : 'var_name=value'\n");
+			return (1);
+		}
+		if (check_forbidden(cmd[i]))
+		{
+			printf("minishell: export: %s: not a valid identifier\n", cmd[i]);
+			return (2);
 		}
 		i++;
 	}
-	if (n != 1)
-		return (1);
 	return (0);
 }
 
-void	export_2(char **cpy, int size, int len, t_prompt *prompt)
+int	check_env_var(t_prompt *prompt, t_token *tokens)
+{
+	int	i;
+
+	i = 1;
+	while (tokens->cmd[i] && is_env_var(tokens->cmd[i], prompt))
+	{
+		prompt->envp = ft_delete_var(tokens, prompt, i);
+		i++;
+	}
+	return (0);
+}
+
+void	export_2(char **cpy, t_token *tokens, int len, t_prompt *prompt)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < size)
+	j = 1;
+	while (prompt->envp[i])
 	{
 		cpy[i] = ft_strdup(prompt->envp[i]);
 		i++;
 	}
-	j = 0;
-	while (++j < len + 1)
+	while (j < len + 1)
 	{
-		cpy[i] = ft_strdup(prompt->cmds->cmd[j]);
-		i++;
+		cpy[i++] = ft_strdup(tokens->cmd[j]);
+		j++;
 	}
 	cpy[i] = 0;
 }
@@ -87,13 +97,14 @@ int	export(t_token *tokens, t_prompt *prompt)
 		return (0);
 	}
 	if (check_export(tokens->cmd))
-		return (printf("export : 'var_name=value'\n"));
+		return (1);
+	check_env_var(prompt, tokens);
 	size = ft_tablen(prompt->envp);
-	len = tokens_to_export(tokens->cmd);
+	len = tokens_to_export(tokens->cmd, prompt);
 	cpy = malloc(sizeof(char *) * ((size + len) + 1));
 	if (!cpy)
 		return (0);
-	export_2(cpy, size, len, prompt);
+	export_2(cpy, tokens, len, prompt);
 	ft_free_matrix(prompt->envp);
 	prompt->envp = ft_dup_matrix(cpy);
 	return (0);

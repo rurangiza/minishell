@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 11:54:01 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 13:44:25 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/17 16:04:58 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ int	get_pipe_nb(t_lexer *lexer)
 
 	i = 0;
 	count = 0;
-	if (!ft_strncmp(lexer->tokens[i], "|", 1))
+	if (!not_real(lexer->tokens[i], '|'))
 		return (-1);
 	while (lexer->tokens[i])
 	{
-		if (!ft_strncmp(lexer->tokens[i], "|", 1))
+		if (!not_real(lexer->tokens[i], '|'))
 		{
-			if (!ft_strncmp(lexer->tokens[i + 1], "|", 1)
-				&& lexer->tokens[i + 1])
+			if (!not_real(lexer->tokens[i + 1], '|') && lexer->tokens[i + 1])
 				return (-1);
 			count++;
 		}

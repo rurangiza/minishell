@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 17:01:23 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:53:54 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,12 @@ int		export(t_token *tokens, t_prompt *prompt);
 char	**ft_dup_matrix(char **arr);
 void	print_export(t_prompt *prompt);
 int		check_export_utils(char *str, int *n);
+char	**ft_delete_var(t_token *tokens, t_prompt *prompt, int index);
+int		is_env_var(char *str, t_prompt *prompt);
+int		len_to_equal(char *str);
+int		check_equal(char *str);
+int		check_forbidden(char *str);
+int		arr_len(char **arr);
 
 void	unset(t_token *token, t_prompt *prompt);
 char	**ft_remove_variable(t_token *token, t_prompt *prompt, int index);
@@ -220,6 +226,7 @@ int		is_path_alias(char *directory);
 void	check_user_input(char *input);
 int		is_empty_pipe(int read_end);
 char	*ft_strjoin_freeboth(char *s1, char *s2);
+int		not_real(char *str, char c);
 
 /* ~~~~~~~~~~ CHECKER ~~~~~~~~~~~~~~ */
 int		ft_isspace(char c);

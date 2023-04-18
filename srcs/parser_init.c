@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 13:37:08 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 13:57:01 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:57:05 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	init_cmd_data(char **tokens, t_prompt *prompt, int *j, t_token *cmd)
 	int	i;
 
 	i = *j;
-	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
+	while (tokens[i] && not_real(tokens[i], '|'))
 	{
 		if (tokens[i] && (tokens[i][0] == '<' || tokens[i][0] == '>'))
 		{
@@ -82,7 +82,7 @@ int	init_redirections(char **tokens, t_token *cmd, int *j)
 	int	i;
 
 	i = *j;
-	while (tokens[i] && ft_strncmp(tokens[i], "|", 1))
+	while (tokens[i] && not_real(tokens[i], '|'))
 	{
 		if (tokens[i] && tokens[i][0] == '<')
 		{

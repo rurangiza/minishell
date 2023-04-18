@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:34:14 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/11 14:43:05 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:31:07 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	not_real(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	if (str[i] != c)
+		return (1);
+	else if (str[i] == c && str[i + 1] != '\0')
+		return (1);
+	else if (str[i] == c && str[i + 1] == '\0')
+		return (0);
+	return (0);
+}
 
 int	main(int arg_count, char **arg_list, char **envp)
 {

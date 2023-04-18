@@ -6,13 +6,13 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 11:32:30 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 14:08:08 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/17 14:51:49 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	arr_len(char **arr)
+int	arr_len(char **arr)
 {
 	int	i;
 

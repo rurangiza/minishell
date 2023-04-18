@@ -6,7 +6,7 @@
 /*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 14:24:20 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 14:04:31 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/17 15:55:55 by akorompa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ int	get_cmd_len(char **tokens, int i)
 
 	len = 0;
 	while (tokens[i]
-		&& ft_strncmp(tokens[i], "|", 1)
-		&& ft_strncmp(tokens[i], ">", 1)
-		&& ft_strncmp(tokens[i], "<", 1))
+		&& not_real(tokens[i], '|')
+		&& not_real(tokens[i], '>')
+		&& not_real(tokens[i], '<'))
 	{
 		len++;
 		i++;
