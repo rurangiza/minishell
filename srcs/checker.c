@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:50:23 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/11 14:42:54 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/19 16:00:24 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ int	is_builtin(char *cmd)
 
 int	is_path_alias(char *directory)
 {
-	if (directory[0] == '-'
+	if (ft_strlen(directory) == 1
+		&& (directory[0] == '-'
 		|| directory[0] == '~'
-		|| directory[0] == '/')
+		|| directory[0] == '/'))
 	{
 		return (1);
 	}

@@ -1,4 +1,5 @@
 # Bugs
+- ls | export <argument> : should not print anything
 
 ## To-do
 - export : verifier si le premier element de l'argument est un nombre, il ne peut y avoir que des lettres (minuscules et maj), des chiffres ou des _.
