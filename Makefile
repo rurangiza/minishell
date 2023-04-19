@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
+#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/17 14:52:12 by akorompa         ###   ########.fr        #
+#    Updated: 2023/04/19 15:12:40 by arurangi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,22 +76,23 @@ else
 endif
 
 %.o: %.c
-	$(CC) -Wall -Wextra -Werror -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+	@$(CC) -Wall -Wextra -Werror -I ${INCLUDES} $(READLINE_INC) -c $< -o $@
+	@echo "$(CLR_GREEN).\c$(CLR_RESET)"
 
 
 all:		${NAME}
 
 ${NAME}:	${OBJS} ${INCLUDES}
-			make -C $(LIBFT)
-			$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
+			@make -C $(LIBFT)
+			@$(CC) $(CCFLAGS) $(READLINE_LIB) -L ./libft -l ft -o $(NAME) $(OBJS)
 
 clean:
-				rm -f ${OBJS}
-				make clean -C $(LIBFT)
+				@rm -f ${OBJS}
+				@make clean -C $(LIBFT)
 
 fclean: 	clean
-				rm -f ${NAME}
-				make fclean -C $(LIBFT)
+				@rm -f ${NAME}
+				@make fclean -C $(LIBFT)
 
 re:				fclean all
 

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/05 17:01:29 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:20:20 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,14 @@ void	execute(t_token *token, t_prompt *prompt)
 	{
 		cmd_type = get_cmd_type(prompt->pipe_nb, index);
 		if (token[index].cmd && is_builtin(token[index].cmd[0]))
+		{
 			exec_builtins(token, prompt, index);
+		}
 		else
+		{
 			exec_cmds(token, prompt, index, cmd_type);
-		parent_process(token, prompt, cmd_type);
+			parent_process(token, prompt, cmd_type);
+		}
 		index++;
 	}
 	check_cmds_status(token, prompt);

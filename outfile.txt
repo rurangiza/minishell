@@ -1,0 +1,10 @@
+total 144
+-rw-r--r--   1 arurangi  2022_brussels   3333 Apr 19 15:12 Makefile
+-rw-r--r--   1 arurangi  2022_brussels   1644 Apr 19 13:35 README.md
+drwxr-xr-x  22 arurangi  2022_brussels    704 Apr 19 15:26 built-ins
+drwxr-xr-x   3 arurangi  2022_brussels     96 Apr 19 13:35 includes
+drwxr-xr-x  97 arurangi  2022_brussels   3104 Apr 19 15:26 libft
+-rwxr-xr-x   1 arurangi  2022_brussels  92016 Apr 19 15:28 minishell
+-rw-r--r--   1 arurangi  2022_brussels    527 Apr 19 13:35 notes.md
+-rw-r--r--   1 arurangi  2022_brussels      0 Apr 19 15:30 outfile.txt
+drwxr-xr-x  62 arurangi  2022_brussels   1984 Apr 19 15:28 srcs
