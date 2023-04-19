@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/11 14:43:38 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:35:26 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	cd(char *directory, t_prompt *prompt)
 	char	*prefix;
 	char	*pwd;
 
+	if (prompt->pipe_nb > 1)
+		return ;
 	path = ft_find_destination(directory, prompt);
 	if (!path)
 		return ;

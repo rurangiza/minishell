@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:05:25 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/05 11:29:34 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/19 15:39:09 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ int	my_exit(t_token *tokens)
 {
 	int	j;
 
-	printf("exit\n");
 	if (!tokens->cmd[1])
 		return (0);
+	printf("exit\n");
 	if (tokens->cmd[2])
 	{
 		printf("minishell: exit: too many arguments\n");
