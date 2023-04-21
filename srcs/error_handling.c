@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/21 13:51:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:44:18 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,7 @@ static void	handle_mostcases(t_token *token, t_prompt *prompt)
 	if (token->cmd && token->cmd[0])
 		exitmsg(": command not found", token->cmd[0], 127);
 	else
-	{
-		printf("---- %s\n", __func__);
 		exitmsg(": command not found", "unknown", 127);
-	}
 }
 
 void	handle_execution_errors(t_token *token, t_prompt *prompt)
