@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/21 13:53:08 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:41:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,8 @@ void	redirect_out(t_token *token)
 void	simple_redirect(t_token *token, t_prompt *prompt, int index,
 			int cmd_type)
 {
-	if (index != 0)
-		dup2(prompt->stdio[WRITE], STDOUT_FILENO);
-	if (cmd_type == _middle)
-	{
-		if (pipe(prompt->pipends) == NO_REDIR)
-			exit_msg();
-	}
+	reset_stdout(prompt, index);
+	createpipe(prompt, cmd_type);
 	if (token[index].infile != NO_REDIR)
 		redirect_in(&token[index], prompt);
 	else if (cmd_type == _middle)
@@ -67,4 +62,10 @@ void	simple_redirect(t_token *token, t_prompt *prompt, int index,
 		dup2(prompt->pipends[WRITE], STDOUT_FILENO);
 	if (cmd_type == _middle)
 		close(prompt->pipends[WRITE]);
+}
+
+void	reset_stdout(t_prompt *prompt, int index)
+{
+	if (index != 0)
+		dup2(prompt->stdio[WRITE], STDOUT_FILENO);
 }

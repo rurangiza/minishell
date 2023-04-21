@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/21 13:49:15 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:41:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void	redirect_in(t_token *token, t_prompt *prompt);
 void	redirect_out(t_token *token);
 void	simple_redirect(t_token *token, t_prompt *prompt, int index,
 			int cmd_type);
+void	reset_stdout(t_prompt *prompt, int index);
 
 int		get_cmd_type(int size, int index);
 
