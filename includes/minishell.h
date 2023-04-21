@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/21 14:41:35 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:43:07 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,9 @@ char	*expand_variable(char *buffer, char **envp);
 //char	*get_userdir(void);
 char	*get_variable_in_environment(char *variable, t_prompt *prompt); // cd()
 char	*getenv_custm(char *variable, t_prompt *prompt); // Same without message
+int		is_special_token(char *str, char c);
+char	*special_token(char *str);
+void	delete_quotes_utils(char *str, char *token, char c);
 
 /* ~~~~~~~~~~ UTILS ~~~~~~~~~~~~~~ */
 int		is_builtin(char *cmd);

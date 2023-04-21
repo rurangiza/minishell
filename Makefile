@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+         #
+#    By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/28 17:47:23 by arurangi          #+#    #+#              #
-#    Updated: 2023/04/21 11:02:09 by arurangi         ###   ########.fr        #
+#    Updated: 2023/04/21 14:30:30 by akorompa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS			= 	srcs/main.c \
 					srcs/get_tokens.c \
 					srcs/lexer.c \
 					srcs/lexer_utils.c \
+					srcs/lexer_utils_2.c \
 					srcs/quotes_checking.c \
 					srcs/execution.c \
 					srcs/ft_cmd_lexer.c \
