@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/19 15:54:24 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:26:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ int	export(t_token *tokens, t_prompt *prompt)
 	int		size;
 	int		len;
 
+	if (prompt->pipe_nb > 1 && tokens->cmd[1])
+		return (0);
 	if (!tokens->cmd[1])
 	{
 		print_export(prompt);

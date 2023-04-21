@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/21 11:22:27 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 14:24:06 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	exec_builtins(t_token *token, t_prompt *prompt, int index, int cmd_type)
 	if (ft_strncmp(token[index].cmd[0], "pwd", 3) == 0)
 		pwd(token);
 	else if (ft_strncmp(token[index].cmd[0], "export", 6) == 0)
-		export(token, prompt);
+		export(&token[index], prompt);
 	else if (ft_strncmp(token[index].cmd[0], "unset", 5) == 0)
 		unset(token, prompt);
 	else if (ft_strncmp(token[index].cmd[0], "env", 3) == 0)
