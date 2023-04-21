@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 16:47:48 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/05 14:17:56 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:51:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ static void	handle_mostcases(t_token *token, t_prompt *prompt)
 
 void	handle_execution_errors(t_token *token, t_prompt *prompt)
 {
+	if (token->infile == ERR_FD || token->outfile == ERR_FD)
+		exitmsg(": No such file or directory", token->cmd[0], 127);
 	if (!token->cmd)
 		exit(0);
 	if (ft_strlen(token->cmd[0]) == 0)

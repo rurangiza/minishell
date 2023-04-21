@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 13:37:08 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/17 15:57:05 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:50:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	init_cmd(t_token *cmd)
 {
-	cmd->infile = -1;
-	cmd->outfile = -1;
+	cmd->infile = NO_REDIR;
+	cmd->outfile = NO_REDIR;
 	cmd->delimiter = NULL;
 	cmd->heredoc_mode = -1;
 	cmd->cmd_path = NULL;

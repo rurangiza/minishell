@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 11:54:01 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/17 16:04:58 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:49:58 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	get_outfile_apmod(char *str)
 		return (-2);
 	outfile = open(str, O_APPEND | O_RDWR | O_CREAT, 0644);
 	if (outfile < 0)
-		return (-1);
+		return (ERR_FD);
 	return (outfile);
 }
 
@@ -52,7 +52,7 @@ int	get_outfile(char *str)
 
 	outfile = open(str, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (outfile < 0)
-		return (-1);
+		return (ERR_FD);
 	return (outfile);
 }
 
@@ -62,7 +62,7 @@ int	get_infile(char *str)
 
 	infile = open(str, O_RDONLY);
 	if (infile < 0)
-		return (-1);
+		return (ERR_FD);
 	return (infile);
 }
 

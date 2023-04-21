@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 16:17:06 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/21 11:16:31 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:52:35 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	child_process(t_token *token, t_prompt *prompt, int cmd_type, int index)
 
 void	single_child(t_token *token, t_prompt *prompt)
 {
-	if (token->infile != -1)
+	if (token->infile != NO_REDIR)
 		redirect_in(token, prompt);
-	if (token->outfile != -1)
+	if (token->outfile != NO_REDIR)
 		redirect_out(token);
 	handle_execution_errors(token, prompt);
 	execve(token->cmd_path, token->cmd, prompt->envp);
@@ -39,14 +39,14 @@ void	single_child(t_token *token, t_prompt *prompt)
 
 void	last_child(t_token *token, t_prompt *prompt)
 {
-	if (token->infile != -1)
+	if (token->infile != NO_REDIR)
 		redirect_in(token, prompt);
 	else
 	{
 		dup2(prompt->prevpipe, STDIN_FILENO);
 		close(prompt->prevpipe);
 	}
-	if (token->outfile != -1)
+	if (token->outfile != NO_REDIR)
 		redirect_out(token);
 	else
 		dup2(prompt->stdio[WRITE], STDOUT_FILENO);
@@ -60,14 +60,14 @@ void	last_child(t_token *token, t_prompt *prompt)
 void	middle_child(t_token *token, t_prompt *prompt, int index)
 {
 	close(prompt->pipends[READ]);
-	if (token->infile != -1)
+	if (token->infile != NO_REDIR)
 		redirect_in(token, prompt);
 	else if (index > 0)
 	{
 		dup2(prompt->prevpipe, STDIN_FILENO);
 		close(prompt->prevpipe);
 	}
-	if (token->outfile != -1)
+	if (token->outfile != NO_REDIR)
 		redirect_out(token);
 	else
 		dup2(prompt->pipends[WRITE], STDOUT_FILENO);

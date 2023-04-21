@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/21 11:24:17 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 13:49:15 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@
 # define TRUE	1
 # define FALSE	0
 # define HERE_DOC -3
-# define NO_REDIR -1
+# define NO_REDIR -2
+# define ERR_FD -1
 # define STAT_POS 1
 # define STAT_NEG -1
 
