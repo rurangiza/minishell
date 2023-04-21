@@ -10,3 +10,17 @@
 ## Done
 - unset : verifier si la commande est valide avant de voir si il est deja dans l'env 
 - cd ~ , il doit faire plus que revenir au HOME, il doit pouvoir naviguer egalement. 
+
+
+
+
+
+
+[x] ls | echo hello | cat
+	-> output   : ls
+	-> expected : "hello"
+[x] echo hello | echo miss
+	-> output   : nothing
+	-> expected : "miss"
+	= first built-in changed stdout, and last enherited that than printed on the changed stdout
+		-> initialized stdout to original in all built-in cmd except first cmd in pipeline

@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:28:41 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/19 15:27:53 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:43:47 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	redirect_out(t_token *token)
 	close(token->outfile);
 }
 
-void	simple_redirect(t_token *token, t_prompt *prompt, int index)
+void	simple_redirect(t_token *token, t_prompt *prompt, int index,
+			int cmd_type)
 {
-	int cmd_type = get_cmd_type(prompt->pipe_nb, index);
+	if (index != 0)
+		dup2(prompt->stdio[WRITE], STDOUT_FILENO);
 	if (cmd_type == _middle)
 	{
 		if (pipe(prompt->pipends) == -1)
@@ -54,8 +56,11 @@ void	simple_redirect(t_token *token, t_prompt *prompt, int index)
 		{
 			dup2(prompt->prevpipe, STDIN_FILENO);
 			close(prompt->prevpipe);
+			prompt->prevpipe = prompt->pipends[READ];
 		}
 	}
+	else if (cmd_type == _last)
+		dup2(prompt->prevpipe, STDIN_FILENO);
 	if (token[index].outfile != -1)
 		redirect_out(&token[index]);
 	else if (cmd_type == _middle)

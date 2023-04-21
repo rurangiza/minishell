@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 16:17:06 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/19 15:28:30 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:16:31 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,5 @@ void	parent_process(t_token *token, t_prompt *prompt, int cmd_type)
 	{
 		dup2(prompt->stdio[READ], STDOUT_FILENO);
 		dup2(prompt->stdio[WRITE], STDOUT_FILENO);
-		//close(prompt->pipends[WRITE]);
 	}
 }

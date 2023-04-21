@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/11 20:01:10 by Arsene            #+#    #+#             */
-/*   Updated: 2023/04/19 15:50:08 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:22:27 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ void	execute(t_token *token, t_prompt *prompt)
 	{
 		cmd_type = get_cmd_type(prompt->pipe_nb, index);
 		if (token[index].cmd && is_builtin(token[index].cmd[0]))
-		{
-			exec_builtins(token, prompt, index);
-		}
+			exec_builtins(token, prompt, index, cmd_type);
 		else
 		{
 			exec_cmds(token, prompt, index, cmd_type);
@@ -98,11 +96,11 @@ void	exec_cmds(t_token *token, t_prompt *prompt, int index, int cmd_type)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void	exec_builtins(t_token *token, t_prompt *prompt, int index)
+void	exec_builtins(t_token *token, t_prompt *prompt, int index, int cmd_type)
 {
 	int	status;
 
-	simple_redirect(token, prompt, index);
+	simple_redirect(token, prompt, index, cmd_type);
 	status = 0;
 	if (ft_strncmp(token[index].cmd[0], "echo", 4) == 0)
 		echo(&token[index]);

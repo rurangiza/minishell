@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 13:31:49 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/18 10:27:46 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:15:18 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	parser(t_prompt *prompt, t_lexer *lexer)
 	prompt->path = ft_split(path, ':');
 	while (i < prompt->pipe_nb + 1)
 	{
-		
 		prompt->cmds[i] = get_cmds(lexer->tokens, prompt, &j);
 		j++;
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 11:58:13 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/17 15:53:54 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:24:17 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,13 +152,15 @@ void	check_cmds_status(t_token *token, t_prompt *prompt);
 /* ~~~~~~~~~~~ REDIRECTIONS ~~~~~~~~~~~~~ */
 void	redirect_in(t_token *token, t_prompt *prompt);
 void	redirect_out(t_token *token);
-void	simple_redirect(t_token *token, t_prompt *prompt, int index);
+void	simple_redirect(t_token *token, t_prompt *prompt, int index,
+			int cmd_type);
 
 int		get_cmd_type(int size, int index);
 
 int		heredoc(char *limiter, int var_expdr, t_prompt *prompt);
 
-void	exec_builtins(t_token *token, t_prompt *prompt, int index);
+void	exec_builtins(t_token *token, t_prompt *prompt, int index,
+			int cmd_type);
 
 /* ~~~~~~~~~~~ BUILT-INS ~~~~~~~~~~~~~ */
 void	echo(t_token *token);

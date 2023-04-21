@@ -27,22 +27,22 @@ CC = gcc ${FLAGS}
 RM = rm -f
 
 %.o: %.c
-	@$(CC) $(FLAGS) -c $< -o $@
-	@echo "$(CLR_GREEN).\c$(CLR_RESET)"
+	$(CC) $(FLAGS) -c $< -o $@
+#@echo "$(CLR_GREEN).\c$(CLR_RESET)"
 
 all: ${NAME}
 
 ${NAME} :   ${OBJS}
-	  @ar rcs ${NAME} ${OBJS}
+	  ar rcs ${NAME} ${OBJS}
 	  
 bonus: ${OBJS} ${BOBJS}
 	ar rcs ${NAME} ${OBJS} ${BOBJS}
 
 clean:
-	@${RM} ${OBJS} ${BOBJS}
+	${RM} ${OBJS} ${BOBJS}
 
 fclean: clean
-		@${RM} ${NAME}
+		${RM} ${NAME}
 
 re: fclean all
 

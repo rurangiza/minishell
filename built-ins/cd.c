@@ -6,7 +6,7 @@
 /*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:33:04 by arurangi          #+#    #+#             */
-/*   Updated: 2023/04/19 16:02:03 by arurangi         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:11:37 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,41 +43,38 @@ void	cd(char *directory, t_prompt *prompt)
 static char	*convert_aliases(char *directory, t_prompt *prompt)
 {
 	char	*path;
-	char	*tmp;
 
 	path = NULL;
-	if (ft_strlen(directory) == 1)
+	if (directory[0] == '-')
 	{
-		if (directory[0] == '-')
-		{
-			path = get_variable_in_environment("OLDPWD=", prompt);
-			if (path == NULL)
-				return (NULL);
-			else
-				printf("%s\n", path);
-		}
-		else if (directory[0] == '~')
-			path = ft_strdup(getenv("HOME"));
-		else if (directory[0] == '/')
-			path = ft_strdup("/");
+		path = get_variable_in_environment("OLDPWD=", prompt);
+		if (path == NULL)
+			return (NULL);
+		else
+			printf("%s\n", path);
 	}
 	else if (directory[0] == '~')
-	{
-		tmp = ft_strdup(getenv("HOME"));
-		path = ft_strjoin_mod(tmp, directory +1);
-	}
+		path = ft_strdup(getenv("HOME"));
+	else if (directory[0] == '/')
+		path = ft_strdup("/");
 	return (path);
 }
 
 char	*ft_find_destination(char *directory, t_prompt *prompt)
 {
 	char	*path;
+	char	*tmp;
 
 	path = NULL;
 	if (!directory)
 		path = get_variable_in_environment("HOME=", prompt);
 	else if (is_path_alias(directory))
 		path = convert_aliases(directory, prompt);
+	else if (directory[0] == '~')
+	{
+		tmp = ft_strdup(getenv("HOME"));
+		path = ft_strjoin_mod(tmp, directory +1);
+	}
 	else if (directory[0] == '/')
 		path = ft_strdup(directory);
 	else

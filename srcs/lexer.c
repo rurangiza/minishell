@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akorompa <akorompa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arurangi <arurangi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 10:16:24 by akorompa          #+#    #+#             */
-/*   Updated: 2023/04/18 15:29:55 by akorompa         ###   ########.fr       */
+/*   Updated: 2023/04/21 11:14:36 by arurangi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	get_size(char *str, char c)
 int	is_special_token(char *str, char c)
 {
 	int	i;
-	
+
 	i = 0;
 	if (ft_strlen(str) != 3)
 		return (0);
@@ -47,7 +47,7 @@ int	is_special_token(char *str, char c)
 char	*special_token(char *str)
 {
 	char	*token;
-	
+
 	token = malloc(sizeof(char) * 3);
 	if (!token)
 		return (NULL);
